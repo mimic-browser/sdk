@@ -1,0 +1,30 @@
+name: Verify PHP mirror access
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    environment: sdk-production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify SSH read and dry-run push without changing the mirror
+        working-directory: release
+        env:
+          PHP_MIRROR_SSH_KEY: ${{ secrets.PHP_MIRROR_SSH_KEY }}
+        run: |
+          python - <<'PY'
+          import os, subprocess, tempfile
+          from pathlib import Path
+          import mirror_auth
+          with mirror_auth.credentials(os.environ) as (mirror, environment), tempfile.TemporaryDirectory() as temporary:
+              checkout = Path(temporary) / 'mirror'
+              subprocess.run(['git', 'clone', '--depth=1', mirror, str(checkout)], env=environment, check=True)
+              reference = 'HEAD:refs/tags/ssh-access-probe-' + os.environ['GITHUB_RUN_ID']
+              subprocess.run(['git', 'push', '--dry-run', 'origin', reference], cwd=checkout, env=environment, check=True)
+          print('PASS PHP mirror SSH clone and dry-run push; no references changed')
+          PY

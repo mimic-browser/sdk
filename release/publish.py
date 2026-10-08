@@ -25,7 +25,7 @@ def check_credentials(packages, environment):
         "crates": ("CARGO_REGISTRY_TOKEN",),
         "rubygems": ("GEM_HOST_API_KEY",),
         "maven": ("GNUPGHOME",),
-        "packagist": ("PHP_MIRROR_TOKEN",),
+        "packagist": ("PHP_MIRROR_SSH_KEY",),
     }
     missing = set()
     for package in packages.values():

@@ -15,6 +15,7 @@ import uuid
 import zipfile
 
 import release
+import mirror_auth
 
 
 def empty_mirror_tree(root, workspace):
@@ -85,16 +86,11 @@ def maven(package, progress, save):
 
 def php(package, source_revision, progress, save):
     """Publish an exact SDK/php tree to the designated CI-only mirror, never an edited fork."""
-    mirror = release.catalog()["php"]["mirror"]
-    token = os.environ.get("PHP_MIRROR_TOKEN")
-    if not token:
-        raise release.ReleaseError("PHP_MIRROR_TOKEN must authorize push to the dedicated PHP mirror")
-    import base64
-    environment = dict(os.environ)
-    # Credential bytes stay out of command arguments and persistent Git config.
-    environment.update({"GIT_TERMINAL_PROMPT":"0", "GIT_CONFIG_COUNT":"1",
-        "GIT_CONFIG_KEY_0":"http." + mirror + ".extraheader",
-        "GIT_CONFIG_VALUE_0":"Authorization: Basic " + base64.b64encode(("x-access-token:" + token).encode()).decode()})
+    with mirror_auth.credentials(os.environ) as (mirror, environment):
+        _php(package, source_revision, progress, save, mirror, environment)
+
+
+def _php(package, source_revision, progress, save, mirror, environment):
     def git(arguments, cwd=release.ROOT, capture=False):
         result = subprocess.run(["git", *map(str, arguments)], cwd=cwd, env=environment, text=True, capture_output=capture)
         if result.returncode:
