@@ -428,7 +428,11 @@ def ruby_doc_type(schema):
         name = schema['$ref'].split('/')[-1]
         return name if model_schema(DEFS[name]) else ruby_doc_type(DEFS[name])
     if nullable(schema) is not None: return ruby_doc_type(nullable(schema)) + ', nil'
+    if 'oneOf' in schema and schema.get('type') != 'object':
+        return ', '.join(dict.fromkeys(ruby_doc_type(child) for child in schema['oneOf']))
     if schema.get('type') == 'array': return 'Array<' + ruby_doc_type(schema['items']) + '>'
+    if schema.get('type') == 'object' and isinstance(schema.get('additionalProperties'), dict):
+        return 'Hash{String => ' + ruby_doc_type(schema['additionalProperties']) + '}'
     return {'integer': 'Integer', 'number': 'Numeric', 'string': 'String', 'boolean': 'Boolean', 'object': 'Hash', 'null': 'nil'}.get(schema.get('type'), 'Object')
 
 
@@ -503,6 +507,29 @@ abstract class Model implements \\JsonSerializable {
 '''
 
 
+def php_doc_type(schema):
+    """Keep collection members and selector shapes visible to PHP editors."""
+    if '$ref' in schema:
+        name = schema['$ref'].split('/')[-1]
+        if model_schema(DEFS[name]): return 'EmptyValue' if name == 'Empty' else name
+        return php_doc_type(DEFS[name])
+    if 'oneOf' in schema and schema.get('type') != 'object':
+        return '|'.join(dict.fromkeys(php_doc_type(child) for child in schema['oneOf']))
+    if 'enum' in schema:
+        return '|'.join(repr(value) if isinstance(value, str) else str(value).lower() for value in schema['enum'])
+    kind = schema.get('type')
+    if kind == 'array': return 'list<' + php_doc_type(schema['items']) + '>'
+    if kind == 'object':
+        if 'properties' in schema:
+            required = schema.get('required', [])
+            fields = ', '.join(name + ('' if name in required else '?') + ': ' + php_doc_type(child)
+                               for name, child in schema['properties'].items())
+            return 'array{' + fields + '}|object{' + fields + '}'
+        child = schema.get('additionalProperties', {})
+        return 'array<string, ' + php_doc_type(child if isinstance(child, dict) else {}) + '>'
+    return {'string': 'string', 'boolean': 'bool', 'integer': 'int', 'number': 'float', 'null': 'null'}.get(kind, 'mixed')
+
+
 def php():
     def descriptor(schema):
         if '$ref' in schema:
@@ -524,6 +551,12 @@ def php():
         for wire,child in properties(schema):
             typ=type_name(child,'php')
             if typ!='mixed': typ+='|Missing' + ('' if '|null' in typ or typ=='null' else '|null')
+            doc_type = php_doc_type(child)
+            if doc_type != 'mixed':
+                # A pipe may belong to a nested shape or collection member.
+                # Preserve that expression intact; repeated null is harmless.
+                doc_type += '|Missing|null'
+                lines.append(f'    /** @var {doc_type} */')
             lines.append(f'    public {typ} ${wire} = Missing::Value;')
         lines.append('}')
     lines+=['final class MimicCommands {','    public function __construct(private \\Closure $sender) {}']

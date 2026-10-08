@@ -54,6 +54,34 @@ class ContractTests(unittest.TestCase):
             with self.subTest(target=filename):
                 self.assertEqual((ROOT / filename).read_bytes(), backend().encode())
 
+    def test_dynamic_language_editor_collection_and_selector_types(self):
+        sources = self.contract.definitions['GetMediaSourcesResult']['properties']['sources']
+        self.assertEqual('list<MediaSource>', generate.php_doc_type(sources))
+        self.assertEqual('Array<MediaSource>', generate.ruby_doc_type(sources))
+        selector = {'$ref': '#/$defs/ProfileSelection'}
+        self.assertEqual('string|GenerateProfileSelection', generate.php_doc_type(selector))
+        self.assertEqual('String, GenerateProfileSelection', generate.ruby_doc_type(selector))
+        source = generate.php_doc_type({'$ref': '#/$defs/MediaSourceSelector'})
+        self.assertIn('array{sourceId: string}', source)
+        self.assertIn('object{label: string}', source)
+        self.assertNotIn('mixed', source)
+
+    def test_php_nested_collection_unions_keep_structural_delimiters(self):
+        choice = {'oneOf': [
+            {'type': 'object', 'properties': {'x': {'oneOf': [{'type': 'string'}, {'type': 'number'}]}}},
+            {'type': 'object', 'properties': {'y': {'oneOf': [{'type': 'boolean'}, {'type': 'number'}]}}},
+        ]}
+        fields = {'items': {'type': 'array', 'items': choice},
+                  'mapping': {'type': 'object', 'additionalProperties': choice}}
+        fixture = 'EditorNestedUnionFixture'
+        generate.DEFS[fixture] = {'type': 'object', 'properties': fields}
+        try:
+            generated = generate.php()
+            for schema in fields.values():
+                self.assertIn('/** @var ' + generate.php_doc_type(schema) + '|Missing|null */', generated)
+        finally:
+            del generate.DEFS[fixture]
+
     def test_source_provenance_and_frozen_chrome(self):
         provenance = json.loads((ROOT / "schema/mimic/source.json").read_text())
         self.assertEqual(self.contract.sha256, provenance["contractSha256"])

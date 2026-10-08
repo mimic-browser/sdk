@@ -9,7 +9,7 @@
     "java": {"name":"boo.mimic:mimic-browser","version":"0.1.0","registry":"maven","directory":"java","inputs":["java/src/main/**","java/pom.xml","release/runtime-lock.json","LICENSE"],"requires":[]},
     "go": {"name":"github.com/mimic-browser/sdk/go","version":"0.1.0","registry":"go","directory":"go","inputs":["go/**"],"requires":[]},
     "rust": {"name":"mimic-browser","version":"0.1.0","registry":"crates","directory":"rust","inputs":["rust/src/**","rust/tests/**","rust/examples/**","rust/Cargo.toml","rust/Cargo.lock","rust/runtime-lock.json","rust/LICENSE","rust/README.md"],"requires":[]},
-    "ruby": {"name":"mimic-browser","version":"0.1.0","registry":"rubygems","directory":"ruby","inputs":["ruby/lib/**","ruby/bin/**","ruby/*.gemspec","ruby/LICENSE","ruby/README.md"],"requires":[]},
-    "php": {"name":"mimic-browser/sdk","version":"0.1.0","registry":"packagist","directory":"php","mirror":"https://github.com/mimic-browser/sdk-php.git","inputs":["php/src/**","php/bin/**","php/resources/**","php/composer.json","php/LICENSE","php/README.md"],"requires":[]}
+    "ruby": {"name":"mimic-browser","version":"0.1.0","registry":"rubygems","directory":"ruby","inputs":["ruby/lib/**","ruby/bin/**","ruby/*.gemspec","ruby/LICENSE","ruby/README.md","ruby/test/editor_types_test.rb"],"requires":[]},
+    "php": {"name":"mimic-browser/sdk","version":"0.1.0","registry":"packagist","directory":"php","mirror":"https://github.com/mimic-browser/sdk-php.git","inputs":["php/src/**","php/bin/**","php/resources/**","php/composer.json","php/LICENSE","php/README.md","php/tests/editor_types*.php","php/tests/check_typing.py"],"requires":[]}
   }
 }

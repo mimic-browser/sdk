@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 import release
+import editor_tools
 
 
 def run(command, directory, environment=None):
@@ -106,10 +107,24 @@ def check(key, package, build, directory):
         run(["composer", "install", "--no-dev", "--no-interaction", "--no-progress"], directory)
         run(["php", "-r", "require 'vendor/autoload.php'; if (class_exists('HeadlessChromium\\Browser') || !\\Mimic\\Sdk\\RuntimeManager::defaultLock()->release) throw new Exception('Core package isolation');"], directory)
         run(["php", "vendor/bin/mimic-sdk", "list"], directory)
+        # Install the selected native client only in this isolated consumer;
+        # the SDK package itself keeps the adapter optional.
+        installed = directory / 'vendor' / package['name']
+        metadata = release.read(directory / 'composer.json')
+        metadata['repositories'] = [metadata['repositories'][0]]
+        metadata['require-dev'] = {'chrome-php/chrome': '1.16.0'}
+        release.write(directory / 'composer.json', metadata)
+        run(['composer', 'update', '--no-interaction', '--no-progress'], directory)
+        analyzer = editor_tools.phpstan(directory / 'editor-tools')
+        run(['python', release.ROOT / 'php/tests/check_typing.py', '--php', os.environ.get('MIMIC_RELEASE_PHP', 'php'),
+             '--phpstan', analyzer, '--autoload', directory / 'vendor/autoload.php', '--package-root', installed], directory)
     elif registry == "rubygems":
         run(["gem", "unpack", files[0], "--target", directory], directory)
         library = directory / f"{package['name']}-{package['version']}" / "lib"
         run(["ruby", "-I" + str(library), "-e", "require 'mimic_sdk'; raise 'Missing core' unless defined?(MimicSDK::RuntimeManager); raise 'Imported unused Ferrum' if $LOADED_FEATURES.any? { |path| path.include?('/ferrum') }"], directory)
+        analyzer = editor_tools.yard(directory / 'editor-tools')
+        environment = dict(os.environ, MIMIC_RUBY_SOURCE=str(library), MIMIC_RUBY_REQUIRE_PACKED='1')
+        run(['ruby', '-I' + str(analyzer), release.ROOT / 'ruby/test/editor_types_test.rb'], directory, environment)
     elif registry in ("go", "crates"):
         unpack(files[0], directory)
         if registry == "go":

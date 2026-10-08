@@ -9,6 +9,7 @@ import subprocess
 import sys
 
 import release
+import editor_tools
 
 
 def pyppeteer_python():
@@ -49,6 +50,13 @@ def unit(group):
         "ruby": [["bundle", "exec", "ruby", "-Ilib", "test/sdk_test.rb"], ["bundle", "exec", "ruby", "-Ilib", "test/transport_test.rb"]],
         "php": [["php", "tests/unit.php"]],
     }
+    if group == 'ruby':
+        library = editor_tools.yard(release.ROOT / '.build/editor-tools')
+        commands[group].append(['ruby', '-I' + str(library), 'test/editor_types_test.rb'])
+    if group == 'php':
+        analyzer = editor_tools.phpstan(release.ROOT / '.build/editor-tools')
+        commands[group].append(['python', 'tests/check_typing.py', '--php', os.environ.get('MIMIC_RELEASE_PHP', 'php'), '--phpstan', analyzer,
+                                '--autoload', release.ROOT / 'php/vendor/autoload.php'])
     for command in commands[group]: release.execute(command, release.ROOT / group)
 
 

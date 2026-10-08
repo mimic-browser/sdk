@@ -8,11 +8,24 @@ end
 
 module MimicSDK
   module Ferrum
+    # Identity and typed capabilities for the context being configured.
+    # @!attribute [rw] browser_context_id
+    #   @return [String]
+    # @!attribute [rw] mimic
+    #   @return [MimicSDK::Client]
     ContextSetup = Struct.new(:browser_context_id, :mimic, keyword_init: true)
 
     class Session
-      attr_reader :browser, :mimic, :runtime
+      # @return [::Ferrum::Browser]
+      attr_reader :browser
+      # @return [MimicSDK::Client]
+      attr_reader :mimic
+      # @return [MimicSDK::RuntimeProcess, nil] nil when attached to an external runtime
+      attr_reader :runtime
 
+      # @param endpoint [String] HTTP or browser WebSocket endpoint
+      # @param runtime [MimicSDK::RuntimeProcess, nil]
+      # @param timeout [Numeric] native client timeout in seconds
       def initialize(endpoint, runtime: nil, timeout: 30)
         @runtime = runtime
         @contexts = []
@@ -53,6 +66,12 @@ module MimicSDK
 
       # Returns Ferrum::Context, not an SDK automation wrapper. All configuration
       # is complete before a user Page can be created through the returned object.
+      # @param profile [String, MimicSDK::Generated::GenerateProfileSelection, Hash]
+      # @param media [MimicSDK::Generated::MediaConfiguration, Hash, Proc, nil]
+      #   A Proc receives ContextSetup and returns MediaConfiguration or its wire Hash.
+      # @param resource_policy [MimicSDK::Generated::ResourcePolicy, Hash, nil]
+      # @param proxy [MimicSDK::Generated::Proxy, Hash, nil]
+      # @return [::Ferrum::Context]
       def new_context(profile: UNSET, media: nil, resource_policy: nil, proxy: nil)
         context = @mutex.synchronize do
           raise RuntimeError, 'Integration session closed' if @closed
@@ -163,6 +182,20 @@ module MimicSDK
       end
     end
 
+    # @param runtime_version [String, nil]
+    # @param lock_file [String, nil]
+    # @param executable_path [String, nil]
+    # @param runtime_dir [String, nil]
+    # @param archive_path [String, nil]
+    # @param allow_download [Boolean] omitted to use the environment default
+    # @param startup_timeout [Numeric] seconds
+    # @param lock_timeout [Numeric] seconds
+    # @param cancelled [Proc, nil] returns true to cancel
+    # @param timeout [Numeric] native client timeout in seconds
+    # @yield [session] closes the session after the block
+    # @yieldparam session [MimicSDK::Ferrum::Session]
+    # @return [MimicSDK::Ferrum::Session] when called without a block;
+    #   the block form returns the block's result instead
     def self.launch(runtime_version: nil, lock_file: nil, executable_path: nil,
                     runtime_dir: nil, archive_path: nil, allow_download: UNSET,
                     startup_timeout: 30, lock_timeout: 120, cancelled: nil,
@@ -186,6 +219,12 @@ module MimicSDK
       raise
     end
 
+    # @param endpoint [String] HTTP or browser WebSocket endpoint
+    # @param timeout [Numeric] native client timeout in seconds
+    # @yield [session] closes the session after the block
+    # @yieldparam session [MimicSDK::Ferrum::Session]
+    # @return [MimicSDK::Ferrum::Session] when called without a block;
+    #   the block form returns the block's result instead
     def self.connect(endpoint, timeout: 30)
       session = Session.new(endpoint, timeout: timeout)
       return session unless block_given?

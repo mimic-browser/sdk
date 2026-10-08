@@ -109,16 +109,16 @@ module MimicSDK
       REQUIRED = [:url, :files, :warnings, :timings_ms].freeze
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :url
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :files
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :warnings
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Integer}] UNSET until assigned when omitted.
       attr_accessor :timings_ms
       # @param url [String]
-      # @param files [Hash]
+      # @param files [Hash{String => String}]
       # @param warnings [Array<String>]
-      # @param timings_ms [Hash]
+      # @param timings_ms [Hash{String => Integer}]
       def initialize(
         url: UNSET,
         files: UNSET,
@@ -149,7 +149,7 @@ module MimicSDK
       FIELDS = {profile: "profile", proxy: "proxy", resource_policy: "resourcePolicy", media: "media", browser_context_id: "browserContextId"}.freeze
       TYPES = {profile: "ProfileSelection", proxy: "Proxy", resource_policy: "ResourcePolicy", media: "MediaConfiguration", browser_context_id: nil}.freeze
       REQUIRED = [:browser_context_id].freeze
-      # @return [Object] UNSET until assigned when omitted.
+      # @return [String, GenerateProfileSelection] UNSET until assigned when omitted.
       attr_accessor :profile
       # @return [Proxy] UNSET until assigned when omitted.
       attr_accessor :proxy
@@ -159,7 +159,7 @@ module MimicSDK
       attr_accessor :media
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :browser_context_id
-      # @param profile [Object]
+      # @param profile [String, GenerateProfileSelection]
       # @param proxy [Proxy]
       # @param resource_policy [ResourcePolicy]
       # @param media [MediaConfiguration]
@@ -220,7 +220,7 @@ module MimicSDK
       FIELDS = {profile: "profile", proxy: "proxy", resource_policy: "resourcePolicy", dispose_on_detach: "disposeOnDetach", media: "media"}.freeze
       TYPES = {profile: "ProfileSelection", proxy: "Proxy", resource_policy: "ResourcePolicy", dispose_on_detach: nil, media: "MediaConfiguration"}.freeze
       REQUIRED = [].freeze
-      # @return [Object] UNSET until assigned when omitted.
+      # @return [String, GenerateProfileSelection] UNSET until assigned when omitted.
       attr_accessor :profile
       # @return [Proxy] UNSET until assigned when omitted.
       attr_accessor :proxy
@@ -230,7 +230,7 @@ module MimicSDK
       attr_accessor :dispose_on_detach
       # @return [MediaConfiguration] UNSET until assigned when omitted.
       attr_accessor :media
-      # @param profile [Object]
+      # @param profile [String, GenerateProfileSelection]
       # @param proxy [Proxy]
       # @param resource_policy [ResourcePolicy]
       # @param dispose_on_detach [Boolean]
@@ -313,16 +313,16 @@ module MimicSDK
       attr_accessor :enabled
       # @return [Boolean] UNSET until assigned when omitted.
       attr_accessor :host_only
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => DiagnosticCost}] UNSET until assigned when omitted.
       attr_accessor :costs
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Object}] UNSET until assigned when omitted.
       attr_accessor :cpu_profiles
       # @return [Array<RealmDiagnostics>] UNSET until assigned when omitted.
       attr_accessor :realms
       # @param enabled [Boolean]
       # @param host_only [Boolean]
-      # @param costs [Hash]
-      # @param cpu_profiles [Hash]
+      # @param costs [Hash{String => DiagnosticCost}]
+      # @param cpu_profiles [Hash{String => Object}]
       # @param realms [Array<RealmDiagnostics>]
       def initialize(
         enabled: UNSET,
@@ -383,12 +383,12 @@ module MimicSDK
       attr_accessor :devices
       # @return [EnvironmentMediaCapabilities] UNSET until assigned when omitted.
       attr_accessor :media
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :keyboard_layout
       # @param storage_quota_bytes [Integer]
       # @param devices [EnvironmentDeviceCapabilities]
       # @param media [EnvironmentMediaCapabilities]
-      # @param keyboard_layout [Hash]
+      # @param keyboard_layout [Hash{String => String}]
       def initialize(
         storage_quota_bytes: UNSET,
         devices: UNSET,
@@ -474,7 +474,7 @@ module MimicSDK
       attr_accessor :monospace
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :system_u_i
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :system
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :fallback
@@ -482,7 +482,7 @@ module MimicSDK
       # @param sans_serif [String]
       # @param monospace [String]
       # @param system_u_i [String]
-      # @param system [Hash]
+      # @param system [Hash{String => String}]
       # @param fallback [Array<String>]
       def initialize(
         serif: UNSET,
@@ -520,7 +520,7 @@ module MimicSDK
       attr_accessor :is_fallback_adapter
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :features
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Integer}] UNSET until assigned when omitted.
       attr_accessor :limits
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :wgsl_language_features
@@ -534,7 +534,7 @@ module MimicSDK
       # @param subgroup_max_size [Integer]
       # @param is_fallback_adapter [Boolean]
       # @param features [Array<String>]
-      # @param limits [Hash]
+      # @param limits [Hash{String => Integer}]
       # @param wgsl_language_features [Array<String>]
       # @param initialization_delay_millis [Numeric]
       def initialize(
@@ -577,14 +577,14 @@ module MimicSDK
       attr_accessor :web_g_l_capabilities_j_s_o_n
       # @return [EnvironmentGPUAdapter] UNSET until assigned when omitted.
       attr_accessor :web_g_p_u
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => EnvironmentGPUAdapter}] UNSET until assigned when omitted.
       attr_accessor :web_g_p_u_adapters
       # @param vendor [String]
       # @param renderer [String]
       # @param max_texture_size [Integer]
       # @param web_g_l_capabilities_j_s_o_n [String]
       # @param web_g_p_u [EnvironmentGPUAdapter]
-      # @param web_g_p_u_adapters [Hash]
+      # @param web_g_p_u_adapters [Hash{String => EnvironmentGPUAdapter}]
       def initialize(
         vendor: UNSET,
         renderer: UNSET,
@@ -737,7 +737,7 @@ module MimicSDK
       FIELDS = {rtp: "rtp", formats: "formats", kinds: "kinds", supported_constraints: "supportedConstraints"}.freeze
       TYPES = {rtp: [:map, "EnvironmentRTPMediaCatalog"], formats: "EnvironmentMediaFormatCatalog", kinds: [:array, nil], supported_constraints: [:array, nil]}.freeze
       REQUIRED = [].freeze
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => EnvironmentRTPMediaCatalog}] UNSET until assigned when omitted.
       attr_accessor :rtp
       # @return [EnvironmentMediaFormatCatalog] UNSET until assigned when omitted.
       attr_accessor :formats
@@ -745,7 +745,7 @@ module MimicSDK
       attr_accessor :kinds
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :supported_constraints
-      # @param rtp [Hash]
+      # @param rtp [Hash{String => EnvironmentRTPMediaCatalog}]
       # @param formats [EnvironmentMediaFormatCatalog]
       # @param kinds [Array<String>]
       # @param supported_constraints [Array<String>]
@@ -788,11 +788,11 @@ module MimicSDK
       FIELDS = {containers: "containers", efficient_video: "efficientVideo"}.freeze
       TYPES = {containers: [:map, "EnvironmentMediaContainerPolicy"], efficient_video: [:array, nil]}.freeze
       REQUIRED = [].freeze
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => EnvironmentMediaContainerPolicy}] UNSET until assigned when omitted.
       attr_accessor :containers
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :efficient_video
-      # @param containers [Hash]
+      # @param containers [Hash{String => EnvironmentMediaContainerPolicy}]
       # @param efficient_video [Array<String>]
       def initialize(
         containers: UNSET,
@@ -861,14 +861,14 @@ module MimicSDK
       REQUIRED = [].freeze
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :color_scheme
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Hash{String => String}}] UNSET until assigned when omitted.
       attr_accessor :system_colors
       # @return [Boolean] UNSET until assigned when omitted.
       attr_accessor :reduced_motion
       # @return [Boolean] UNSET until assigned when omitted.
       attr_accessor :do_not_track
       # @param color_scheme [String]
-      # @param system_colors [Hash]
+      # @param system_colors [Hash{String => Hash{String => String}}]
       # @param reduced_motion [Boolean]
       # @param do_not_track [Boolean]
       def initialize(
@@ -911,11 +911,11 @@ module MimicSDK
       attr_accessor :preferences
       # @return [EnvironmentNetwork] UNSET until assigned when omitted.
       attr_accessor :network
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :permissions
       # @return [EnvironmentCapabilities] UNSET until assigned when omitted.
       attr_accessor :capabilities
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Boolean}] UNSET until assigned when omitted.
       attr_accessor :features
       # @return [EnvironmentTiming] UNSET until assigned when omitted.
       attr_accessor :timing
@@ -931,9 +931,9 @@ module MimicSDK
       # @param fonts [EnvironmentFonts]
       # @param preferences [EnvironmentPreferences]
       # @param network [EnvironmentNetwork]
-      # @param permissions [Hash]
+      # @param permissions [Hash{String => String}]
       # @param capabilities [EnvironmentCapabilities]
-      # @param features [Hash]
+      # @param features [Hash{String => Boolean}]
       # @param timing [EnvironmentTiming]
       def initialize(
         schema_version: UNSET,
@@ -1051,7 +1051,7 @@ module MimicSDK
       FIELDS = {codecs: "codecs", sender_order: "senderOrder", receiver_order: "receiverOrder", offer_order: "offerOrder", header_extensions: "headerExtensions", receiver_r_t_t: "receiverRTT"}.freeze
       TYPES = {codecs: [:map, "EnvironmentRTPCodec"], sender_order: [:array, nil], receiver_order: [:array, nil], offer_order: [:array, nil], header_extensions: [:array, nil], receiver_r_t_t: nil}.freeze
       REQUIRED = [].freeze
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => EnvironmentRTPCodec}] UNSET until assigned when omitted.
       attr_accessor :codecs
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :sender_order
@@ -1063,7 +1063,7 @@ module MimicSDK
       attr_accessor :header_extensions
       # @return [Boolean] UNSET until assigned when omitted.
       attr_accessor :receiver_r_t_t
-      # @param codecs [Hash]
+      # @param codecs [Hash{String => EnvironmentRTPCodec}]
       # @param sender_order [Array<String>]
       # @param receiver_order [Array<String>]
       # @param offer_order [Array<String>]
@@ -1456,16 +1456,16 @@ module MimicSDK
       attr_accessor :enabled
       # @return [Boolean] UNSET until assigned when omitted.
       attr_accessor :host_only
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => DiagnosticCost}] UNSET until assigned when omitted.
       attr_accessor :costs
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Object}] UNSET until assigned when omitted.
       attr_accessor :cpu_profiles
       # @return [Array<RealmDiagnostics>] UNSET until assigned when omitted.
       attr_accessor :realms
       # @param enabled [Boolean]
       # @param host_only [Boolean]
-      # @param costs [Hash]
-      # @param cpu_profiles [Hash]
+      # @param costs [Hash{String => DiagnosticCost}]
+      # @param cpu_profiles [Hash{String => Object}]
       # @param realms [Array<RealmDiagnostics>]
       def initialize(
         enabled: UNSET,
@@ -1526,10 +1526,10 @@ module MimicSDK
       REQUIRED = [:profile, :diagnostics].freeze
       # @return [MediaProfile, nil] UNSET until assigned when omitted.
       attr_accessor :profile
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :diagnostics
       # @param profile [MediaProfile, nil]
-      # @param diagnostics [Hash]
+      # @param diagnostics [Hash{String => String}]
       def initialize(
         profile: UNSET,
         diagnostics: UNSET
@@ -1557,10 +1557,10 @@ module MimicSDK
       REQUIRED = [:sources, :diagnostics].freeze
       # @return [Array<MediaSource>] UNSET until assigned when omitted.
       attr_accessor :sources
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :diagnostics
       # @param sources [Array<MediaSource>]
-      # @param diagnostics [Hash]
+      # @param diagnostics [Hash{String => String}]
       def initialize(
         sources: UNSET,
         diagnostics: UNSET
@@ -1616,13 +1616,13 @@ module MimicSDK
       FIELDS = {schema: "schema", base_profiles: "baseProfiles", limitations: "limitations"}.freeze
       TYPES = {schema: [:map, nil], base_profiles: [:array, nil], limitations: [:array, nil]}.freeze
       REQUIRED = [:schema, :base_profiles, :limitations].freeze
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Object}] UNSET until assigned when omitted.
       attr_accessor :schema
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :base_profiles
       # @return [Array<String>] UNSET until assigned when omitted.
       attr_accessor :limitations
-      # @param schema [Hash]
+      # @param schema [Hash{String => Object}]
       # @param base_profiles [Array<String>]
       # @param limitations [Array<String>]
       def initialize(
@@ -1682,9 +1682,9 @@ module MimicSDK
       FIELDS = {schema: "schema"}.freeze
       TYPES = {schema: [:map, nil]}.freeze
       REQUIRED = [:schema].freeze
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Object}] UNSET until assigned when omitted.
       attr_accessor :schema
-      # @param schema [Hash]
+      # @param schema [Hash{String => Object}]
       def initialize(
         schema: UNSET
       )
@@ -1750,10 +1750,10 @@ module MimicSDK
       REQUIRED = [:events, :crash_reports].freeze
       # @return [Array<TraceEvent>, nil] UNSET until assigned when omitted.
       attr_accessor :events
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :crash_reports
       # @param events [Array<TraceEvent>, nil]
-      # @param crash_reports [Hash]
+      # @param crash_reports [Hash{String => String}]
       def initialize(
         events: UNSET,
         crash_reports: UNSET
@@ -1796,11 +1796,11 @@ module MimicSDK
       FIELDS = {profile: "profile", mode: "mode"}.freeze
       TYPES = {profile: nil, mode: nil}.freeze
       REQUIRED = [:profile].freeze
-      # @return [Object] UNSET until assigned when omitted.
+      # @return [ProfileDescriptor, ManualProfile] UNSET until assigned when omitted.
       attr_accessor :profile
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :mode
-      # @param profile [Object]
+      # @param profile [ProfileDescriptor, ManualProfile]
       # @param mode [String]
       def initialize(
         profile: UNSET,
@@ -1910,11 +1910,11 @@ module MimicSDK
       attr_accessor :preferences
       # @return [ManualNetwork] UNSET until assigned when omitted.
       attr_accessor :network
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :permissions
       # @return [EnvironmentCapabilities] UNSET until assigned when omitted.
       attr_accessor :capabilities
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Boolean}] UNSET until assigned when omitted.
       attr_accessor :features
       # @return [EnvironmentTiming] UNSET until assigned when omitted.
       attr_accessor :timing
@@ -1928,9 +1928,9 @@ module MimicSDK
       # @param fonts [EnvironmentFonts]
       # @param preferences [EnvironmentPreferences]
       # @param network [ManualNetwork]
-      # @param permissions [Hash]
+      # @param permissions [Hash{String => String}]
       # @param capabilities [EnvironmentCapabilities]
-      # @param features [Hash]
+      # @param features [Hash{String => Boolean}]
       # @param timing [EnvironmentTiming]
       def initialize(
         identity: UNSET,
@@ -1968,13 +1968,13 @@ module MimicSDK
       FIELDS = {source: "source", profile: "profile", overrides: "overrides"}.freeze
       TYPES = {source: "MediaSourceSelector", profile: nil, overrides: "MediaDeviceOverride"}.freeze
       REQUIRED = [].freeze
-      # @return [Object] UNSET until assigned when omitted.
+      # @return [String, Hash] UNSET until assigned when omitted.
       attr_accessor :source
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :profile
       # @return [MediaDeviceOverride] UNSET until assigned when omitted.
       attr_accessor :overrides
-      # @param source [Object]
+      # @param source [String, Hash]
       # @param profile [String]
       # @param overrides [MediaDeviceOverride]
       def initialize(
@@ -2051,7 +2051,7 @@ module MimicSDK
       attr_accessor :key
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :kind
-      # @return [Object] UNSET until assigned when omitted.
+      # @return [String, Hash] UNSET until assigned when omitted.
       attr_accessor :source
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :profile
@@ -2067,7 +2067,7 @@ module MimicSDK
       attr_accessor :processing
       # @param key [String]
       # @param kind [String]
-      # @param source [Object]
+      # @param source [String, Hash]
       # @param profile [String]
       # @param label [String]
       # @param group [String]
@@ -2100,11 +2100,11 @@ module MimicSDK
       FIELDS = {source: "source", profile: "profile"}.freeze
       TYPES = {source: "MediaSourceSelector", profile: nil}.freeze
       REQUIRED = [].freeze
-      # @return [Object] UNSET until assigned when omitted.
+      # @return [String, Hash] UNSET until assigned when omitted.
       attr_accessor :source
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :profile
-      # @param source [Object]
+      # @param source [String, Hash]
       # @param profile [String]
       def initialize(
         source: UNSET,
@@ -2300,11 +2300,11 @@ module MimicSDK
       attr_accessor :preferences
       # @return [ManualNetwork] UNSET until assigned when omitted.
       attr_accessor :network
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => String}] UNSET until assigned when omitted.
       attr_accessor :permissions
       # @return [EnvironmentCapabilities] UNSET until assigned when omitted.
       attr_accessor :capabilities
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Boolean}] UNSET until assigned when omitted.
       attr_accessor :features
       # @return [EnvironmentTiming] UNSET until assigned when omitted.
       attr_accessor :timing
@@ -2318,9 +2318,9 @@ module MimicSDK
       # @param fonts [EnvironmentFonts]
       # @param preferences [EnvironmentPreferences]
       # @param network [ManualNetwork]
-      # @param permissions [Hash]
+      # @param permissions [Hash{String => String}]
       # @param capabilities [EnvironmentCapabilities]
-      # @param features [Hash]
+      # @param features [Hash{String => Boolean}]
       # @param timing [EnvironmentTiming]
       def initialize(
         identity: UNSET,
@@ -2649,7 +2649,7 @@ module MimicSDK
       attr_accessor :would_bypass_cache
       # @return [Integer] UNSET until assigned when omitted.
       attr_accessor :budget_denied
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Integer}] UNSET until assigned when omitted.
       attr_accessor :by_rule
       # @param generation [Integer]
       # @param requests [Integer]
@@ -2668,7 +2668,7 @@ module MimicSDK
       # @param would_block [Integer]
       # @param would_bypass_cache [Integer]
       # @param budget_denied [Integer]
-      # @param by_rule [Hash]
+      # @param by_rule [Hash{String => Integer}]
       def initialize(
         generation: UNSET,
         requests: UNSET,
@@ -2905,13 +2905,13 @@ module MimicSDK
       attr_accessor :kind
       # @return [String] UNSET until assigned when omitted.
       attr_accessor :name
-      # @return [Hash] UNSET until assigned when omitted.
+      # @return [Hash{String => Object}] UNSET until assigned when omitted.
       attr_accessor :data
       # @param sequence [Integer]
       # @param time [String]
       # @param kind [String]
       # @param name [String]
-      # @param data [Hash]
+      # @param data [Hash{String => Object}]
       def initialize(
         sequence: UNSET,
         time: UNSET,

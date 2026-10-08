@@ -49,8 +49,11 @@ final class CameraFormat extends Model {
     protected const REQUIRED = ['width', 'height', 'frameRate'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['width' => null, 'height' => null, 'frameRate' => null];
+    /** @var float|Missing|null */
     public float|Missing|null $frameRate = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $height = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $width = Missing::Value;
 }
 final class CancelExecutionParams extends Model {
@@ -62,21 +65,27 @@ final class CancelExecutionResult extends Model {
     protected const REQUIRED = ['cancelled'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['cancelled' => null];
+    /** @var bool|Missing|null */
     public bool|Missing|null $cancelled = Missing::Value;
 }
 final class CaptureSnapshotParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['interrupt' => null];
+    /** @var bool|Missing|null */
     public bool|Missing|null $interrupt = Missing::Value;
 }
 final class CaptureSnapshotResult extends Model {
     protected const REQUIRED = ['url', 'files', 'warnings', 'timingsMs'];
     protected const MAP_FIELDS = ['files', 'timingsMs'];
     protected const TYPES = ['url' => null, 'files' => ['map', null], 'warnings' => ['array', null], 'timingsMs' => ['map', null]];
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $files = Missing::Value;
+    /** @var array<string, int>|Missing|null */
     public array|Missing|null $timingsMs = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $url = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $warnings = Missing::Value;
 }
 final class ClearTraceParams extends Model {
@@ -93,59 +102,88 @@ final class ConfigureContextParams extends Model {
     protected const REQUIRED = ['browserContextId'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => null, 'proxy' => Proxy::class, 'resourcePolicy' => ResourcePolicy::class, 'media' => MediaConfiguration::class, 'browserContextId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
+    /** @var MediaConfiguration|Missing|null */
     public MediaConfiguration|Missing|null $media = Missing::Value;
+    /** @var string|GenerateProfileSelection|Missing|null */
     public mixed $profile = Missing::Value;
+    /** @var Proxy|Missing|null */
     public Proxy|Missing|null $proxy = Missing::Value;
+    /** @var ResourcePolicy|Missing|null */
     public ResourcePolicy|Missing|null $resourcePolicy = Missing::Value;
 }
 final class ConfigureContextResult extends Model {
     protected const REQUIRED = ['profile', 'profileId', 'mode', 'warnings', 'browserContextId'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => null, 'profileId' => null, 'mode' => null, 'warnings' => ['array', null], 'browserContextId' => null, 'media' => MediaProfile::class];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
+    /** @var 'generated'|'manual'|Missing|null */
     public string|Missing|null $mode = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profile = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profileId = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $warnings = Missing::Value;
+    /** @var MediaProfile|Missing|null */
     public MediaProfile|Missing|null $media = Missing::Value;
 }
 final class CreateContextParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => null, 'proxy' => Proxy::class, 'resourcePolicy' => ResourcePolicy::class, 'disposeOnDetach' => null, 'media' => MediaConfiguration::class];
+    /** @var bool|Missing|null */
     public bool|Missing|null $disposeOnDetach = Missing::Value;
+    /** @var MediaConfiguration|Missing|null */
     public MediaConfiguration|Missing|null $media = Missing::Value;
+    /** @var string|GenerateProfileSelection|Missing|null */
     public mixed $profile = Missing::Value;
+    /** @var Proxy|Missing|null */
     public Proxy|Missing|null $proxy = Missing::Value;
+    /** @var ResourcePolicy|Missing|null */
     public ResourcePolicy|Missing|null $resourcePolicy = Missing::Value;
 }
 final class CreateContextResult extends Model {
     protected const REQUIRED = ['profile', 'profileId', 'mode', 'warnings', 'browserContextId'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => null, 'profileId' => null, 'mode' => null, 'warnings' => ['array', null], 'browserContextId' => null, 'media' => MediaProfile::class];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
+    /** @var 'generated'|'manual'|Missing|null */
     public string|Missing|null $mode = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profile = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profileId = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $warnings = Missing::Value;
+    /** @var MediaProfile|Missing|null */
     public MediaProfile|Missing|null $media = Missing::Value;
 }
 final class DiagnosticCost extends Model {
     protected const REQUIRED = ['count', 'ns'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['count' => null, 'ns' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $count = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $ns = Missing::Value;
 }
 final class Diagnostics extends Model {
     protected const REQUIRED = ['enabled'];
     protected const MAP_FIELDS = ['costs', 'cpu_profiles'];
     protected const TYPES = ['enabled' => null, 'hostOnly' => null, 'costs' => ['map', DiagnosticCost::class], 'cpu_profiles' => ['map', null], 'realms' => ['array', RealmDiagnostics::class]];
+    /** @var bool|Missing|null */
     public bool|Missing|null $enabled = Missing::Value;
+    /** @var array<string, DiagnosticCost>|Missing|null */
     public array|Missing|null $costs = Missing::Value;
+    /** @var array<string, mixed>|Missing|null */
     public array|Missing|null $cpu_profiles = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $hostOnly = Missing::Value;
+    /** @var list<RealmDiagnostics>|Missing|null */
     public array|Missing|null $realms = Missing::Value;
 }
 final class EmptyValue extends Model {
@@ -157,322 +195,484 @@ final class EnvironmentAudio extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['sampleRate' => null, 'channels' => null, 'bufferDuration' => null, 'maxBufferFrames' => null];
+    /** @var float|Missing|null */
     public float|Missing|null $bufferDuration = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $channels = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $maxBufferFrames = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $sampleRate = Missing::Value;
 }
 final class EnvironmentCapabilities extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['keyboardLayout'];
     protected const TYPES = ['storageQuotaBytes' => null, 'devices' => EnvironmentDeviceCapabilities::class, 'media' => EnvironmentMediaCapabilities::class, 'keyboardLayout' => ['map', null]];
+    /** @var EnvironmentDeviceCapabilities|Missing|null */
     public EnvironmentDeviceCapabilities|Missing|null $devices = Missing::Value;
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $keyboardLayout = Missing::Value;
+    /** @var EnvironmentMediaCapabilities|Missing|null */
     public EnvironmentMediaCapabilities|Missing|null $media = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $storageQuotaBytes = Missing::Value;
 }
 final class EnvironmentDeviceCapabilities extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['bluetoothAvailable' => null, 'posture' => null];
+    /** @var bool|Missing|null */
     public bool|Missing|null $bluetoothAvailable = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $posture = Missing::Value;
 }
 final class EnvironmentDisplay extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['width' => null, 'height' => null, 'availableWidth' => null, 'availableHeight' => null, 'deviceScaleFactor' => null, 'colorDepth' => null, 'orientation' => EnvironmentScreenOrientation::class];
+    /** @var int|Missing|null */
     public int|Missing|null $availableHeight = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $availableWidth = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $colorDepth = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $deviceScaleFactor = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $height = Missing::Value;
+    /** @var EnvironmentScreenOrientation|Missing|null */
     public EnvironmentScreenOrientation|Missing|null $orientation = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $width = Missing::Value;
 }
 final class EnvironmentFonts extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['system'];
     protected const TYPES = ['serif' => null, 'sansSerif' => null, 'monospace' => null, 'systemUI' => null, 'system' => ['map', null], 'fallback' => ['array', null]];
+    /** @var list<string>|Missing|null */
     public array|Missing|null $fallback = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $monospace = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $sansSerif = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $serif = Missing::Value;
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $system = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $systemUI = Missing::Value;
 }
 final class EnvironmentGPUAdapter extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['limits'];
     protected const TYPES = ['vendor' => null, 'architecture' => null, 'device' => null, 'description' => null, 'subgroupMinSize' => null, 'subgroupMaxSize' => null, 'isFallbackAdapter' => null, 'features' => ['array', null], 'limits' => ['map', null], 'wgslLanguageFeatures' => ['array', null], 'initializationDelayMillis' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $architecture = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $description = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $device = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $features = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $initializationDelayMillis = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $isFallbackAdapter = Missing::Value;
+    /** @var array<string, int>|Missing|null */
     public array|Missing|null $limits = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $subgroupMaxSize = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $subgroupMinSize = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $vendor = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $wgslLanguageFeatures = Missing::Value;
 }
 final class EnvironmentGraphics extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['webGPUAdapters'];
     protected const TYPES = ['vendor' => null, 'renderer' => null, 'maxTextureSize' => null, 'webGLCapabilitiesJSON' => null, 'webGPU' => EnvironmentGPUAdapter::class, 'webGPUAdapters' => ['map', EnvironmentGPUAdapter::class]];
+    /** @var int|Missing|null */
     public int|Missing|null $maxTextureSize = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $renderer = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $vendor = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $webGLCapabilitiesJSON = Missing::Value;
+    /** @var EnvironmentGPUAdapter|Missing|null */
     public EnvironmentGPUAdapter|Missing|null $webGPU = Missing::Value;
+    /** @var array<string, EnvironmentGPUAdapter>|Missing|null */
     public array|Missing|null $webGPUAdapters = Missing::Value;
 }
 final class EnvironmentHardware extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['cpuPerformance' => null, 'cpuPerformanceKnown' => null, 'logicalProcessors' => null, 'deviceMemoryGB' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $cpuPerformance = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $cpuPerformanceKnown = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $deviceMemoryGB = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $logicalProcessors = Missing::Value;
 }
 final class EnvironmentICEProfile extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['hostCandidateCount' => null, 'reflexiveCandidateCount' => null, 'portOffsets' => ['array', null], 'reflexivePortOffsets' => ['array', null], 'publicAddress' => null, 'networkCost' => null, 'hostDelayMillis' => null, 'reflexiveDelayMillis' => null, 'endDelayMillis' => null];
+    /** @var float|Missing|null */
     public float|Missing|null $endDelayMillis = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $hostCandidateCount = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $hostDelayMillis = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $networkCost = Missing::Value;
+    /** @var list<int>|Missing|null */
     public array|Missing|null $portOffsets = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $publicAddress = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $reflexiveCandidateCount = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $reflexiveDelayMillis = Missing::Value;
+    /** @var list<int>|Missing|null */
     public array|Missing|null $reflexivePortOffsets = Missing::Value;
 }
 final class EnvironmentIdentity extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['userAgent' => null, 'platform' => null, 'metadata' => EnvironmentUserAgentMetadata::class];
+    /** @var EnvironmentUserAgentMetadata|Missing|null */
     public EnvironmentUserAgentMetadata|Missing|null $metadata = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $platform = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $userAgent = Missing::Value;
 }
 final class EnvironmentLocale extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['reduceAcceptLanguage' => null, 'languages' => ['array', null], 'intlLocale' => null, 'timezone' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $intlLocale = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $languages = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $reduceAcceptLanguage = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $timezone = Missing::Value;
 }
 final class EnvironmentMediaCapabilities extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['rtp'];
     protected const TYPES = ['rtp' => ['map', EnvironmentRTPMediaCatalog::class], 'formats' => EnvironmentMediaFormatCatalog::class, 'kinds' => ['array', null], 'supportedConstraints' => ['array', null]];
+    /** @var EnvironmentMediaFormatCatalog|Missing|null */
     public EnvironmentMediaFormatCatalog|Missing|null $formats = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $kinds = Missing::Value;
+    /** @var array<string, EnvironmentRTPMediaCatalog>|Missing|null */
     public array|Missing|null $rtp = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $supportedConstraints = Missing::Value;
 }
 final class EnvironmentMediaContainerPolicy extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['codecs' => ['array', null], 'defaultCodec' => null, 'mediaSource' => null];
+    /** @var list<string>|Missing|null */
     public array|Missing|null $codecs = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $defaultCodec = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $mediaSource = Missing::Value;
 }
 final class EnvironmentMediaFormatCatalog extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['containers'];
     protected const TYPES = ['containers' => ['map', EnvironmentMediaContainerPolicy::class], 'efficientVideo' => ['array', null]];
+    /** @var array<string, EnvironmentMediaContainerPolicy>|Missing|null */
     public array|Missing|null $containers = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $efficientVideo = Missing::Value;
 }
 final class EnvironmentNetwork extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['saveData' => null, 'online' => null, 'effectiveType' => null, 'downlinkMbps' => null, 'rttMillis' => null, 'cookiesEnabled' => null, 'wireProfile' => null, 'ice' => EnvironmentICEProfile::class, 'proxy' => EnvironmentProxy::class];
+    /** @var bool|Missing|null */
     public bool|Missing|null $cookiesEnabled = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $downlinkMbps = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $effectiveType = Missing::Value;
+    /** @var EnvironmentICEProfile|Missing|null */
     public EnvironmentICEProfile|Missing|null $ice = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $online = Missing::Value;
+    /** @var EnvironmentProxy|Missing|null */
     public EnvironmentProxy|Missing|null $proxy = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $rttMillis = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $saveData = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $wireProfile = Missing::Value;
 }
 final class EnvironmentPreferences extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['systemColors'];
     protected const TYPES = ['colorScheme' => null, 'systemColors' => ['map', ['map', null]], 'reducedMotion' => null, 'doNotTrack' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $colorScheme = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $doNotTrack = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $reducedMotion = Missing::Value;
+    /** @var array<string, array<string, string>>|Missing|null */
     public array|Missing|null $systemColors = Missing::Value;
 }
 final class EnvironmentProfile extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['permissions', 'features'];
     protected const TYPES = ['schemaVersion' => null, 'baseProfile' => null, 'identity' => EnvironmentIdentity::class, 'display' => EnvironmentDisplay::class, 'window' => EnvironmentWindow::class, 'hardware' => EnvironmentHardware::class, 'locale' => EnvironmentLocale::class, 'graphics' => EnvironmentGraphics::class, 'audio' => EnvironmentAudio::class, 'fonts' => EnvironmentFonts::class, 'preferences' => EnvironmentPreferences::class, 'network' => EnvironmentNetwork::class, 'permissions' => ['map', null], 'capabilities' => EnvironmentCapabilities::class, 'features' => ['map', null], 'timing' => EnvironmentTiming::class];
+    /** @var EnvironmentAudio|Missing|null */
     public EnvironmentAudio|Missing|null $audio = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $baseProfile = Missing::Value;
+    /** @var EnvironmentCapabilities|Missing|null */
     public EnvironmentCapabilities|Missing|null $capabilities = Missing::Value;
+    /** @var EnvironmentDisplay|Missing|null */
     public EnvironmentDisplay|Missing|null $display = Missing::Value;
+    /** @var array<string, bool>|Missing|null */
     public array|Missing|null $features = Missing::Value;
+    /** @var EnvironmentFonts|Missing|null */
     public EnvironmentFonts|Missing|null $fonts = Missing::Value;
+    /** @var EnvironmentGraphics|Missing|null */
     public EnvironmentGraphics|Missing|null $graphics = Missing::Value;
+    /** @var EnvironmentHardware|Missing|null */
     public EnvironmentHardware|Missing|null $hardware = Missing::Value;
+    /** @var EnvironmentIdentity|Missing|null */
     public EnvironmentIdentity|Missing|null $identity = Missing::Value;
+    /** @var EnvironmentLocale|Missing|null */
     public EnvironmentLocale|Missing|null $locale = Missing::Value;
+    /** @var EnvironmentNetwork|Missing|null */
     public EnvironmentNetwork|Missing|null $network = Missing::Value;
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $permissions = Missing::Value;
+    /** @var EnvironmentPreferences|Missing|null */
     public EnvironmentPreferences|Missing|null $preferences = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $schemaVersion = Missing::Value;
+    /** @var EnvironmentTiming|Missing|null */
     public EnvironmentTiming|Missing|null $timing = Missing::Value;
+    /** @var EnvironmentWindow|Missing|null */
     public EnvironmentWindow|Missing|null $window = Missing::Value;
 }
 final class EnvironmentProxy extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['server' => null, 'username' => null, 'password' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $password = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $server = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $username = Missing::Value;
 }
 final class EnvironmentRTPCodec extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['name' => null, 'clockRate' => null, 'channels' => null, 'parameters' => null, 'senderParameters' => null, 'feedback' => ['array', null], 'payload' => null, 'rtxPayload' => null, 'redundant' => ['array', null]];
+    /** @var int|Missing|null */
     public int|Missing|null $channels = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $clockRate = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $feedback = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $name = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $parameters = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $payload = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $redundant = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $rtxPayload = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $senderParameters = Missing::Value;
 }
 final class EnvironmentRTPMediaCatalog extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['codecs'];
     protected const TYPES = ['codecs' => ['map', EnvironmentRTPCodec::class], 'senderOrder' => ['array', null], 'receiverOrder' => ['array', null], 'offerOrder' => ['array', null], 'headerExtensions' => ['array', null], 'receiverRTT' => null];
+    /** @var array<string, EnvironmentRTPCodec>|Missing|null */
     public array|Missing|null $codecs = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $headerExtensions = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $offerOrder = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $receiverOrder = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $receiverRTT = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $senderOrder = Missing::Value;
 }
 final class EnvironmentScreenOrientation extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['type' => null, 'angle' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $angle = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $type = Missing::Value;
 }
 final class EnvironmentTiming extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['executionScale' => null, 'navigationScale' => null, 'networkScale' => null];
+    /** @var float|Missing|null */
     public float|Missing|null $executionScale = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $navigationScale = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $networkScale = Missing::Value;
 }
 final class EnvironmentUserAgentBrand extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['brand' => null, 'version' => null, 'fullVersion' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $brand = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $fullVersion = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $version = Missing::Value;
 }
 final class EnvironmentUserAgentMetadata extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['brands' => ['array', EnvironmentUserAgentBrand::class], 'fullVersionList' => ['array', EnvironmentUserAgentBrand::class], 'formFactors' => ['array', null], 'fullVersion' => null, 'platform' => null, 'platformVersion' => null, 'architecture' => null, 'model' => null, 'bitness' => null, 'mobile' => null, 'wow64' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $architecture = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $bitness = Missing::Value;
+    /** @var list<EnvironmentUserAgentBrand>|Missing|null */
     public array|Missing|null $brands = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $formFactors = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $fullVersion = Missing::Value;
+    /** @var list<EnvironmentUserAgentBrand>|Missing|null */
     public array|Missing|null $fullVersionList = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $mobile = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $model = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $platform = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $platformVersion = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $wow64 = Missing::Value;
 }
 final class EnvironmentWindow extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['x' => null, 'y' => null, 'outerWidth' => null, 'outerHeight' => null, 'viewportWidth' => null, 'viewportHeight' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $outerHeight = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $outerWidth = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $viewportHeight = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $viewportWidth = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $x = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $y = Missing::Value;
 }
 final class ExecutionStatus extends Model {
     protected const REQUIRED = ['running', 'taskId', 'source', 'phase', 'elapsedMs'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['running' => null, 'taskId' => null, 'source' => null, 'phase' => null, 'elapsedMs' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $elapsedMs = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $phase = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $running = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $source = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $taskId = Missing::Value;
 }
 final class ExportProfileParams extends Model {
     protected const REQUIRED = ['profile'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $profile = Missing::Value;
 }
 final class ExportProfileResult extends Model {
     protected const REQUIRED = ['profile', 'warnings'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => ProfileDescriptor::class, 'warnings' => ['array', null]];
+    /** @var ProfileDescriptor|Missing|null */
     public ProfileDescriptor|Missing|null $profile = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $warnings = Missing::Value;
 }
 final class GenerateProfileOptions extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browser' => null, 'version' => null, 'platform' => null, 'seed' => null];
+    /** @var 'chrome'|Missing|null */
     public string|Missing|null $browser = Missing::Value;
+    /** @var 'windows'|Missing|null */
     public string|Missing|null $platform = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $seed = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $version = Missing::Value;
 }
 final class GenerateProfileParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browser' => null, 'version' => null, 'platform' => null, 'seed' => null];
+    /** @var 'chrome'|Missing|null */
     public string|Missing|null $browser = Missing::Value;
+    /** @var 'windows'|Missing|null */
     public string|Missing|null $platform = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $seed = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $version = Missing::Value;
 }
 final class GenerateProfileResult extends Model {
     protected const REQUIRED = ['profile', 'profileId', 'mode', 'warnings'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => null, 'profileId' => null, 'mode' => null, 'warnings' => ['array', null]];
+    /** @var 'generated'|'manual'|Missing|null */
     public string|Missing|null $mode = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profile = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profileId = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $warnings = Missing::Value;
 }
 final class GenerateProfileSelection extends Model {
     protected const REQUIRED = ['generate'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['generate' => GenerateProfileOptions::class];
+    /** @var GenerateProfileOptions|Missing|null */
     public GenerateProfileOptions|Missing|null $generate = Missing::Value;
 }
 final class GetCompatibilityMatrixParams extends Model {
@@ -484,8 +684,11 @@ final class GetCompatibilityMatrixResult extends Model {
     protected const REQUIRED = ['chromeVersion', 'protocol', 'extensions'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['chromeVersion' => null, 'protocol' => ['array', ProtocolCoverage::class], 'extensions' => ['array', ProtocolCoverage::class]];
+    /** @var string|Missing|null */
     public string|Missing|null $chromeVersion = Missing::Value;
+    /** @var list<ProtocolCoverage>|Missing|null */
     public array|Missing|null $extensions = Missing::Value;
+    /** @var list<ProtocolCoverage>|Missing|null */
     public array|Missing|null $protocol = Missing::Value;
 }
 final class GetDiagnosticsParams extends Model {
@@ -497,62 +700,79 @@ final class GetDiagnosticsResult extends Model {
     protected const REQUIRED = ['enabled'];
     protected const MAP_FIELDS = ['costs', 'cpu_profiles'];
     protected const TYPES = ['enabled' => null, 'hostOnly' => null, 'costs' => ['map', DiagnosticCost::class], 'cpu_profiles' => ['map', null], 'realms' => ['array', RealmDiagnostics::class]];
+    /** @var bool|Missing|null */
     public bool|Missing|null $enabled = Missing::Value;
+    /** @var array<string, DiagnosticCost>|Missing|null */
     public array|Missing|null $costs = Missing::Value;
+    /** @var array<string, mixed>|Missing|null */
     public array|Missing|null $cpu_profiles = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $hostOnly = Missing::Value;
+    /** @var list<RealmDiagnostics>|Missing|null */
     public array|Missing|null $realms = Missing::Value;
 }
 final class GetMediaPresetsParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browserContextId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
 }
 final class GetMediaPresetsResult extends Model {
     protected const REQUIRED = ['presets'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['presets' => ['array', MediaPreset::class]];
+    /** @var list<MediaPreset>|Missing|null */
     public array|Missing|null $presets = Missing::Value;
 }
 final class GetMediaProfileParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browserContextId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
 }
 final class GetMediaProfileResult extends Model {
     protected const REQUIRED = ['profile', 'diagnostics'];
     protected const MAP_FIELDS = ['diagnostics'];
     protected const TYPES = ['profile' => MediaProfile::class, 'diagnostics' => ['map', null]];
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $diagnostics = Missing::Value;
+    /** @var MediaProfile|null|Missing|null */
     public MediaProfile|null|Missing $profile = Missing::Value;
 }
 final class GetMediaSourcesParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browserContextId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
 }
 final class GetMediaSourcesResult extends Model {
     protected const REQUIRED = ['sources', 'diagnostics'];
     protected const MAP_FIELDS = ['diagnostics'];
     protected const TYPES = ['sources' => ['array', MediaSource::class], 'diagnostics' => ['map', null]];
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $diagnostics = Missing::Value;
+    /** @var list<MediaSource>|Missing|null */
     public array|Missing|null $sources = Missing::Value;
 }
 final class GetProfileParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browserContextId' => null, 'targetId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $targetId = Missing::Value;
 }
 final class GetProfileResult extends Model {
     protected const REQUIRED = ['profile', 'limitations'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => EnvironmentProfile::class, 'limitations' => ['array', null]];
+    /** @var list<string>|Missing|null */
     public array|Missing|null $limitations = Missing::Value;
+    /** @var EnvironmentProfile|Missing|null */
     public EnvironmentProfile|Missing|null $profile = Missing::Value;
 }
 final class GetProfileSchemaParams extends Model {
@@ -564,22 +784,29 @@ final class GetProfileSchemaResult extends Model {
     protected const REQUIRED = ['schema', 'baseProfiles', 'limitations'];
     protected const MAP_FIELDS = ['schema'];
     protected const TYPES = ['schema' => ['map', null], 'baseProfiles' => ['array', null], 'limitations' => ['array', null]];
+    /** @var list<string>|Missing|null */
     public array|Missing|null $baseProfiles = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $limitations = Missing::Value;
+    /** @var array<string, mixed>|Missing|null */
     public array|Missing|null $schema = Missing::Value;
 }
 final class GetResourcePolicyParams extends Model {
     protected const REQUIRED = ['browserContextId'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browserContextId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
 }
 final class GetResourcePolicyResult extends Model {
     protected const REQUIRED = ['policy', 'enabled', 'generation'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['policy' => ResourcePolicy::class, 'enabled' => null, 'generation' => null];
+    /** @var bool|Missing|null */
     public bool|Missing|null $enabled = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $generation = Missing::Value;
+    /** @var ResourcePolicy|Missing|null */
     public ResourcePolicy|Missing|null $policy = Missing::Value;
 }
 final class GetResourcePolicySchemaParams extends Model {
@@ -591,18 +818,21 @@ final class GetResourcePolicySchemaResult extends Model {
     protected const REQUIRED = ['schema'];
     protected const MAP_FIELDS = ['schema'];
     protected const TYPES = ['schema' => ['map', null]];
+    /** @var array<string, mixed>|Missing|null */
     public array|Missing|null $schema = Missing::Value;
 }
 final class GetResourcePolicyStatsParams extends Model {
     protected const REQUIRED = ['browserContextId'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browserContextId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
 }
 final class GetResourcePolicyStatsResult extends Model {
     protected const REQUIRED = ['stats'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['stats' => ResourcePolicyStats::class];
+    /** @var ResourcePolicyStats|Missing|null */
     public ResourcePolicyStats|Missing|null $stats = Missing::Value;
 }
 final class GetStatusParams extends Model {
@@ -614,6 +844,7 @@ final class GetStatusResult extends Model {
     protected const REQUIRED = ['execution'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['execution' => ExecutionStatus::class];
+    /** @var ExecutionStatus|Missing|null */
     public ExecutionStatus|Missing|null $execution = Missing::Value;
 }
 final class GetTraceParams extends Model {
@@ -625,7 +856,9 @@ final class GetTraceResult extends Model {
     protected const REQUIRED = ['events', 'crashReports'];
     protected const MAP_FIELDS = ['crashReports'];
     protected const TYPES = ['events' => ['array', TraceEvent::class], 'crashReports' => ['map', null]];
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $crashReports = Missing::Value;
+    /** @var list<TraceEvent>|null|Missing|null */
     public array|null|Missing $events = Missing::Value;
 }
 final class GetVersionParams extends Model {
@@ -637,135 +870,200 @@ final class GetVersionResult extends Model {
     protected const REQUIRED = ['version', 'chromeVersion', 'baseProfile'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['version' => null, 'chromeVersion' => null, 'baseProfile' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $baseProfile = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $chromeVersion = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $version = Missing::Value;
 }
 final class ImportProfileParams extends Model {
     protected const REQUIRED = ['profile'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => null, 'mode' => null];
+    /** @var ProfileDescriptor|ManualProfile|Missing|null */
     public mixed $profile = Missing::Value;
+    /** @var 'manual'|Missing|null */
     public string|Missing|null $mode = Missing::Value;
 }
 final class ImportProfileResult extends Model {
     protected const REQUIRED = ['profile', 'profileId', 'mode', 'warnings'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => null, 'profileId' => null, 'mode' => null, 'warnings' => ['array', null]];
+    /** @var 'generated'|'manual'|Missing|null */
     public string|Missing|null $mode = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profile = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profileId = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $warnings = Missing::Value;
 }
 final class ManualNetwork extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['saveData' => null, 'online' => null, 'effectiveType' => null, 'downlinkMbps' => null, 'rttMillis' => null, 'cookiesEnabled' => null, 'wireProfile' => null, 'ice' => EnvironmentICEProfile::class];
+    /** @var bool|Missing|null */
     public bool|Missing|null $cookiesEnabled = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $downlinkMbps = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $effectiveType = Missing::Value;
+    /** @var EnvironmentICEProfile|Missing|null */
     public EnvironmentICEProfile|Missing|null $ice = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $online = Missing::Value;
+    /** @var float|Missing|null */
     public float|Missing|null $rttMillis = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $saveData = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $wireProfile = Missing::Value;
 }
 final class ManualProfile extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['permissions', 'features'];
     protected const TYPES = ['identity' => EnvironmentIdentity::class, 'display' => EnvironmentDisplay::class, 'window' => EnvironmentWindow::class, 'hardware' => EnvironmentHardware::class, 'locale' => EnvironmentLocale::class, 'graphics' => EnvironmentGraphics::class, 'audio' => EnvironmentAudio::class, 'fonts' => EnvironmentFonts::class, 'preferences' => EnvironmentPreferences::class, 'network' => ManualNetwork::class, 'permissions' => ['map', null], 'capabilities' => EnvironmentCapabilities::class, 'features' => ['map', null], 'timing' => EnvironmentTiming::class];
+    /** @var EnvironmentAudio|Missing|null */
     public EnvironmentAudio|Missing|null $audio = Missing::Value;
+    /** @var EnvironmentCapabilities|Missing|null */
     public EnvironmentCapabilities|Missing|null $capabilities = Missing::Value;
+    /** @var EnvironmentDisplay|Missing|null */
     public EnvironmentDisplay|Missing|null $display = Missing::Value;
+    /** @var array<string, bool>|Missing|null */
     public array|Missing|null $features = Missing::Value;
+    /** @var EnvironmentFonts|Missing|null */
     public EnvironmentFonts|Missing|null $fonts = Missing::Value;
+    /** @var EnvironmentGraphics|Missing|null */
     public EnvironmentGraphics|Missing|null $graphics = Missing::Value;
+    /** @var EnvironmentHardware|Missing|null */
     public EnvironmentHardware|Missing|null $hardware = Missing::Value;
+    /** @var EnvironmentIdentity|Missing|null */
     public EnvironmentIdentity|Missing|null $identity = Missing::Value;
+    /** @var EnvironmentLocale|Missing|null */
     public EnvironmentLocale|Missing|null $locale = Missing::Value;
+    /** @var ManualNetwork|Missing|null */
     public ManualNetwork|Missing|null $network = Missing::Value;
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $permissions = Missing::Value;
+    /** @var EnvironmentPreferences|Missing|null */
     public EnvironmentPreferences|Missing|null $preferences = Missing::Value;
+    /** @var EnvironmentTiming|Missing|null */
     public EnvironmentTiming|Missing|null $timing = Missing::Value;
+    /** @var EnvironmentWindow|Missing|null */
     public EnvironmentWindow|Missing|null $window = Missing::Value;
 }
 final class MediaCameraRequest extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['source' => null, 'profile' => null, 'overrides' => MediaDeviceOverride::class];
+    /** @var MediaDeviceOverride|Missing|null */
     public MediaDeviceOverride|Missing|null $overrides = Missing::Value;
+    /** @var 'auto'|'integrated-webcam'|'usb-webcam'|'integrated-webcam-hd'|'integrated-webcam-fhd'|'usb-webcam-hd'|'usb-webcam-fhd'|Missing|null */
     public string|Missing|null $profile = Missing::Value;
+    /** @var 'default'|'obs'|array{sourceId: string}|object{sourceId: string}|array{label: string}|object{label: string}|Missing|null */
     public mixed $source = Missing::Value;
 }
 final class MediaConfiguration extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['seed' => null, 'camera' => MediaCameraRequest::class, 'microphone' => MediaMicrophoneRequest::class, 'devices' => ['array', MediaDeviceProfile::class]];
+    /** @var MediaCameraRequest|Missing|null */
     public MediaCameraRequest|Missing|null $camera = Missing::Value;
+    /** @var list<MediaDeviceProfile>|Missing|null */
     public array|Missing|null $devices = Missing::Value;
+    /** @var MediaMicrophoneRequest|Missing|null */
     public MediaMicrophoneRequest|Missing|null $microphone = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $seed = Missing::Value;
 }
 final class MediaDeviceOverride extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['label' => null, 'modes' => ['array', CameraFormat::class], 'defaultMode' => CameraFormat::class, 'processing' => MediaProcessing::class];
+    /** @var CameraFormat|Missing|null */
     public CameraFormat|Missing|null $defaultMode = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $label = Missing::Value;
+    /** @var list<CameraFormat>|Missing|null */
     public array|Missing|null $modes = Missing::Value;
+    /** @var MediaProcessing|Missing|null */
     public MediaProcessing|Missing|null $processing = Missing::Value;
 }
 final class MediaDeviceProfile extends Model {
     protected const REQUIRED = ['key', 'kind', 'source', 'label'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['key' => null, 'kind' => null, 'source' => null, 'profile' => null, 'label' => null, 'group' => null, 'modes' => ['array', CameraFormat::class], 'defaultMode' => CameraFormat::class, 'processing' => MediaProcessing::class];
+    /** @var string|Missing|null */
     public string|Missing|null $key = Missing::Value;
+    /** @var 'videoinput'|'audioinput'|Missing|null */
     public string|Missing|null $kind = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $label = Missing::Value;
+    /** @var 'default'|'obs'|array{sourceId: string}|object{sourceId: string}|array{label: string}|object{label: string}|Missing|null */
     public mixed $source = Missing::Value;
+    /** @var CameraFormat|Missing|null */
     public CameraFormat|Missing|null $defaultMode = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $group = Missing::Value;
+    /** @var list<CameraFormat>|Missing|null */
     public array|Missing|null $modes = Missing::Value;
+    /** @var MediaProcessing|Missing|null */
     public MediaProcessing|Missing|null $processing = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profile = Missing::Value;
 }
 final class MediaMicrophoneRequest extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['source' => null, 'profile' => null];
+    /** @var 'webcam'|Missing|null */
     public string|Missing|null $profile = Missing::Value;
+    /** @var 'default'|'obs'|array{sourceId: string}|object{sourceId: string}|array{label: string}|object{label: string}|Missing|null */
     public mixed $source = Missing::Value;
 }
 final class MediaPreset extends Model {
     protected const REQUIRED = ['id', 'label', 'class', 'variants'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['id' => null, 'label' => null, 'class' => null, 'variants' => ['array', null]];
+    /** @var string|Missing|null */
     public string|Missing|null $class = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $id = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $label = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $variants = Missing::Value;
 }
 final class MediaProcessing extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['resize' => null, 'noise' => null];
+    /** @var float|Missing|null */
     public float|Missing|null $noise = Missing::Value;
+    /** @var 'none'|'crop-and-scale'|Missing|null */
     public string|Missing|null $resize = Missing::Value;
 }
 final class MediaProfile extends Model {
     protected const REQUIRED = ['seed', 'devices'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['seed' => null, 'devices' => ['array', MediaDeviceProfile::class]];
+    /** @var list<MediaDeviceProfile>|Missing|null */
     public array|Missing|null $devices = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $seed = Missing::Value;
 }
 final class MediaSource extends Model {
     protected const REQUIRED = ['sourceId', 'kind', 'label', 'default'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['sourceId' => null, 'kind' => null, 'label' => null, 'default' => null];
+    /** @var bool|Missing|null */
     public bool|Missing|null $default = Missing::Value;
+    /** @var 'videoinput'|'audioinput'|Missing|null */
     public string|Missing|null $kind = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $label = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $sourceId = Missing::Value;
 }
 final class PauseParams extends Model {
@@ -782,58 +1080,91 @@ final class ProfileDescriptor extends Model {
     protected const REQUIRED = ['mode', 'baseProfile', 'profileId'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['mode' => null, 'baseProfile' => null, 'seed' => null, 'profileId' => null, 'environment' => ManualProfile::class];
+    /** @var string|Missing|null */
     public string|Missing|null $baseProfile = Missing::Value;
+    /** @var 'generated'|'manual'|Missing|null */
     public string|Missing|null $mode = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $profileId = Missing::Value;
+    /** @var ManualProfile|Missing|null */
     public ManualProfile|Missing|null $environment = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $seed = Missing::Value;
 }
 final class ProfileErrorData extends Model {
     protected const REQUIRED = ['path', 'reason', 'message'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['path' => null, 'reason' => null, 'message' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $message = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $path = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $reason = Missing::Value;
 }
 final class ProfilePatch extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = ['permissions', 'features'];
     protected const TYPES = ['identity' => EnvironmentIdentity::class, 'display' => EnvironmentDisplay::class, 'window' => EnvironmentWindow::class, 'hardware' => EnvironmentHardware::class, 'locale' => EnvironmentLocale::class, 'graphics' => EnvironmentGraphics::class, 'audio' => EnvironmentAudio::class, 'fonts' => EnvironmentFonts::class, 'preferences' => EnvironmentPreferences::class, 'network' => ManualNetwork::class, 'permissions' => ['map', null], 'capabilities' => EnvironmentCapabilities::class, 'features' => ['map', null], 'timing' => EnvironmentTiming::class];
+    /** @var EnvironmentAudio|Missing|null */
     public EnvironmentAudio|Missing|null $audio = Missing::Value;
+    /** @var EnvironmentCapabilities|Missing|null */
     public EnvironmentCapabilities|Missing|null $capabilities = Missing::Value;
+    /** @var EnvironmentDisplay|Missing|null */
     public EnvironmentDisplay|Missing|null $display = Missing::Value;
+    /** @var array<string, bool>|Missing|null */
     public array|Missing|null $features = Missing::Value;
+    /** @var EnvironmentFonts|Missing|null */
     public EnvironmentFonts|Missing|null $fonts = Missing::Value;
+    /** @var EnvironmentGraphics|Missing|null */
     public EnvironmentGraphics|Missing|null $graphics = Missing::Value;
+    /** @var EnvironmentHardware|Missing|null */
     public EnvironmentHardware|Missing|null $hardware = Missing::Value;
+    /** @var EnvironmentIdentity|Missing|null */
     public EnvironmentIdentity|Missing|null $identity = Missing::Value;
+    /** @var EnvironmentLocale|Missing|null */
     public EnvironmentLocale|Missing|null $locale = Missing::Value;
+    /** @var ManualNetwork|Missing|null */
     public ManualNetwork|Missing|null $network = Missing::Value;
+    /** @var array<string, string>|Missing|null */
     public array|Missing|null $permissions = Missing::Value;
+    /** @var EnvironmentPreferences|Missing|null */
     public EnvironmentPreferences|Missing|null $preferences = Missing::Value;
+    /** @var EnvironmentTiming|Missing|null */
     public EnvironmentTiming|Missing|null $timing = Missing::Value;
+    /** @var EnvironmentWindow|Missing|null */
     public EnvironmentWindow|Missing|null $window = Missing::Value;
 }
 final class ProtocolCoverage extends Model {
     protected const REQUIRED = ['name', 'kind', 'surfaceRegistered', 'wireSchemaGenerated', 'status', 'semanticsImplemented', 'semanticsVerified'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['name' => null, 'kind' => null, 'surfaceRegistered' => null, 'wireSchemaGenerated' => null, 'status' => null, 'notes' => null, 'tests' => ['array', null], 'semanticsImplemented' => null, 'semanticsVerified' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $kind = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $name = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $semanticsImplemented = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $semanticsVerified = Missing::Value;
+    /** @var 'unsupported'|'partial'|'implemented'|Missing|null */
     public string|Missing|null $status = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $surfaceRegistered = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $wireSchemaGenerated = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $notes = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $tests = Missing::Value;
 }
 final class ProtocolError extends Model {
     protected const REQUIRED = ['code', 'message'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['code' => null, 'message' => null, 'data' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $code = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $message = Missing::Value;
     public mixed $data = Missing::Value;
 }
@@ -841,103 +1172,156 @@ final class Proxy extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['server' => null, 'username' => null, 'password' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $password = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $server = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $username = Missing::Value;
 }
 final class RealmDiagnostics extends Model {
     protected const REQUIRED = ['realm', 'diagnostics'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['realm' => null, 'diagnostics' => Diagnostics::class];
+    /** @var Diagnostics|Missing|null */
     public Diagnostics|Missing|null $diagnostics = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $realm = Missing::Value;
 }
 final class ResetProfileOverridesParams extends Model {
     protected const REQUIRED = ['targetId'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['targetId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $targetId = Missing::Value;
 }
 final class ResetProfileOverridesResult extends Model {
     protected const REQUIRED = ['profile'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => EnvironmentProfile::class];
+    /** @var EnvironmentProfile|Missing|null */
     public EnvironmentProfile|Missing|null $profile = Missing::Value;
 }
 final class ResourceBudgets extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['maxRequests' => null, 'maxConcurrent' => null, 'maxWireBytes' => null, 'maxBodyBytes' => null, 'maxResponseBytes' => null, 'maxDecodedBytes' => null, 'maxRetainedBytes' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $maxBodyBytes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $maxConcurrent = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $maxDecodedBytes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $maxRequests = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $maxResponseBytes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $maxRetainedBytes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $maxWireBytes = Missing::Value;
 }
 final class ResourceMatch extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['kinds' => ['array', null], 'hosts' => ['array', null], 'origins' => ['array', null], 'urlGlob' => null, 'owners' => ['array', null], 'mechanisms' => ['array', null], 'topLevelSite' => null];
+    /** @var list<string>|Missing|null */
     public array|Missing|null $hosts = Missing::Value;
+    /** @var list<'document'|'iframe'|'script'|'stylesheet'|'image'|'font'|'media'|'favicon'|'preload'|'fetch'|'xhr'|'worker'|'websocket'|'other'>|Missing|null */
     public array|Missing|null $kinds = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $mechanisms = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $origins = Missing::Value;
+    /** @var list<string>|Missing|null */
     public array|Missing|null $owners = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $topLevelSite = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $urlGlob = Missing::Value;
 }
 final class ResourcePolicy extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['reportOnly' => null, 'presets' => ['array', null], 'rules' => ['array', ResourceRule::class], 'budgets' => ResourceBudgets::class];
+    /** @var ResourceBudgets|Missing|null */
     public ResourceBudgets|Missing|null $budgets = Missing::Value;
+    /** @var list<'noVisualAssets'|'headersOnly'|'dataExtraction'|'noSpeculativeLoads'>|Missing|null */
     public array|Missing|null $presets = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $reportOnly = Missing::Value;
+    /** @var list<ResourceRule>|Missing|null */
     public array|Missing|null $rules = Missing::Value;
 }
 final class ResourcePolicyStats extends Model {
     protected const REQUIRED = ['generation', 'requests', 'networkAcquisitions', 'cacheHits', 'blocked', 'headerOnly', 'prefixes', 'wireBytesKnown', 'encodedNetworkBodyBytes', 'bodyBytesConsumed', 'retainedBodyBytes', 'decodedPixelWorkBytes', 'knownAvoidedBodyReadBytes', 'unknownAvoidedBodyRequests', 'wouldBlock', 'wouldBypassCache', 'budgetDenied', 'byRule'];
     protected const MAP_FIELDS = ['byRule'];
     protected const TYPES = ['generation' => null, 'requests' => null, 'networkAcquisitions' => null, 'cacheHits' => null, 'blocked' => null, 'headerOnly' => null, 'prefixes' => null, 'wireBytesKnown' => null, 'encodedNetworkBodyBytes' => null, 'bodyBytesConsumed' => null, 'retainedBodyBytes' => null, 'decodedPixelWorkBytes' => null, 'knownAvoidedBodyReadBytes' => null, 'unknownAvoidedBodyRequests' => null, 'wouldBlock' => null, 'wouldBypassCache' => null, 'budgetDenied' => null, 'byRule' => ['map', null]];
+    /** @var int|Missing|null */
     public int|Missing|null $blocked = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $bodyBytesConsumed = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $budgetDenied = Missing::Value;
+    /** @var array<string, int>|Missing|null */
     public array|Missing|null $byRule = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $cacheHits = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $decodedPixelWorkBytes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $encodedNetworkBodyBytes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $generation = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $headerOnly = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $knownAvoidedBodyReadBytes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $networkAcquisitions = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $prefixes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $requests = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $retainedBodyBytes = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $unknownAvoidedBodyRequests = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $wireBytesKnown = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $wouldBlock = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $wouldBypassCache = Missing::Value;
 }
 final class ResourceRule extends Model {
     protected const REQUIRED = ['id'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['id' => null, 'match' => ResourceMatch::class, 'work' => ResourceWork::class];
+    /** @var string|Missing|null */
     public string|Missing|null $id = Missing::Value;
+    /** @var ResourceMatch|Missing|null */
     public ResourceMatch|Missing|null $match = Missing::Value;
+    /** @var ResourceWork|Missing|null */
     public ResourceWork|Missing|null $work = Missing::Value;
 }
 final class ResourceWork extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['cacheRead' => null, 'network' => null, 'body' => null, 'prefixBytes' => null, 'decode' => null, 'cacheRetain' => null, 'debugRetain' => null];
+    /** @var 'full'|'none'|'prefix'|Missing|null */
     public string|Missing|null $body = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $cacheRead = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $cacheRetain = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $debugRetain = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $decode = Missing::Value;
+    /** @var bool|Missing|null */
     public bool|Missing|null $network = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $prefixBytes = Missing::Value;
 }
 final class ResumeParams extends Model {
@@ -954,24 +1338,33 @@ final class SetMediaProfileParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['seed' => null, 'camera' => MediaCameraRequest::class, 'microphone' => MediaMicrophoneRequest::class, 'devices' => ['array', MediaDeviceProfile::class], 'browserContextId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
+    /** @var MediaCameraRequest|Missing|null */
     public MediaCameraRequest|Missing|null $camera = Missing::Value;
+    /** @var list<MediaDeviceProfile>|Missing|null */
     public array|Missing|null $devices = Missing::Value;
+    /** @var MediaMicrophoneRequest|Missing|null */
     public MediaMicrophoneRequest|Missing|null $microphone = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $seed = Missing::Value;
 }
 final class SetMediaProfileResult extends Model {
     protected const REQUIRED = ['profile', 'nativeModesVerified'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => MediaProfile::class, 'nativeModesVerified' => null];
+    /** @var bool|Missing|null */
     public bool|Missing|null $nativeModesVerified = Missing::Value;
+    /** @var MediaProfile|Missing|null */
     public MediaProfile|Missing|null $profile = Missing::Value;
 }
 final class SetViewportParams extends Model {
     protected const REQUIRED = ['width', 'height'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['width' => null, 'height' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $height = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $width = Missing::Value;
 }
 final class SetViewportResult extends Model {
@@ -1003,65 +1396,85 @@ final class TraceEvent extends Model {
     protected const REQUIRED = ['sequence', 'time', 'kind', 'name'];
     protected const MAP_FIELDS = ['data'];
     protected const TYPES = ['sequence' => null, 'time' => null, 'kind' => null, 'name' => null, 'data' => ['map', null]];
+    /** @var string|Missing|null */
     public string|Missing|null $kind = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $name = Missing::Value;
+    /** @var int|Missing|null */
     public int|Missing|null $sequence = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $time = Missing::Value;
+    /** @var array<string, mixed>|Missing|null */
     public array|Missing|null $data = Missing::Value;
 }
 final class UpdateProfileParams extends Model {
     protected const REQUIRED = ['targetId', 'patch'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['targetId' => null, 'patch' => ProfilePatch::class];
+    /** @var ProfilePatch|Missing|null */
     public ProfilePatch|Missing|null $patch = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $targetId = Missing::Value;
 }
 final class UpdateProfileResult extends Model {
     protected const REQUIRED = ['profile'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => EnvironmentProfile::class];
+    /** @var EnvironmentProfile|Missing|null */
     public EnvironmentProfile|Missing|null $profile = Missing::Value;
 }
 final class UpdateResourcePolicyParams extends Model {
     protected const REQUIRED = ['browserContextId', 'policy'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['browserContextId' => null, 'policy' => ResourcePolicy::class];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
+    /** @var ResourcePolicy|Missing|null */
     public ResourcePolicy|Missing|null $policy = Missing::Value;
 }
 final class UpdateResourcePolicyResult extends Model {
     protected const REQUIRED = ['generation'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['generation' => null];
+    /** @var int|Missing|null */
     public int|Missing|null $generation = Missing::Value;
 }
 final class ValidateMediaProfileParams extends Model {
     protected const REQUIRED = [];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['seed' => null, 'camera' => MediaCameraRequest::class, 'microphone' => MediaMicrophoneRequest::class, 'devices' => ['array', MediaDeviceProfile::class], 'browserContextId' => null];
+    /** @var string|Missing|null */
     public string|Missing|null $browserContextId = Missing::Value;
+    /** @var MediaCameraRequest|Missing|null */
     public MediaCameraRequest|Missing|null $camera = Missing::Value;
+    /** @var list<MediaDeviceProfile>|Missing|null */
     public array|Missing|null $devices = Missing::Value;
+    /** @var MediaMicrophoneRequest|Missing|null */
     public MediaMicrophoneRequest|Missing|null $microphone = Missing::Value;
+    /** @var string|Missing|null */
     public string|Missing|null $seed = Missing::Value;
 }
 final class ValidateMediaProfileResult extends Model {
     protected const REQUIRED = ['profile', 'nativeModesVerified'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['profile' => MediaProfile::class, 'nativeModesVerified' => null];
+    /** @var bool|Missing|null */
     public bool|Missing|null $nativeModesVerified = Missing::Value;
+    /** @var MediaProfile|Missing|null */
     public MediaProfile|Missing|null $profile = Missing::Value;
 }
 final class ValidateResourcePolicyParams extends Model {
     protected const REQUIRED = ['policy'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['policy' => ResourcePolicy::class];
+    /** @var ResourcePolicy|Missing|null */
     public ResourcePolicy|Missing|null $policy = Missing::Value;
 }
 final class ValidateResourcePolicyResult extends Model {
     protected const REQUIRED = ['policy'];
     protected const MAP_FIELDS = [];
     protected const TYPES = ['policy' => ResourcePolicy::class];
+    /** @var ResourcePolicy|Missing|null */
     public ResourcePolicy|Missing|null $policy = Missing::Value;
 }
 final class MimicCommands {
