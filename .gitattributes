@@ -1,2 +1,10 @@
+* text=auto eol=lf
+
 # Published manifest bytes are covered by SHA256SUMS; never normalize newlines.
 release/runtime-manifest.json -text whitespace=cr-at-eol
+release/runtime-SHA256SUMS -text whitespace=cr-at-eol
+
+# Preserve upstream protocol snapshots and frozen wire fixtures byte-for-byte.
+schema/sources/** -text
+schema/cdp/** -text
+conformance/fixtures/** -text

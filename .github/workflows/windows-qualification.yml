@@ -1,0 +1,51 @@
+name: Windows SDK qualification
+
+on:
+  workflow_dispatch:
+    inputs:
+      runtime_version:
+        description: Expected exact bundled runtime release
+        required: true
+        default: v0.2.3
+
+permissions:
+  contents: read
+
+jobs:
+  installed-consumers:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: "1"
+      PUPPETEER_SKIP_DOWNLOAD: "1"
+      MIMIC_EXPECTED_RELEASE: ${{ inputs.runtime_version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22.19.0"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build distributable packages
+        shell: pwsh
+        run: |
+          npm ci --prefix node
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          npm run build --prefix node
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          New-Item -ItemType Directory -Force .build/windows-qualification | Out-Null
+          npm pack ./node --pack-destination .build/windows-qualification
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          python -m pip install build
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          python -m build python --wheel --outdir .build/windows-qualification
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+      - name: Qualify isolated installed consumers
+        run: python conformance/windows/run.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-sdk-qualification
+          path: .build/windows-qualification/result.json
+          if-no-files-found: warn

@@ -144,7 +144,9 @@ def extract_archive(archive, destination, root):
                 mode = entry.external_attr >> 16
                 if stat.S_ISLNK(mode) or (stat.S_IFMT(mode) not in (0, stat.S_IFREG, stat.S_IFDIR)):
                     raise RuntimeError("Archive links and special files are unsupported")
-                path = target(entry.filename.rstrip("/"), entry.file_size)
+                # ZipInfo normalizes Windows separators in filename. Validate
+                # the original archive spelling before using the parsed path.
+                path = target(entry.orig_filename.rstrip("/"), entry.file_size)
                 if entry.is_dir():
                     path.mkdir(parents=True, exist_ok=True)
                 else:

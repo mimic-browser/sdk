@@ -51,7 +51,11 @@ class ContractTests(unittest.TestCase):
             for name in ("root/../../escape", "/root/absolute", "root\\escape", "C:/escape"):
                 archive = root / "bad.zip"
                 with zipfile.ZipFile(archive, "w") as output:
-                    output.writestr(name, b"bad")
+                    entry = zipfile.ZipInfo(name)
+                    # Preserve deliberately invalid archive bytes on Windows,
+                    # where ZipInfo otherwise normalizes a backslash separator.
+                    entry.filename = name
+                    output.writestr(entry, b"bad")
                 with self.assertRaises(RuntimeError):
                     extract_archive(archive, root / "out", "root")
             archive = root / "link.zip"

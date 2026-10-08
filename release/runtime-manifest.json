@@ -1,8 +1,8 @@
 {
-  "version": "v0.2.2",
-  "sourceRevision": "9462c0f03070c0ebeffdf6aede9ac45fc195e7dd",
-  "packagingRevision": "9462c0f03070c0ebeffdf6aede9ac45fc195e7dd",
-  "ciRun": "https://github.com/mimic-browser/runtime/actions/runs/37636184984",
+  "version": "v0.2.3",
+  "sourceRevision": "cfcabd40e52e86bb30461888fe101f37b4996774",
+  "packagingRevision": "cfcabd40e52e86bb30461888fe101f37b4996774",
+  "ciRun": "https://github.com/mimic-browser/runtime/actions/runs/37752215291",
   "binariesReusedUnchanged": true,
   "license": "Prosperity-3.0.0",
   "exampleLicense": "MIT",
@@ -17,11 +17,11 @@
   "artifacts": [
     {
       "platform": "windows-amd64",
-      "archive": "mimic-v0.2.2-windows-amd64.zip",
-      "sha256": "e1a0ac115e4d33a69b9e18a95b037095a6a88770d98967967e1254f77150bb21",
-      "size": 47656230,
-      "binarySha256": "371184ec64510b80f9f34615b76772b3388e769561a0db44385516739a4d305c",
-      "binaryVersion": "v0.2.2",
+      "archive": "mimic-v0.2.3-windows-amd64.zip",
+      "sha256": "6040ed4fa90f7cb42df6cb54d9a1481c0945a3cbde340ffebd5d45883ee49a19",
+      "size": 47677460,
+      "binarySha256": "a657174860a4e570ef8e0ee8737a566134f4c1c15d595e8f6f823437c1556cb5",
+      "binaryVersion": "v0.2.3",
       "checks": [
         "runtimecheck:v8",
         "runtimecheck:quickjs",
@@ -33,11 +33,11 @@
     },
     {
       "platform": "linux-amd64",
-      "archive": "mimic-v0.2.2-linux-amd64.tar.gz",
-      "sha256": "e55f562a74acffb4a98eb079bf35cb2a5859c63fbf8d14ffdd37a27b379c9418",
-      "size": 51008524,
-      "binarySha256": "1d12e9587a270b005f32383eb09f87da7aecbf70e618a50ec29edf5ab3384ef3",
-      "binaryVersion": "v0.2.2",
+      "archive": "mimic-v0.2.3-linux-amd64.tar.gz",
+      "sha256": "4fb6a71f7b2c5d5ad49136c9456e6f2cc1e70701e91259ff905ae72218c56a9a",
+      "size": 51026543,
+      "binarySha256": "414fc217b24301861c078e0e39dafb79110996ea4c4c23ff7d33fab41175eb32",
+      "binaryVersion": "v0.2.3",
       "checks": [
         "runtimecheck:v8",
         "runtimecheck:quickjs",
