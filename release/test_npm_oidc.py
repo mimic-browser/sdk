@@ -137,6 +137,20 @@ class NpmOIDCTests(unittest.TestCase):
         with self.assertRaisesRegex(release.ReleaseError, r"npm token exchange \(HTTP 200\)"):
             npm_oidc.verify_oidc(self.environment, opener, self.now)
 
+    def test_expiry_failures_reveal_only_structural_classification(self):
+        cases = [({}, "missing expires field"), ({"expires": None}, "expires field is null"),
+                 ({"expires": 1234}, "expires field is number"),
+                 ({"expires": "secret"}, "expires field is not an ISO datetime"),
+                 ({"expires": "2026-10-08T11:00:00"}, "expires datetime has no timezone"),
+                 ({"expires": "2026-10-08T09:00:00Z"}, "expires datetime is not in the future")]
+        for fields, classification in cases:
+            payload = {key: value for key, value in self.token.items() if key != "expires"}
+            _, opener = self.opener({**payload, **fields})
+            with self.subTest(classification=classification), self.assertRaises(release.ReleaseError) as error:
+                npm_oidc.verify_oidc(self.environment, opener, self.now)
+            self.assertIn(classification, str(error.exception))
+            self.assertNotIn("secret", str(error.exception))
+
     def test_missing_identity_inputs_do_not_fall_back_to_local_npm_auth(self):
         for environment in ({}, {**self.environment, "ACTIONS_ID_TOKEN_REQUEST_TOKEN": ""},
                             {**self.environment, "ACTIONS_ID_TOKEN_REQUEST_URL": "http://secret.invalid"}):

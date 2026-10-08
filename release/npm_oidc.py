@@ -24,8 +24,33 @@ class _UnexpectedStatus(ValueError):
         self.status = status
 
 
+class _InvalidExpiry(ValueError):
+    def __init__(self, reason):
+        self.reason = reason
+
+
+def _expiry(response, now):
+    if "expires" not in response:
+        raise _InvalidExpiry("missing expires field")
+    value = response["expires"]
+    if not isinstance(value, str):
+        kind = "null" if value is None else "number" if isinstance(value, (int, float)) else "non-string"
+        raise _InvalidExpiry(f"expires field is {kind}")
+    try:
+        expires = dt.datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        raise _InvalidExpiry("expires field is not an ISO datetime") from None
+    if expires.tzinfo is None:
+        raise _InvalidExpiry("expires datetime has no timezone")
+    if expires <= now:
+        raise _InvalidExpiry("expires datetime is not in the future")
+    return expires
+
+
 def _failure_detail(error):
     """Expose only transport status and a fixed allowlist of public error codes."""
+    if isinstance(error, _InvalidExpiry):
+        return error.reason
     status = error.code if isinstance(error, urllib.error.HTTPError) else getattr(error, "status", None)
     detail = f"HTTP {status}" if type(status) is int and 100 <= status <= 599 else "invalid response"
     if isinstance(error, urllib.error.HTTPError):
@@ -107,9 +132,7 @@ def verify_oidc(environment, opener=None, now=None):
             raise ValueError("Unexpected npm credential type")
         _credential(exchanged["token"])
         phase = "npm expiry validation"
-        expires = dt.datetime.fromisoformat(exchanged["expires"].replace("Z", "+00:00"))
-        if expires.tzinfo is None or expires <= (now or dt.datetime.now(dt.timezone.utc)):
-            raise ValueError("Expired npm credential")
+        expires = _expiry(exchanged, now or dt.datetime.now(dt.timezone.utc))
     except (urllib.error.URLError, OSError, ValueError, KeyError, TypeError, AttributeError, OverflowError) as error:
         detail = _failure_detail(error)
         # Never include URLs, exception text, response messages or credentials.
