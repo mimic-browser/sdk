@@ -11,11 +11,10 @@ The native registries are not enabled yet. Source installation and local
 packaging do not invoke any publisher; the registry workflow below is an
 independent, explicit release operation.
 
-Several native clients need runtime fixes missing from the immutable default v0.2.2.
-**Publication remains blocked** until a compatible official runtime is released,
-the default pin is intentionally updated, and every selected adapter passes
-against that exact official executable. An unreleased development runtime cannot satisfy
-the publication gate.
+The immutable default is the official v0.2.3 runtime. Registry publication
+remains disabled until it is explicitly configured and every selected adapter
+passes against that exact official executable. An unreleased development
+runtime cannot satisfy the publication gate.
 
 After a compatible official runtime is published, intentionally update all
 packaged pins from its verified manifest and `SHA256SUMS`:
@@ -55,7 +54,7 @@ original pinned release archive used by installer tests:
 ```sh
 python release/qualify.py --build .build/release/build.json \
   --runtime /absolute/path/mimic --runtime-sha256 <sha256> \
-  --archive /absolute/path/mimic-v0.2.2-linux-amd64.tar.gz \
+  --archive /absolute/path/mimic-v0.2.3-linux-amd64.tar.gz \
   --output .build/release/qualification.json
 ```
 
@@ -95,16 +94,16 @@ same source checkout with the retained artifacts/receipts and toolchain paths.
 Native artifact paths are absolute and must be remapped consistently when moving
 the receipt directory; never silently rebuild a partially published release.
 
-| Registry      | Required CI configuration                                                                                                          | Publication identity                                                             |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
-| npm           | npm trusted publishing or `NODE_AUTH_TOKEN` through setup-node                                                                     | `mimic-browser` native version                                                   |
-| PyPI          | GitHub trusted publisher for `sdk-release.yml` and environment `sdk-production`; `id-token: write`                                  | `mimic-browser` wheel and sdist                                                  |
-| NuGet         | `NUGET_API_KEY`                                                                                                                    | Independently selected `Mimic.Sdk`, `Mimic.Playwright`, `Mimic.PuppeteerSharp`   |
-| Maven Central | Portal base64 token in `MAVEN_CENTRAL_TOKEN`; pre-provisioned noninteractive GPG signing key                                       | `io.mimicbrowser:mimic-sdk`, JAR/sources/Javadoc/POM                             |
-| Go            | Authenticated SDK origin with tag-write permission                                                                                 | `go/vX.Y.Z` points at the exact SDK source commit                                |
-| crates.io     | `CARGO_REGISTRY_TOKEN`                                                                                                             | `mimic-sdk` crate; clean checkout and locked dependencies                        |
-| RubyGems      | `GEM_HOST_API_KEY`                                                                                                                 | `mimic-browser-sdk` gem                                                          |
-| Packagist     | `PHP_MIRROR_TOKEN` with Contents write permission only on the CI-only `mimic-browser/sdk-php` mirror; configured Packagist webhook | Exact packed PHP tree, ordinary `vX.Y.Z` tag; source and mirror commits retained |
+| Registry      | Required CI configuration                                                                                                          | Publication identity                                                                               |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| npm           | npm trusted publishing or `NODE_AUTH_TOKEN` through setup-node                                                                     | `mimic-browser` native version                                                                     |
+| PyPI          | GitHub trusted publisher for `sdk-release.yml` and environment `sdk-production`; `id-token: write`                                 | `mimic-browser` wheel and sdist                                                                    |
+| NuGet         | `NUGET_API_KEY`                                                                                                                    | Independently selected `mimic-browser`, `mimic-browser.Playwright`, `mimic-browser.PuppeteerSharp` |
+| Maven Central | Portal base64 token in `MAVEN_CENTRAL_TOKEN`; pre-provisioned noninteractive GPG signing key                                       | `io.github.mimic-browser:mimic-browser`, JAR/sources/Javadoc/POM                                   |
+| Go            | Authenticated SDK origin with tag-write permission                                                                                 | `go/vX.Y.Z` points at the exact SDK source commit                                                  |
+| crates.io     | `CARGO_REGISTRY_TOKEN`                                                                                                             | `mimic-browser` crate; clean checkout and locked dependencies                                      |
+| RubyGems      | `GEM_HOST_API_KEY`                                                                                                                 | `mimic-browser` gem                                                                                |
+| Packagist     | `PHP_MIRROR_TOKEN` with Contents write permission only on the CI-only `mimic-browser/sdk-php` mirror; configured Packagist webhook | Exact packed PHP tree, ordinary `vX.Y.Z` tag; source and mirror commits retained                   |
 
 PyPI authentication exchanges the GitHub OIDC identity for a short-lived upload
 token immediately before publishing the selected Python package. No `PYPI_TOKEN`
@@ -120,9 +119,8 @@ outcome requires recovery of the existing deployment ID rather than a duplicate.
 Configure registry credentials, noninteractive signing and mirror access before
 enabling publication. The publisher requires those configurations and a
 compatible officially released default runtime.
-Maven Central also requires verification of the `io.mimicbrowser` namespace;
-the repository's GitHub organization alone does not prove control of the
-corresponding domain. Packagist requires initial submission of the PHP mirror
+Maven Central requires verification of the `io.github.mimic-browser` namespace
+through the organization's GitHub ownership. Packagist requires initial submission of the PHP mirror
 and a configured webhook before its first version can be indexed.
 Central bundle handling follows the official [Publisher API](https://central.sonatype.org/publish/publish-portal-api/)
 and [artifact requirements](https://central.sonatype.org/publish/requirements/).

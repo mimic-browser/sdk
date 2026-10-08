@@ -1,4 +1,4 @@
-use mimic_sdk::{RuntimeManager, RuntimeOptions};
+use mimic_browser::{RuntimeManager, RuntimeOptions};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

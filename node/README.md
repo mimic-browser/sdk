@@ -64,10 +64,8 @@ Managed environment profiles require the runtime's explicit configure-context
 bridge; older releases fail clearly instead of pretending ordinary contexts have
 the selected profile.
 
-The current development runtime supports `newContext({profile: {generate:
-{seed: "repeatable"}}})`. Use an explicit `executablePath` without a release
-selector when testing a development build. The v0.2.2 default does not implement
-that bridge. The helper disables framework viewport/media defaults and rejects
+The bundled runtime supports `newContext({profile: {generate:
+{seed: "repeatable"}}})`. The helper disables framework viewport/media defaults and rejects
 explicit competing emulation settings; it never changes a profile after a user
 Page exists.
 
@@ -101,11 +99,11 @@ Omission differs from explicit null. Unsupported JSON values fail before send.
 undo a command already dispatched; the SDK does not retry state-changing calls.
 
 `RuntimeManager` provides `install`, `inspect`, `verify`, `prune` and `launch`.
-An explicit `launch({runtimeVersion: "0.2.2"})` selects a runtime release when
+An explicit `launch({runtimeVersion: "0.2.3"})` selects a runtime release when
 your project needs a pin.
 Use `install({archivePath})` to preinstall a separately obtained verified archive.
 `allowDownload:false` or `MIMIC_DOWNLOAD=0` makes installation strictly offline.
-The packaged default remains exactly v0.2.2; runtime releases do not update SDK
+The packaged default remains exactly v0.2.3; runtime releases do not update SDK
 packages or change saved pins. The common cache, lock, receipt, requirements and
 selector rules are specified in `../spec/runtime-manager.md`. Pruning requires
 an explicit call and rejects live or unverifiable leases.

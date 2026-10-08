@@ -1,4 +1,4 @@
-use mimic_sdk::{chromiumoxide::Session, RuntimeOptions};
+use mimic_browser::{chromiumoxide::Session, RuntimeOptions};
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {

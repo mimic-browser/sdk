@@ -1,9 +1,9 @@
 #![cfg(all(feature = "chromiumoxide", target_os = "linux"))]
 use chromiumoxide::cdp::browser_protocol::target::CreateTargetParams;
-use mimic_sdk::generated::{
+use mimic_browser::generated::{
     ConfigureContextParams, GetMediaSourcesParams, MediaConfiguration, WireOptional,
 };
-use mimic_sdk::{chromiumoxide::Session, Error};
+use mimic_browser::{chromiumoxide::Session, Error};
 use serde_json::{json, Value};
 use std::process::Stdio;
 use std::time::Duration;

@@ -76,16 +76,16 @@ await browser.close(); // Disconnects this externally connected Playwright clien
 
 ## Choose your language and client
 
-| Language                | Native package / module                             | Optional framework integration                        |
-| ----------------------- | --------------------------------------------------- | ----------------------------------------------------- |
-| JavaScript / TypeScript | [`mimic-browser`](node/README.md)                   | Playwright, Puppeteer                                 |
-| Python                  | [`mimic-browser`, import `mimic`](python/README.md) | Playwright sync/async; optional Pyppeteer             |
-| C# / .NET               | [`Mimic.Sdk`](dotnet/README.md)                     | Playwright, PuppeteerSharp, separate adapter packages |
-| Java / Kotlin           | [`io.mimicbrowser:mimic-sdk`](java/README.md)       | Playwright; Kotlin uses the JVM API                   |
-| Go                      | [`github.com/mimic-browser/sdk/go`](go/README.md)   | Rod, chromedp subpackages                             |
-| Rust                    | [`mimic-sdk`](rust/README.md)                       | chromiumoxide feature                                 |
-| Ruby                    | [`mimic-browser-sdk`](ruby/README.md)               | Ferrum, optional require                              |
-| PHP                     | [`mimic-browser/sdk`](php/README.md)                | chrome-php, optional adapter                          |
+| Language                | Native package / module                                   | Optional framework integration                        |
+| ----------------------- | --------------------------------------------------------- | ----------------------------------------------------- |
+| JavaScript / TypeScript | [`mimic-browser`](node/README.md)                         | Playwright, Puppeteer                                 |
+| Python                  | [`mimic-browser`, import `mimic`](python/README.md)       | Playwright sync/async; optional Pyppeteer             |
+| C# / .NET               | [`mimic-browser`](dotnet/README.md)                       | Playwright, PuppeteerSharp, separate adapter packages |
+| Java / Kotlin           | [`io.github.mimic-browser:mimic-browser`](java/README.md) | Playwright; Kotlin uses the JVM API                   |
+| Go                      | [`github.com/mimic-browser/sdk/go`](go/README.md)         | Rod, chromedp subpackages                             |
+| Rust                    | [`mimic-browser`](rust/README.md)                         | chromiumoxide feature                                 |
+| Ruby                    | [`mimic-browser`](ruby/README.md)                         | Ferrum, optional require                              |
+| PHP                     | [`mimic-browser/sdk`](php/README.md)                      | chrome-php, optional adapter                          |
 
 Framework dependencies are explicit and optional. Their genuine APIs retain
 their own conventions; Mimic extensions use camelCase in JS/Java/PHP,
@@ -108,10 +108,10 @@ Current binary artifacts target Windows x64 and Linux x64 with glibc 2.39+.
 An unsupported host fails before a download. Framework client support is
 qualified separately from runtime host packaging.
 
-The packaged runtime is currently v0.2.2. New environment-profile helpers and
-some native clients require the accompanying runtime changes, which are awaiting
-a runtime release. See [supported integrations](compatibility/README.md) for the
-current boundaries.
+The packaged runtime is v0.2.3. It includes the context configuration bridge
+used by managed environment profiles. See
+[supported integrations](compatibility/README.md) for client versions and
+runtime capability boundaries.
 
 ## Mimic capabilities and contributor experiments
 

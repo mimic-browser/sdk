@@ -3,11 +3,11 @@
 Native runtime installation, exact version pins, typed Mimic commands and an
 optional adapter for the real `chromiumoxide::Browser` and `Page` types.
 
-Install from GitHub. Cargo finds `mimic-sdk` in the repository's `rust` directory;
+Install from GitHub. Cargo finds `mimic-browser` in the repository's `rust` directory;
 the crates.io package is not published yet:
 
 ```sh
-cargo add mimic-sdk --git https://github.com/mimic-browser/sdk.git --features chromiumoxide
+cargo add mimic-browser --git https://github.com/mimic-browser/sdk.git --features chromiumoxide
 ```
 
 Alternatively, from a parent directory containing a checkout named `sdk`:
@@ -15,22 +15,19 @@ Alternatively, from a parent directory containing a checkout named `sdk`:
 ```sh
 cargo new mimic-rust-example
 cd mimic-rust-example
-cargo add mimic-sdk --path ../sdk/rust --features chromiumoxide
+cargo add mimic-browser --path ../sdk/rust --features chromiumoxide
 ```
 
-The native adapter is qualified
-against the current runtime candidate containing the Frame security projection
-and Context configuration bridge. For local development set
-`MIMIC_EXECUTABLE_PATH` to that candidate. The retained official v0.2.2 default
-pin qualifies installation/raw CDP ownership; it lacks the required native
-adapter fixes. A compatible runtime release and intentional default-pin update
-are required before publishing this adapter.
+The bundled v0.2.3 runtime includes the Frame security projection and Context
+configuration bridge required by the native adapter. Default `RuntimeOptions`
+downloads and verifies that exact release on first launch; no executable path
+is required. Rust 1.89 or newer is required by the locked dependency graph.
 
 ```rust,no_run
-use mimic_sdk::{RuntimeOptions, generated::GetVersionParams};
+use mimic_browser::{RuntimeOptions, generated::GetVersionParams};
 
 # async fn example() -> Result<(), Box<dyn std::error::Error>> {
-let mut session = mimic_sdk::chromiumoxide::Session::launch(RuntimeOptions::default()).await?;
+let mut session = mimic_browser::chromiumoxide::Session::launch(RuntimeOptions::default()).await?;
 let page = session.browser.new_page("about:blank").await?;
 page.goto("https://example.com").await?;
 let title: String = page.evaluate("document.title").await?.into_value()?;
@@ -51,8 +48,8 @@ new Context before configuration and before its first Page. The factory receives
 `ContextSetup { browser_context_id, mimic }` and returns a `MediaConfiguration`:
 
 ```rust,no_run
-use mimic_sdk::generated::{ConfigureContextParams, GetMediaSourcesParams, MediaConfiguration, WireOptional};
-# async fn configure(session: &mut mimic_sdk::chromiumoxide::Session) -> mimic_sdk::Result<()> {
+use mimic_browser::generated::{ConfigureContextParams, GetMediaSourcesParams, MediaConfiguration, WireOptional};
+# async fn configure(session: &mut mimic_browser::chromiumoxide::Session) -> mimic_browser::Result<()> {
 let context = session.new_context_with_media(
     ConfigureContextParams::default(),
     |setup| async move {
@@ -61,7 +58,7 @@ let context = session.new_context_with_media(
         }).await?;
         // Choose an available private source, then declare its public identity.
         let camera = sources.sources.iter().find(|source| source.kind == "videoinput")
-            .ok_or_else(|| mimic_sdk::Error::Invalid("No camera source available".into()))?;
+            .ok_or_else(|| mimic_browser::Error::Invalid("No camera source available".into()))?;
         Ok(serde_json::from_value::<MediaConfiguration>(serde_json::json!({
             "devices": [{
                 "key": "front", "kind": "videoinput", "label": "Studio Camera",

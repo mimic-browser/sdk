@@ -1,6 +1,6 @@
 # Mimic for Ruby
 
-Package `mimic-browser-sdk` requires Ruby 3.2+. Ferrum is optional; require
+Package `mimic-browser` requires Ruby 3.2+. Ferrum is optional; require
 `mimic_sdk/ferrum` to select it. Core import is inert.
 
 Install from GitHub with the native gem tools. The RubyGems package is not
@@ -9,21 +9,19 @@ published yet:
 ```sh
 git clone https://github.com/mimic-browser/sdk.git
 cd sdk/ruby
-gem build mimic-browser-sdk.gemspec
-gem install ./mimic-browser-sdk-0.1.0.gem --no-document
+gem build mimic-browser.gemspec
+gem install ./mimic-browser-0.1.0.gem --no-document
 gem install ferrum --version 0.18.0 --no-document
 ```
 
-The Ferrum integration requires CSS and navigation lifecycle fixes absent from
-the bundled v0.2.2 runtime. Set `MIMIC_EXECUTABLE_PATH` to a compatible development
-executable until those fixes are available in an official release.
-The SDK core already downloads and verifies its bundled pin automatically; this
-adapter's compatibility requirement does not change package installation.
+The bundled v0.2.3 runtime includes the CSS and navigation lifecycle support
+required by Ferrum. The first launch downloads and verifies that exact runtime;
+later launches reuse the persistent cache. No executable path is required.
 
 ```ruby
 require 'mimic_sdk/ferrum'
 
-MimicSDK::Ferrum.launch(executable_path: ENV.fetch('MIMIC_EXECUTABLE_PATH')) do |session|
+MimicSDK::Ferrum.launch do |session|
   context = session.new_context
   page = context.create_page
   page.go_to('https://example.com')
@@ -38,7 +36,7 @@ external process and other clients. `launch` owns startup and bounded cleanup.
 All launches are headless and bind an OS-assigned loopback port.
 
 `new_context(profile:, media:, resource_policy:, proxy:)` applies Mimic settings
-before returning the native context. A managed profile requires the local
+before returning the native context. A managed profile uses the runtime's
 configure-context bridge. `for_page(page)` creates a page extension session on
 the owned raw connection. Framework session IDs are never copied across sockets.
 
@@ -81,7 +79,7 @@ after dispatch does not imply rollback and does not cause automatic retries.
 `RuntimeManager.new(runtime_version:, lock_file:, executable_path:, runtime_dir:,
 allow_download:, archive_path:, startup_timeout:, cancelled:)` follows the shared
 runtime contract. It provides `resolve_lock`, `install`, `launch`, `list`,
-`verify` and explicit `prune`. The packaged pin is v0.2.2. Exact archives and
+`verify` and explicit `prune`. The packaged pin is v0.2.3. Exact archives and
 executables are hash-verified; all languages reuse the same OS cache and leases.
 Use `mimic-sdk install --offline --archive /path/to/official.tar.gz`, `list`,
 `verify`, or `lock` for deliberate cache operations.

@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>io.mimicbrowser</groupId><artifactId>mimic-sdk</artifactId><version>0.1.0</version>
+  <groupId>io.github.mimic-browser</groupId><artifactId>mimic-browser</artifactId><version>0.1.0</version>
   <name>Mimic SDK</name><description>Native Mimic runtime management and typed extensions.</description>
   <url>https://github.com/mimic-browser/sdk</url>
   <licenses><license><name>Prosperity Public License 3.0.0</name><url>https://prosperitylicense.com/versions/3.0.0</url></license></licenses>

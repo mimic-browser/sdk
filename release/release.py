@@ -135,7 +135,8 @@ def input_digest(package):
             value = re.escape(package["version"])
             patterns = [rf"(<Version>){value}(</Version>)", rf"(spec\.version\s*=\s*['\"]){value}(['\"])"]
             if path.name == "pom.xml":
-                patterns.append(rf"(<artifactId>mimic-sdk</artifactId>\s*<version>){value}(</version>)")
+                component = re.escape(package["name"].split(":", 1)[1])
+                patterns.append(rf"(<artifactId>{component}</artifactId>\s*<version>){value}(</version>)")
             if path.suffix == ".toml":
                 patterns.append(rf'(?m)^(version\s*=\s*"){value}("\s*)$')
             for pattern in patterns:
@@ -150,23 +151,33 @@ def check_versions(packages):
         directory = ROOT / item["directory"]
         registry = item["registry"]
         if registry in ("npm", "packagist"):
-            actual = read(directory / ("package.json" if registry == "npm" else "composer.json"))["version"]
+            metadata = read(directory / ("package.json" if registry == "npm" else "composer.json"))
+            actual, identity = metadata["version"], metadata["name"]
         elif registry == "nuget":
-            actual = ET.parse(next(directory.glob("*.csproj"))).findtext(".//Version")
+            metadata = ET.parse(next(directory.glob("*.csproj")))
+            actual, identity = metadata.findtext(".//Version"), metadata.findtext(".//PackageId")
         elif registry == "maven":
-            actual = ET.parse(directory / "pom.xml").findtext("{http://maven.apache.org/POM/4.0.0}version")
+            metadata = ET.parse(directory / "pom.xml")
+            ns = "{http://maven.apache.org/POM/4.0.0}"
+            actual = metadata.findtext(ns + "version")
+            identity = metadata.findtext(ns + "groupId") + ":" + metadata.findtext(ns + "artifactId")
         elif registry in ("pypi", "crates"):
             import tomllib
             document = tomllib.loads((directory / ("pyproject.toml" if registry == "pypi" else "Cargo.toml")).read_text())
-            actual = document["project" if registry == "pypi" else "package"]["version"]
+            metadata = document["project" if registry == "pypi" else "package"]
+            actual, identity = metadata["version"], metadata["name"]
         elif registry == "rubygems":
-            actual = re.search(r"spec\.version\s*=\s*['\"]([^'\"]+)", next(directory.glob("*.gemspec")).read_text()).group(1)
+            metadata = next(directory.glob("*.gemspec")).read_text()
+            actual = re.search(r"spec\.version\s*=\s*['\"]([^'\"]+)", metadata).group(1)
+            identity = re.search(r"spec\.name\s*=\s*['\"]([^'\"]+)", metadata).group(1)
         else:
-            actual = item["version"]  # Go's package version is its module-prefixed tag.
+            actual, identity = item["version"], item["name"]  # Go's version is its module-prefixed tag.
             if not (directory / "go.mod").read_text().startswith("module " + item["name"] + "\n"):
                 raise ReleaseError("Go module path disagrees with package catalog")
         if actual != item["version"]:
             raise ReleaseError(f"{key}: catalog {item['version']} differs from native metadata {actual}")
+        if identity != item["name"]:
+            raise ReleaseError(f"{key}: catalog package name {item['name']} differs from native metadata {identity}")
 
 
 def make_plan(selected, baseline=None):
@@ -258,9 +269,10 @@ def pack_package(key, package, output):
         execute(["dotnet", "pack", next(directory.glob("*.csproj")), "--configuration", "Release", "--output", destination, "--nologo"], directory)
     elif registry == "maven":
         execute(["mvn", "-B", "-ntp", "package"], directory)
+        component = package["name"].split(":", 1)[1]
         for suffix in (".jar", "-sources.jar", "-javadoc.jar"):
-            shutil.copyfile(directory / "target" / f"mimic-sdk-{package['version']}{suffix}", destination / f"mimic-sdk-{package['version']}{suffix}")
-        shutil.copyfile(directory / "pom.xml", destination / f"mimic-sdk-{package['version']}.pom")
+            shutil.copyfile(directory / "target" / f"{component}-{package['version']}{suffix}", destination / f"{component}-{package['version']}{suffix}")
+        shutil.copyfile(directory / "pom.xml", destination / f"{component}-{package['version']}.pom")
     elif registry == "crates":
         execute(["cargo", "package", "--allow-dirty", "--locked"], directory)
         metadata = json.loads(execute(["cargo", "metadata", "--format-version", "1", "--no-deps", "--locked"], directory, capture=True))

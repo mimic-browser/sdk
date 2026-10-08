@@ -1,9 +1,12 @@
 # Mimic for .NET
 
-Requires .NET 8 or newer. The core `Mimic.Sdk` package has no automation-framework
-dependency. Select `Mimic.Playwright` or `Mimic.PuppeteerSharp` separately.
+Requires .NET 8 or newer. The core `mimic-browser` package has no automation-framework
+dependency. Select `mimic-browser.Playwright` or `mimic-browser.PuppeteerSharp` separately.
 Both return the original framework interfaces, with their original exceptions,
 events, options, and automation methods.
+
+Package IDs describe installation; C# namespaces remain `Mimic.Sdk`,
+`Mimic.Playwright` and `Mimic.PuppeteerSharp`.
 
 Install from the GitHub source repository. NuGet packages are not published yet;
 the example builds the actual SDK projects through native project references:
@@ -60,8 +63,8 @@ directly. `NewContextAsync` accepts `media` and `resourcePolicy` configuration b
 the application creates its first page. No private framework fields are accessed.
 
 `NewConfiguredContextAsync(configuration)` also supports coherent generated or
-imported profiles and proxy settings through `Mimic.configureContext` on the local
-runtime candidate. Its Playwright defaults use the public no-viewport and null
+imported profiles and proxy settings through `Mimic.configureContext` on the
+bundled v0.2.3 runtime. Its Playwright defaults use the public no-viewport and null
 media sentinels so framework defaults do not alter a managed profile. Conflicting
 identity, geometry or media options are rejected before a Context is created.
 PuppeteerSharp sessions default to `DefaultViewport = null`; callers using
@@ -103,5 +106,6 @@ dotnet run --project dotnet/Mimic.Tests -- --install /tmp/mimic-sdk-cache
 The tests include shared generated wire cases, integrity, exact pins, offline
 selection, archive traversal, real framework objects, context setup, errors,
 attach isolation, process cleanup, cache receipts, and lease protection. Runtime
-browser limitations remain visible: for example, v0.2.2 rejects `data:` navigation.
+browser limitations remain visible: for example, top-level `data:` navigation
+is unsupported; use HTTP(S), `about:blank`, or the framework's content setter.
 Client qualification is recorded separately from successful package compilation.

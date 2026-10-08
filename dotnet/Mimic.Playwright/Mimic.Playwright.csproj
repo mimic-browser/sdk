@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><Version>0.1.0</Version><PackageId>Mimic.Playwright</PackageId><PackageLicenseFile>LICENSE</PackageLicenseFile></PropertyGroup>
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><Version>0.1.0</Version><PackageId>mimic-browser.Playwright</PackageId><PackageLicenseFile>LICENSE</PackageLicenseFile></PropertyGroup>
   <ItemGroup><ProjectReference Include="../Mimic.Sdk/Mimic.Sdk.csproj" /><PackageReference Include="Microsoft.Playwright" Version="1.63.0" /></ItemGroup>
   <ItemGroup><None Include="../../LICENSE" Pack="true" PackagePath="" Link="LICENSE" /></ItemGroup>
 </Project>

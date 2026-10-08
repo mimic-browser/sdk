@@ -1,6 +1,6 @@
 #![cfg(target_os = "linux")]
-use mimic_sdk::runtime::RuntimeLock;
-use mimic_sdk::{RuntimeManager, RuntimeOptions};
+use mimic_browser::runtime::RuntimeLock;
+use mimic_browser::{RuntimeManager, RuntimeOptions};
 use serde_json::json;
 use sha2::{Digest, Sha256};
 use std::io::Write;

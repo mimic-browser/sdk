@@ -34,10 +34,9 @@ value, err := page.Eval(`() => document.title`)
 `Session.Browser` and returned objects are native Rod types. chromedp exposes
 `Session.Context` and `Session.Browser`; pass the context to normal
 `chromedp.Run` actions. Its existing-target attachment hydrates an already loaded
-blank frame through public chromedp APIs. The chromedp integration requires
-CSS, DOM refresh and numeric connection-ID fixes absent from the bundled v0.2.2
-runtime. Use a compatible development executable through `RuntimeOptions` until
-those fixes are available in an official release.
+blank frame through public chromedp APIs. The bundled v0.2.3 runtime includes the
+CSS, DOM refresh and network identity projections required by chromedp. Default
+`RuntimeOptions{}` selects that verified pin without an executable path.
 
 `Connect(ctx, endpoint)` does not install or spawn. Its `Close` cleans owned
 contexts and connections, preserving the external runtime. `Launch` owns and

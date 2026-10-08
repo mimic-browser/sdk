@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <Version>0.1.0</Version>
-    <PackageId>Mimic.Sdk</PackageId>
+    <PackageId>mimic-browser</PackageId>
     <Description>Verified Mimic runtime management and typed CDP extensions.</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RepositoryUrl>https://github.com/mimic-browser/sdk</RepositoryUrl>

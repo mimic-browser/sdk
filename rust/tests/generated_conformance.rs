@@ -1,4 +1,4 @@
-use mimic_sdk::generated::*;
+use mimic_browser::generated::*;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{json, Value};
 

@@ -1,5 +1,5 @@
 #![cfg(target_os = "linux")]
-use mimic_sdk::{Client, RuntimeManager, RuntimeOptions, Transport};
+use mimic_browser::{Client, RuntimeManager, RuntimeOptions, Transport};
 
 #[tokio::test]
 async fn startup_timeout_and_future_cancellation_reap_owned_children() {
@@ -19,7 +19,7 @@ async fn startup_timeout_and_future_cancellation_reap_owned_children() {
     let manager = RuntimeManager::new(options.clone()).unwrap();
     assert!(matches!(
         manager.launch().await,
-        Err(mimic_sdk::Error::Timeout(_))
+        Err(mimic_browser::Error::Timeout(_))
     ));
     let pid: u32 = std::fs::read_to_string(&pid_file).unwrap().parse().unwrap();
     assert_eq!(unsafe { libc::kill(pid as libc::pid_t, 0) }, -1);

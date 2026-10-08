@@ -1,4 +1,4 @@
-use mimic_sdk::{generated::GetVersionParams, Client, Transport};
+use mimic_browser::{generated::GetVersionParams, Client, Transport};
 use serde_json::json;
 
 #[tokio::main]

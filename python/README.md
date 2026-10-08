@@ -56,10 +56,9 @@ require the explicit runtime configure-context bridge. Unsupported options fail
 instead of producing a misleading profile. Framework options use native
 Playwright keyword names.
 
-The current development runtime supports
-`new_context(profile={"generate": {"seed": "repeatable"}})`. Select it with an
-explicit `executable_path` and no release selector; the v0.2.2 default does not
-implement the bridge. The helper sets `no_viewport=True` and uses Playwright's
+The bundled runtime supports
+`new_context(profile={"generate": {"seed": "repeatable"}})`.
+The helper sets `no_viewport=True` and uses Playwright's
 explicit `"null"` media defaults so a frozen profile stays authoritative. It
 rejects competing framework emulation options before creating the context.
 
@@ -112,7 +111,7 @@ asyncio.run(main())
 ```
 
 `RuntimeManager` supplies `install`, `inspect`, `verify`, `prune` and `launch`.
-`launch(runtime_version="0.2.2")` selects an explicit release when your project
+`launch(runtime_version="0.2.3")` selects an explicit release when your project
 needs a pin.
 `mimic-sdk install|list|verify|prune` exposes artifact operations. Preinstall an
 official archive with `install(archive_path=...)`. Installation can run offline

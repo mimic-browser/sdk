@@ -83,8 +83,9 @@ def check(key, package, build, directory):
         for name in ("maven.compiler.source", "maven.compiler.target"): ET.SubElement(properties, ns + name).text = "17"
         dependencies = ET.SubElement(project, ns + "dependencies")
         sdk = ET.SubElement(dependencies, ns + "dependency")
-        jar = next(path for path in files if path.name == f"mimic-sdk-{package['version']}.jar")
-        for tag, value in [("groupId","io.mimicbrowser"),("artifactId","mimic-sdk"),("version",package["version"]),("scope","system"),("systemPath",str(jar))]: ET.SubElement(sdk, ns + tag).text = value
+        group, component = package["name"].split(":", 1)
+        jar = next(path for path in files if path.name == f"{component}-{package['version']}.jar")
+        for tag, value in [("groupId",group),("artifactId",component),("version",package["version"]),("scope","system"),("systemPath",str(jar))]: ET.SubElement(sdk, ns + tag).text = value
         for dependency in pom.find(ns + "dependencies"):
             if dependency.findtext(ns + "optional") != "true" and dependency.findtext(ns + "scope") != "test": dependencies.append(dependency)
         ET.ElementTree(project).write(directory / "pom.xml", encoding="utf-8", xml_declaration=True)

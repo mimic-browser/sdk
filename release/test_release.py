@@ -22,6 +22,15 @@ class ReleaseTests(unittest.TestCase):
         with self.assertRaises(release.ReleaseError): release.make_plan(["unknown"])
         with self.assertRaises(release.ReleaseError): release.make_plan([])
 
+    def test_catalog_names_must_match_every_native_distribution(self):
+        packages = release.catalog()
+        release.check_versions(packages)
+        for key in ("node", "python", "dotnet-core", "dotnet-playwright", "dotnet-puppeteer", "java", "rust", "ruby", "php"):
+            with self.subTest(package=key):
+                changed = {**packages[key], "name": "different-package"}
+                with self.assertRaisesRegex(release.ReleaseError, "package name"):
+                    release.check_versions({key: changed})
+
     def test_empty_bump_and_changed_unversioned_package_are_rejected(self):
         plan = release.make_plan(["php"])
         with self.assertRaisesRegex(release.ReleaseError, "unchanged"):

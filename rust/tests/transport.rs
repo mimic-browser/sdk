@@ -1,6 +1,6 @@
 #![cfg(target_os = "linux")]
 use futures_util::{SinkExt, StreamExt};
-use mimic_sdk::{Client, Error, Transport};
+use mimic_browser::{Client, Error, Transport};
 use serde_json::{json, Value};
 use std::sync::{Arc, Mutex};
 use std::time::Duration;

@@ -1,5 +1,5 @@
 Gem::Specification.new do |spec|
-  spec.name = 'mimic-browser-sdk'
+  spec.name = 'mimic-browser'
   spec.version = '0.1.0'
   spec.summary = 'Pinned Mimic runtimes and typed capabilities beside native browser clients'
   spec.authors = ['Mimic Browser contributors']

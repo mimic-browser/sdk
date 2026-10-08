@@ -112,8 +112,8 @@ audio-output device catalog. Runtime errors and diagnostics remain authoritative
 
 ## Runtime support and testing
 
-The immutable v0.2.2 runtime remains the SDK's default pin. Managed environment
-profiles require a newer runtime with the configure-context bridge. See
+The immutable v0.2.3 runtime is the SDK's default pin and includes the
+configure-context bridge used by managed environment profiles. See
 [supported integrations](../compatibility/README.md) for client-specific limits.
 
 `node/test/media.mjs` and `python/tests/media.py` exercise real framework clients

@@ -1,10 +1,10 @@
 #![cfg(all(feature = "chromiumoxide", target_os = "linux"))]
 use chromiumoxide::cdp::browser_protocol::target::CreateTargetParams;
-use mimic_sdk::generated::{
+use mimic_browser::generated::{
     ConfigureContextParams, GenerateProfileParams, GetMediaProfileParams, GetProfileParams,
     GetResourcePolicyParams, GetStatusParams, MediaConfiguration, ResourcePolicy, WireOptional,
 };
-use mimic_sdk::{chromiumoxide::Session, RuntimeOptions};
+use mimic_browser::{chromiumoxide::Session, RuntimeOptions};
 use serde_json::json;
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 
@@ -110,7 +110,7 @@ async fn genuine_framework_context_page_and_borrowed_ownership() {
         );
         page.close().await?;
         owned.close().await?;
-        Ok::<(), mimic_sdk::Error>(())
+        Ok::<(), mimic_browser::Error>(())
     })
     .await;
     fixture.abort();

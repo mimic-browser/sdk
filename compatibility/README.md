@@ -17,16 +17,16 @@ determine compatibility; an available SDK method does not imply runtime support.
 
 ## Runtime requirements
 
-The bundled runtime pin is **v0.2.2**. Its exact manifest and archive/executable
+The bundled runtime pin is **v0.2.3**. Its exact manifest and archive/executable
 hashes are in [`release/runtime-lock.json`](../release/runtime-lock.json).
-Ordinary Playwright, Puppeteer, Rod and PHP examples can use that default.
-Managed environment-profile helpers require `Mimic.configureContext`, which is
-not available in v0.2.2. PuppeteerSharp, chromedp, chromiumoxide and Ferrum also
-require runtime fixes awaiting a compatible release.
+It includes `Mimic.configureContext` for managed environment profiles and the
+frame, DOM, network and navigation lifecycle projections used by the native
+clients listed above. Ordinary launch and managed-context examples select this
+pin automatically. Selecting an older release can expose unsupported commands
+or native framework incompatibilities.
 
-These integrations therefore have different release readiness. A development
-executable can exercise pending behavior, but it does not qualify the unchanged
-official pin. Publication requires a compatible official runtime, an intentional
+Development executables can exercise pending behavior, but do not qualify an
+official pin. Package publication requires a compatible official runtime, an intentional
 default-pin update and qualification of the selected packages against that
 exact executable. See [release requirements](../release/README.md).
 

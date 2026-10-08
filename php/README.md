@@ -55,9 +55,8 @@ Context class, so `newContext` returns an explicit Mimic capability handle and
 `newPage($context)` returns a real Chrome PHP Page. Configuration is applied
 before page creation. `forPage($page)` resolves the page's actual Context.
 Generated/imported profiles, proxy, media and resource policies are accepted by
-`newContext`; the runtime enforces profile coherence. `Mimic.configureContext`
-is unavailable in the bundled v0.2.2 runtime and requires a compatible runtime
-release or development executable.
+`newContext`; the runtime enforces profile coherence. The bundled v0.2.3 runtime
+provides the `Mimic.configureContext` bridge for managed profiles.
 
 The optional second `newContext` argument is a media factory:
 `function (ContextSetup $setup): Generated\MediaConfiguration`. It receives the
@@ -74,7 +73,7 @@ close sessions in `finally` for reliable errors and cleanup.
 
 `RuntimeManager::install` supports exact version pins, explicit lock files,
 verified shared cache, offline reuse and native binary overrides. The bundled
-pin is immutable v0.2.2. `MIMIC_RUNTIME_DIR`, `MIMIC_RUNTIME_VERSION`,
+pin is immutable v0.2.3. `MIMIC_RUNTIME_DIR`, `MIMIC_RUNTIME_VERSION`,
 `MIMIC_EXECUTABLE_PATH` and `MIMIC_DOWNLOAD=0` follow the shared specification.
 Linux requires amd64/glibc 2.39; the other packaged target is Windows amd64.
 The installer uses libcurl's HTTPS, proxy and CA settings. The browser Context

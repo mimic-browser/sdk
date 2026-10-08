@@ -13,9 +13,9 @@ artifact provenance and process ownership, not selectable versions of the RPC AP
   apply to explicit executables; inspect runtime identity on connection.
 - Default lock is `release/runtime-lock.json`, embedding the unchanged official
   manifest, its SHA256, official base URL and Chrome source provenance.
-- Lock JSON: `{"release":"v0.2.2","manifestSha256":"...","manifest":{...},
-  "manifestJson":"exact original UTF-8 manifest text",
-  "baseUrl":"https://github.com/mimic-browser/runtime/releases/download/v0.2.2"}`.
+- Lock JSON: `{"release":"v0.2.3","manifestSha256":"...","manifest":{...},
+"manifestJson":"exact original UTF-8 manifest text",
+"baseUrl":"https://github.com/mimic-browser/runtime/releases/download/v0.2.3"}`.
   Hash manifestJson's UTF-8 bytes and require its parsed value equals manifest;
   do not hash a language-dependent reserialization of the nested manifest.
   Keep sourceRevision, packagingRevision, binaryVersion, archive/binary hashes,
@@ -77,9 +77,9 @@ the owner record or directory. Cache filesystems must support atomic publication
 
 Launch with redirected pipes, `--browser-mode headless --listen 127.0.0.1:0`.
 Never enable shell execution, detached/background daemon mode or a visible Windows
-console. The Windows runtime watches parent death. Published v0.2.2 lacks the
-Unix parent-death watcher; qualify that lifecycle explicitly before selecting a
-runtime that provides it rather than inferring Unix behavior from Windows.
+console. The bundled runtime watches parent death on Windows and Linux. Qualify
+that lifecycle on each supported platform before changing the runtime pin;
+do not infer one platform's behavior from another.
 Parse only the redirected startup
 line `Mimic listening on http://127.0.0.1:<port>`; do not reserve/free ports.
 Fetch `/json/version` to discover the browser websocket, then inspect

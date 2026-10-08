@@ -1,10 +1,13 @@
 # Mimic for Java and Kotlin
 
-Requires Java 17 or newer. `io.mimicbrowser:mimic-sdk` contains the native runtime
+Requires Java 17 or newer. `io.github.mimic-browser:mimic-browser` contains the native runtime
 manager and typed extension API. Playwright Java is an optional Maven dependency;
 add `com.microsoft.playwright:playwright:1.63.0` when importing the
 `io.mimicbrowser.sdk.playwright` adapter. No Chromium download or framework launcher
 is involved. Kotlin uses the same Java artifact.
+
+Maven coordinates and Java package names serve different purposes: imports
+remain under `io.mimicbrowser.sdk`.
 
 Install from the GitHub source repository. Maven Central packages are not
 published yet. Maven installs the SDK into your local artifact cache, so the
@@ -55,8 +58,8 @@ configures the actual Context before application pages are created. Native
 `Browser`, `BrowserContext`, `Page`, and `Locator` types remain intact.
 
 `newConfiguredContext(configuration, options)` applies coherent generated or
-imported profiles and proxy settings via `Mimic.configureContext` in the local
-runtime candidate. Public Playwright Optional-null settings disable its default
+imported profiles and proxy settings via `Mimic.configureContext` in the bundled
+v0.2.3 runtime. Public Playwright Optional-null settings disable its default
 viewport and media emulation for managed profiles. Conflicting identity, geometry
 or media options are rejected before Context creation. Supplied options are copied.
 
@@ -83,4 +86,5 @@ Run `mvn test` for non-listening unit checks. On Linux, run
 `IntegrationCheck` from the test classpath with an explicit Mimic executable, or
 `--install /tmp/mimic-sdk-cache` for the shared installer. See
 `examples/java/kotlin` for a compiled Kotlin consumer. Browser capabilities remain
-bounded by the selected Mimic runtime; v0.2.2 rejects `data:` navigation.
+bounded by the selected Mimic runtime. Top-level `data:` navigation is unsupported;
+use HTTP(S), `about:blank`, or the framework's content setter.
