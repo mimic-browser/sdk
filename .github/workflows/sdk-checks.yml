@@ -33,7 +33,6 @@ jobs:
         with:
           node-version: '22.19.0'
       - uses: actions/setup-python@v5
-        if: matrix.language == 'python'
         with:
           python-version: '3.12'
       - uses: actions/setup-dotnet@v4
