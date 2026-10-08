@@ -1,0 +1,16 @@
+.tools/
+.build/
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+dotnet/**/bin/
+examples/dotnet/**/bin/
+obj/
+target/
+vendor/
+.bundle/
+*.gem
+dist/
+*.egg-info/
+.DS_Store
