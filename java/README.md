@@ -9,30 +9,58 @@ is involved. Kotlin uses the same Java artifact.
 Maven coordinates and Java package names serve different purposes: imports
 remain under `io.mimicbrowser.sdk`.
 
-Install from the GitHub source repository. Maven Central packages are not
-published yet. Maven installs the SDK into your local artifact cache, so the
-included Kotlin consumer uses ordinary Maven dependency coordinates:
+Install from Maven Central. In a Java 17 or newer Maven project, add the SDK
+and the optional Playwright client to `pom.xml`:
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>boo.mimic</groupId>
+    <artifactId>mimic-browser</artifactId>
+    <version>0.1.0</version>
+  </dependency>
+  <dependency>
+    <groupId>com.microsoft.playwright</groupId>
+    <artifactId>playwright</artifactId>
+    <version>1.63.0</version>
+  </dependency>
+</dependencies>
+```
+
+The Playwright dependency is needed only for its adapter. Core runtime management
+and generated Mimic commands do not require a browser automation framework.
+
+```java
+import io.mimicbrowser.sdk.Generated;
+import io.mimicbrowser.sdk.RuntimeOptions;
+import io.mimicbrowser.sdk.playwright.PlaywrightSession;
+
+public class Example {
+    public static void main(String[] args) {
+        try (var session = PlaywrightSession.launch(new RuntimeOptions())) {
+            var context = session.newContext();
+            var page = context.newPage();
+            page.navigate("https://example.com");
+            System.out.println(page.title());
+            var version = session.mimic().commands()
+                .getVersion(new Generated.GetVersionParams());
+            System.out.println(version.version);
+        }
+    }
+}
+```
+
+Kotlin uses the same artifact and Java package names. Run the complete example,
+which resolves the SDK from Maven Central:
 
 ```sh
 git clone https://github.com/mimic-browser/sdk.git
 cd sdk
-mvn -B -ntp -f java/pom.xml install -Dmaven.test.skip=true
-mvn -f examples/java/kotlin/pom.xml compile exec:java
+mvn -B -ntp -f examples/java/kotlin/pom.xml compile exec:java
 ```
 
-The consumer uses the ordinary bundled runtime pin; first launch downloads and
-verifies Mimic automatically. Add the locally installed SDK and optional
-Playwright dependency to another project's POM using the coordinates above.
-
-```java
-try (var session = PlaywrightSession.launch(new RuntimeOptions())) {
-    var context = session.newContext();
-    var page = context.newPage();
-    page.navigate("https://example.com");
-    System.out.println(page.title());
-    var version = session.mimic().commands().getVersion(new Generated.GetVersionParams());
-}
-```
+For SDK development, `mvn -B -ntp -f java/pom.xml install` builds and installs the
+checked-out source into your local Maven cache before running a consumer.
 
 The first launch installs the exact verified runtime. Cache, manifests, locks,
 receipts and leases are shared with other SDK languages. `allowDownload(false)`
