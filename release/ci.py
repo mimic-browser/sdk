@@ -22,7 +22,9 @@ def prepare(groups):
         directory = release.ROOT / group
         if group == "node": release.execute(["npm", "ci"], directory)
         elif group == "python":
-            release.execute(["python", "-m", "pip", "install", "-e", ".[playwright,test]", "mypy==1.18.2"], directory)
+            # Type check the installed wheel: setuptools editable import hooks
+            # are executed by Python but are not discoverable by type checkers.
+            release.execute(["python", "-m", "pip", "install", ".[playwright,test]", "mypy==1.18.2"], directory)
             # Pyppeteer requires older pyee/websockets than the modern client and
             # transport fixture. Qualify it independently instead of resolving
             # incompatible extras into one environment.
@@ -37,7 +39,7 @@ def unit(group):
     prepare([group])
     commands = {
         "node": [["node", "scripts/git-package.mjs", "--check"], ["npm", "run", "build"], ["npm", "test"], ["node", "--test", "test/transport.mjs"]],
-        "python": [["python", "tools/generate_api_typing.py", "--check"], ["python", "tools/check_typing.py", "--python", sys.executable, "--allow-source"], ["python", "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"], ["python", "tests/transport.py"]],
+        "python": [["python", "tools/generate_api_typing.py", "--check"], ["python", "tools/check_typing.py", "--python", sys.executable], ["python", "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"], ["python", "tests/transport.py"]],
         "dotnet": [["dotnet", "run", "--project", "Mimic.Tests", "--no-launch-profile"]],
         "java": [["mvn", "-B", "-ntp", "test"]],
         "go": [["go", "test", "./..."]],
