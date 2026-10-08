@@ -3,14 +3,13 @@
 Native runtime installation, exact version pins, typed Mimic commands and an
 optional adapter for the real `chromiumoxide::Browser` and `Page` types.
 
-Install from GitHub. Cargo finds `mimic-browser` in the repository's `rust` directory;
-the crates.io package is not published yet:
+Install from crates.io with the optional chromiumoxide adapter:
 
 ```sh
-cargo add mimic-browser --git https://github.com/mimic-browser/sdk.git --features chromiumoxide
+cargo add mimic-browser --features chromiumoxide
 ```
 
-Alternatively, from a parent directory containing a checkout named `sdk`:
+For source development, from a parent directory containing a checkout named `sdk`:
 
 ```sh
 cargo new mimic-rust-example

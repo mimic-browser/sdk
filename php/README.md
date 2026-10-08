@@ -6,28 +6,16 @@ OpenSSL, zlib and ZipArchive are required. The optional Chrome PHP adapter uses
 the genuine `HeadlessChromium\Browser` and `Page` classes from
 `chrome-php/chrome` (qualified with 1.16.0).
 
-Install from the GitHub source repository. The Packagist package is not published
-yet. The checkout's development dependencies include the optional Chrome PHP
-client for the example:
+Install the SDK from Packagist with the optional Chrome PHP client:
 
 ```sh
-git clone https://github.com/mimic-browser/sdk.git
-cd sdk
-composer install --working-dir=php --no-interaction
-php examples/php/example.php
+mkdir mimic-php-example
+cd mimic-php-example
+composer require mimic-browser/sdk:^0.1 chrome-php/chrome:1.16.0 --no-interaction
 ```
 
 No runtime path is needed: the first `launch()` downloads and verifies the
-bundled runtime pin. In another project, point Composer at the cloned package
-using its known relative directory:
-
-```sh
-mkdir php-app
-cd php-app
-composer init --name=example/mimic-app --no-interaction
-composer config repositories.mimic path ../php
-composer require mimic-browser/sdk:0.1.0 chrome-php/chrome:1.16.0 --no-interaction
-```
+bundled runtime pin.
 
 Save the example below as `example.php` in that project and run `php example.php`.
 
@@ -40,7 +28,7 @@ use Mimic\Sdk\RuntimeOptions;
 
 $session = ChromeSession::launch();
 try {
-    $context = $session->newContext(['media' => ['devices' => []]]);
+    $context = $session->newContext();
     $page = $session->newPage($context);
     $page->setHtml('<button id="run" onclick="this.textContent=\'done\'">run</button>');
     $page->dom()->querySelector('#run')->click();

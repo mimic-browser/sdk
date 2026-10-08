@@ -2,13 +2,15 @@
 
 Licensed under the included Prosperity Public License 3.0.0.
 
-Install the SDK from GitHub and the client you want to use. The PyPI package is
-not published yet:
+Install the SDK from PyPI and the client you want to use:
 
 ```sh
-python -m pip install "mimic-browser @ git+https://github.com/mimic-browser/sdk.git#subdirectory=python"
+python -m pip install mimic-browser
 python -m pip install playwright==1.63.0
 ```
+
+Source installation is also available with
+`python -m pip install "mimic-browser @ git+https://github.com/mimic-browser/sdk.git@v0.1.0#subdirectory=python"`.
 
 Python 3.10+ is required. The first `launch()` downloads Mimic and later runs
 reuse it. No executable path or `playwright install` step is needed. The native runtime
@@ -89,7 +91,7 @@ connection. The extension connection preserves protocol error code, message and
 data that framework send methods can lose. Dispatched calls are never retried
 automatically; cancellation cannot imply rollback.
 
-Optional `python -m pip install 'mimic-browser[pyppeteer] @ git+https://github.com/mimic-browser/sdk.git#subdirectory=python'` provides the Pyppeteer
+Optional `python -m pip install 'mimic-browser[pyppeteer]'` provides the Pyppeteer
 2.0.0 integration via `mimic.pyppeteer`. It returns real Pyppeteer objects,
 whose automation methods retain that project's existing naming. It connects to
 Mimic without invoking Chromium download or launch. Keep Pyppeteer in a separate
@@ -120,8 +122,8 @@ lock file and executable selection follow `../spec/runtime-manager.md`. Pins do
 not silently advance with a new runtime or SDK release. Pruning is explicit and
 rejects live or unverifiable leases.
 
-To include the optional framework in one Git installation, use
-`python -m pip install "mimic-browser[playwright] @ git+https://github.com/mimic-browser/sdk.git#subdirectory=python"`.
+To include the optional framework in one installation, use
+`python -m pip install 'mimic-browser[playwright]'`.
 For local development, use `python -m pip install -e '.[playwright]'` in this
 directory, or select `.[pyppeteer]`. Run `python -m unittest discover -s tests -p test_unit.py` for checks without
 listeners. Run `python tests/integration.py` and `python tests/transport.py`

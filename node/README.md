@@ -1,9 +1,9 @@
 # Mimic for Node.js and TypeScript
 
-Install directly from the SDK Git repository:
+Install the SDK from npm:
 
 ```sh
-npm install git+https://github.com/mimic-browser/sdk.git
+npm install mimic-browser
 ```
 
 Requires Node.js 22.19 or newer. Licensed under the included Prosperity Public
@@ -24,9 +24,10 @@ For Puppeteer, use `npm install puppeteer-core@25.10.0` instead and import from
 `mimic-browser/puppeteer`. Installing or importing the core SDK does not install
 either framework.
 
+Source installation is also available with
+`npm install git+https://github.com/mimic-browser/sdk.git#v0.1.0`.
 Git installation builds the package automatically; runtime acquisition still
-happens only on `launch()`. The npm registry package is not published yet. Its
-package name is `mimic-browser`.
+happens only on `launch()`.
 
 ```typescript
 import { launch } from "mimic-browser/playwright";

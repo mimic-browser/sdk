@@ -3,14 +3,10 @@
 Package `mimic-browser` requires Ruby 3.2+. Ferrum is optional; require
 `mimic_sdk/ferrum` to select it. Core import is inert.
 
-Install from GitHub with the native gem tools. The RubyGems package is not
-published yet:
+Install the SDK from RubyGems and the optional Ferrum client:
 
 ```sh
-git clone https://github.com/mimic-browser/sdk.git
-cd sdk/ruby
-gem build mimic-browser.gemspec
-gem install ./mimic-browser-0.1.0.gem --no-document
+gem install mimic-browser --no-document
 gem install ferrum --version 0.18.0 --no-document
 ```
 

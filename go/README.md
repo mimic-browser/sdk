@@ -3,21 +3,18 @@
 The module is `github.com/mimic-browser/sdk/go` and the core package is `mimic`.
 Import `/rod` or `/chromedp` to choose a real framework.
 
-Install from the GitHub source repository. No versioned module tag is required
-when using the checkout as a source replacement:
+Install the released module and the client you want to use:
 
 ```sh
-git clone https://github.com/mimic-browser/sdk.git
 mkdir mimic-go-example
 cd mimic-go-example
 go mod init example.com/mimic-go-example
-go mod edit -replace=github.com/mimic-browser/sdk/go=../sdk/go
-go get github.com/mimic-browser/sdk/go/rod
+go get github.com/mimic-browser/sdk/go/rod@v0.1.0
 ```
 
-An existing Go project can instead use
-`go get github.com/mimic-browser/sdk/go/rod@main` directly. The runtime installer
-uses the bundled default pin without an explicit executable path.
+For chromedp, use `go get github.com/mimic-browser/sdk/go/chromedp@v0.1.0`
+instead. The runtime installer uses the bundled default pin without an explicit
+executable path.
 
 ```go
 ctx := context.Background()
