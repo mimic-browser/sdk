@@ -19,10 +19,34 @@ class _NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
+class _UnexpectedStatus(ValueError):
+    def __init__(self, status):
+        self.status = status
+
+
+def _failure_detail(error):
+    """Expose only transport status and a fixed allowlist of public error codes."""
+    status = error.code if isinstance(error, urllib.error.HTTPError) else getattr(error, "status", None)
+    detail = f"HTTP {status}" if type(status) is int and 100 <= status <= 599 else "invalid response"
+    if isinstance(error, urllib.error.HTTPError):
+        try:
+            data = error.read(65_537)
+            body = json.loads(data) if len(data) <= 65_536 else None
+            code = body.get("code") if isinstance(body, dict) else None
+            if code in ("E400", "E401", "E403", "E404", "E500", "EOTP", "ENEEDAUTH",
+                        "EUNAUTHORIZED", "EFORBIDDEN", "EINVALIDOIDC", "EINVALIDTOKEN"):
+                detail += f"; {code}"
+        except (OSError, ValueError, TypeError, AttributeError):
+            pass
+        finally:
+            error.close()
+    return detail
+
+
 def _json_response(opener, request, expected_status):
     with opener(request, timeout=30) as response:
         if response.status != expected_status:
-            raise ValueError("Unexpected authentication status")
+            raise _UnexpectedStatus(response.status)
         data = response.read(65_537)
         if len(data) > 65_536:
             raise ValueError("Oversized authentication response")
@@ -53,6 +77,7 @@ def verify_oidc(environment, opener=None, now=None):
     if not isinstance(package_name, str) or not package_name or any(character.isspace() for character in package_name):
         raise release.ReleaseError("Invalid Node package name in the release catalog")
     opener = opener or urllib.request.build_opener(_NoRedirect()).open
+    phase = "GitHub identity configuration"
     try:
         request_token = _credential(environment.get("ACTIONS_ID_TOKEN_REQUEST_TOKEN"))
         parts = urllib.parse.urlsplit(environment.get("ACTIONS_ID_TOKEN_REQUEST_URL", ""))
@@ -66,6 +91,7 @@ def verify_oidc(environment, opener=None, now=None):
             identity_url,
             headers={"Authorization": "Bearer " + request_token, "Accept": "application/json"},
         )
+        phase = "GitHub identity response"
         identity = _credential(_json_response(opener, identity_request, 200)["value"])
         exchange_request = urllib.request.Request(
             "https://registry.npmjs.org/-/npm/v1/oidc/token/exchange/package/"
@@ -74,19 +100,22 @@ def verify_oidc(environment, opener=None, now=None):
             headers={"Authorization": "Bearer " + identity, "Accept": "application/json"},
             method="POST",
         )
+        phase = "npm token exchange"
         exchanged = _json_response(opener, exchange_request, 201)
+        phase = "npm token validation"
         if exchanged.get("token_type") != "oidc":
             raise ValueError("Unexpected npm credential type")
         _credential(exchanged["token"])
+        phase = "npm expiry validation"
         expires = dt.datetime.fromisoformat(exchanged["expires"].replace("Z", "+00:00"))
         if expires.tzinfo is None or expires <= (now or dt.datetime.now(dt.timezone.utc)):
             raise ValueError("Expired npm credential")
     except (urllib.error.URLError, OSError, ValueError, KeyError, TypeError, AttributeError, OverflowError) as error:
-        if isinstance(error, urllib.error.HTTPError):
-            error.close()  # Prevent deferred response warnings from exposing its reason.
-        # Do not include URLs, exception text, response bodies or credentials.
+        detail = _failure_detail(error)
+        # Never include URLs, exception text, response messages or credentials.
         raise release.ReleaseError(
-            "npm trusted publisher authentication failed; check the package, repository, workflow and environment"
+            f"npm trusted publisher authentication failed during {phase} ({detail}); "
+            "check the package, repository, workflow and environment"
         ) from None
     return {"package": package_name, "expires": expires.astimezone(dt.timezone.utc).isoformat()}
 

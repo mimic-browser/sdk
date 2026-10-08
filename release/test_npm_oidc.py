@@ -88,6 +88,27 @@ class NpmOIDCTests(unittest.TestCase):
                         npm_oidc.verify_oidc(self.environment, opener, self.now)
                     self.assertNotIn("secret", str(error.exception))
                     self.assertTrue(error.exception.__suppress_context__)
+                    self.assertIn(f"HTTP {status}", str(error.exception))
+                    self.assertIn("GitHub identity response" if phase == 1 else "npm token exchange",
+                                  str(error.exception))
+
+    def test_http_diagnostic_codes_are_allowlisted_and_bodies_redacted(self):
+        for body, expected in (({"code": "E403", "message": "secret"}, "; E403"),
+                               ({"code": "SECRET_TOKEN", "message": "secret"}, None),
+                               ({"code": {"secret": True}}, None)):
+            calls = []
+            def opener(request, timeout):
+                calls.append(request)
+                if len(calls) == 1:
+                    return Response({"value": "secret-identity-jwt"})
+                raise urllib.error.HTTPError("https://secret.invalid", 403, "secret", {},
+                                             io.BytesIO(json.dumps(body).encode()))
+            with self.assertRaises(release.ReleaseError) as error:
+                npm_oidc.verify_oidc(self.environment, opener, self.now)
+            self.assertNotIn("secret", str(error.exception).lower())
+            self.assertIn("npm token exchange (HTTP 403", str(error.exception))
+            if expected:
+                self.assertIn(expected, str(error.exception))
 
     def test_expired_malformed_or_non_oidc_credentials_fail_closed(self):
         payloads = [
@@ -113,7 +134,7 @@ class NpmOIDCTests(unittest.TestCase):
 
     def test_exchange_must_return_201(self):
         _, opener = self.opener(status=200)
-        with self.assertRaises(release.ReleaseError):
+        with self.assertRaisesRegex(release.ReleaseError, r"npm token exchange \(HTTP 200\)"):
             npm_oidc.verify_oidc(self.environment, opener, self.now)
 
     def test_missing_identity_inputs_do_not_fall_back_to_local_npm_auth(self):
