@@ -32,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        if: matrix.language == 'node'
+        if: matrix.language == 'node' || matrix.language == 'python'
         with:
           node-version: '22.19.0'
       - uses: actions/setup-python@v5

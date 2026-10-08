@@ -68,6 +68,8 @@ def check(key, package, build, directory):
         run([python, "-c", "import mimic; from mimic import RuntimeManager; from mimic.playwright.sync_api import launch; from mimic.playwright.async_api import launch as launch_async; from mimic.pyppeteer import launch as launch_pyppeteer; import importlib.util; assert all(importlib.util.find_spec(name) is None for name in ('playwright', 'pyppeteer', 'mimic_sdk'))"], directory)
         run([python, "-m", "pip", "install", str(wheel) + "[playwright]", "mypy==1.18.2"], directory)
         run([python, release.ROOT / "python/tools/check_typing.py", "--python", python], directory)
+        run(["npm", "install", "--prefix", directory / "type-tools", "--ignore-scripts", "--no-audit", "--no-fund", "pyright@1.1.414"], directory)
+        run([python, release.ROOT / "python/tools/check_ide.py", "--python", python, "--pyright", directory / "type-tools/node_modules/pyright"], directory)
     elif registry == "nuget":
         feed = directory / "feed"; feed.mkdir()
         for selected in build["packages"].values():

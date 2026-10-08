@@ -2,7 +2,7 @@
   "repository": "https://github.com/mimic-browser/sdk",
   "packages": {
     "node": {"name":"mimic-browser","version":"0.1.1","registry":"npm","directory":"node","inputs":["node/src/**","node/scripts/**","node/test/git-install.mjs","node/package.json","node/package-lock.json","node/tsconfig*.json","node/README.md","node/runtime-lock.json","node/LICENSE","package.json","package-lock.json","README.md"],"requires":[]},
-    "python": {"name":"mimic-browser","version":"0.1.0","registry":"pypi","directory":"python","inputs":["python/mimic/**","python/tools/**","python/tests/test_*.py","python/pyproject.toml","python/README.md","python/LICENSE"],"requires":[]},
+    "python": {"name":"mimic-browser","version":"0.1.0","registry":"pypi","directory":"python","inputs":["python/mimic/**","python/tools/**","python/tests/test_*.py","python/tests/typing/**","python/pyproject.toml","python/README.md","python/LICENSE"],"requires":[]},
     "dotnet-core": {"name":"mimic-browser","version":"0.1.0","registry":"nuget","directory":"dotnet/Mimic.Sdk","inputs":["dotnet/Directory.Build.props","dotnet/Mimic.Sdk/*.cs","dotnet/Mimic.Sdk/*.csproj","release/runtime-lock.json","LICENSE"],"requires":[]},
     "dotnet-playwright": {"name":"mimic-browser.Playwright","version":"0.1.0","registry":"nuget","directory":"dotnet/Mimic.Playwright","inputs":["dotnet/Directory.Build.props","dotnet/Mimic.Playwright/*.cs","dotnet/Mimic.Playwright/*.csproj","LICENSE"],"requires":["dotnet-core"]},
     "dotnet-puppeteer": {"name":"mimic-browser.PuppeteerSharp","version":"0.1.0","registry":"nuget","directory":"dotnet/Mimic.PuppeteerSharp","inputs":["dotnet/Directory.Build.props","dotnet/Mimic.PuppeteerSharp/*.cs","dotnet/Mimic.PuppeteerSharp/*.csproj","LICENSE"],"requires":["dotnet-core"]},

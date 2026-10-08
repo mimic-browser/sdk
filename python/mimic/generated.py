@@ -742,198 +742,198 @@ ProfileSelection: TypeAlias = Union[str, GenerateProfileSelection]
 class MimicCommands:
     def __init__(self, sender):
         self._sender = sender
-    def cancel_execution(self, params: CancelExecutionParams | dict | None = None) -> CancelExecutionResult:
+    def cancel_execution(self, params: CancelExecutionParams | dict[str, JsonValue] | None = None) -> CancelExecutionResult:
         value = self._sender("Mimic.cancelExecution", to_wire(params) if params is not None else {})
         return from_wire(CancelExecutionResult, value)
-    def capture_snapshot(self, params: CaptureSnapshotParams | dict | None = None) -> CaptureSnapshotResult:
+    def capture_snapshot(self, params: CaptureSnapshotParams | dict[str, JsonValue] | None = None) -> CaptureSnapshotResult:
         value = self._sender("Mimic.captureSnapshot", to_wire(params) if params is not None else {})
         return from_wire(CaptureSnapshotResult, value)
-    def clear_trace(self, params: ClearTraceParams | dict | None = None) -> ClearTraceResult:
+    def clear_trace(self, params: ClearTraceParams | dict[str, JsonValue] | None = None) -> ClearTraceResult:
         value = self._sender("Mimic.clearTrace", to_wire(params) if params is not None else {})
         return from_wire(ClearTraceResult, value)
-    def configure_context(self, params: ConfigureContextParams | dict) -> ConfigureContextResult:
+    def configure_context(self, params: ConfigureContextParams | dict[str, JsonValue]) -> ConfigureContextResult:
         value = self._sender("Mimic.configureContext", to_wire(params) if params is not None else {})
         return from_wire(ConfigureContextResult, value)
-    def create_context(self, params: CreateContextParams | dict | None = None) -> CreateContextResult:
+    def create_context(self, params: CreateContextParams | dict[str, JsonValue] | None = None) -> CreateContextResult:
         value = self._sender("Mimic.createContext", to_wire(params) if params is not None else {})
         return from_wire(CreateContextResult, value)
-    def export_profile(self, params: ExportProfileParams | dict) -> ExportProfileResult:
+    def export_profile(self, params: ExportProfileParams | dict[str, JsonValue]) -> ExportProfileResult:
         value = self._sender("Mimic.exportProfile", to_wire(params) if params is not None else {})
         return from_wire(ExportProfileResult, value)
-    def generate_profile(self, params: GenerateProfileParams | dict | None = None) -> GenerateProfileResult:
+    def generate_profile(self, params: GenerateProfileParams | dict[str, JsonValue] | None = None) -> GenerateProfileResult:
         value = self._sender("Mimic.generateProfile", to_wire(params) if params is not None else {})
         return from_wire(GenerateProfileResult, value)
-    def get_compatibility_matrix(self, params: GetCompatibilityMatrixParams | dict | None = None) -> GetCompatibilityMatrixResult:
+    def get_compatibility_matrix(self, params: GetCompatibilityMatrixParams | dict[str, JsonValue] | None = None) -> GetCompatibilityMatrixResult:
         value = self._sender("Mimic.getCompatibilityMatrix", to_wire(params) if params is not None else {})
         return from_wire(GetCompatibilityMatrixResult, value)
-    def get_diagnostics(self, params: GetDiagnosticsParams | dict | None = None) -> GetDiagnosticsResult:
+    def get_diagnostics(self, params: GetDiagnosticsParams | dict[str, JsonValue] | None = None) -> GetDiagnosticsResult:
         value = self._sender("Mimic.getDiagnostics", to_wire(params) if params is not None else {})
         return from_wire(GetDiagnosticsResult, value)
-    def get_media_presets(self, params: GetMediaPresetsParams | dict | None = None) -> GetMediaPresetsResult:
+    def get_media_presets(self, params: GetMediaPresetsParams | dict[str, JsonValue] | None = None) -> GetMediaPresetsResult:
         value = self._sender("Mimic.getMediaPresets", to_wire(params) if params is not None else {})
         return from_wire(GetMediaPresetsResult, value)
-    def get_media_profile(self, params: GetMediaProfileParams | dict | None = None) -> GetMediaProfileResult:
+    def get_media_profile(self, params: GetMediaProfileParams | dict[str, JsonValue] | None = None) -> GetMediaProfileResult:
         value = self._sender("Mimic.getMediaProfile", to_wire(params) if params is not None else {})
         return from_wire(GetMediaProfileResult, value)
-    def get_media_sources(self, params: GetMediaSourcesParams | dict | None = None) -> GetMediaSourcesResult:
+    def get_media_sources(self, params: GetMediaSourcesParams | dict[str, JsonValue] | None = None) -> GetMediaSourcesResult:
         value = self._sender("Mimic.getMediaSources", to_wire(params) if params is not None else {})
         return from_wire(GetMediaSourcesResult, value)
-    def get_profile(self, params: GetProfileParams | dict) -> GetProfileResult:
+    def get_profile(self, params: GetProfileParams | dict[str, JsonValue]) -> GetProfileResult:
         value = self._sender("Mimic.getProfile", to_wire(params) if params is not None else {})
         return from_wire(GetProfileResult, value)
-    def get_profile_schema(self, params: GetProfileSchemaParams | dict | None = None) -> GetProfileSchemaResult:
+    def get_profile_schema(self, params: GetProfileSchemaParams | dict[str, JsonValue] | None = None) -> GetProfileSchemaResult:
         value = self._sender("Mimic.getProfileSchema", to_wire(params) if params is not None else {})
         return from_wire(GetProfileSchemaResult, value)
-    def get_resource_policy(self, params: GetResourcePolicyParams | dict) -> GetResourcePolicyResult:
+    def get_resource_policy(self, params: GetResourcePolicyParams | dict[str, JsonValue]) -> GetResourcePolicyResult:
         value = self._sender("Mimic.getResourcePolicy", to_wire(params) if params is not None else {})
         return from_wire(GetResourcePolicyResult, value)
-    def get_resource_policy_schema(self, params: GetResourcePolicySchemaParams | dict | None = None) -> GetResourcePolicySchemaResult:
+    def get_resource_policy_schema(self, params: GetResourcePolicySchemaParams | dict[str, JsonValue] | None = None) -> GetResourcePolicySchemaResult:
         value = self._sender("Mimic.getResourcePolicySchema", to_wire(params) if params is not None else {})
         return from_wire(GetResourcePolicySchemaResult, value)
-    def get_resource_policy_stats(self, params: GetResourcePolicyStatsParams | dict) -> GetResourcePolicyStatsResult:
+    def get_resource_policy_stats(self, params: GetResourcePolicyStatsParams | dict[str, JsonValue]) -> GetResourcePolicyStatsResult:
         value = self._sender("Mimic.getResourcePolicyStats", to_wire(params) if params is not None else {})
         return from_wire(GetResourcePolicyStatsResult, value)
-    def get_status(self, params: GetStatusParams | dict | None = None) -> GetStatusResult:
+    def get_status(self, params: GetStatusParams | dict[str, JsonValue] | None = None) -> GetStatusResult:
         value = self._sender("Mimic.getStatus", to_wire(params) if params is not None else {})
         return from_wire(GetStatusResult, value)
-    def get_trace(self, params: GetTraceParams | dict | None = None) -> GetTraceResult:
+    def get_trace(self, params: GetTraceParams | dict[str, JsonValue] | None = None) -> GetTraceResult:
         value = self._sender("Mimic.getTrace", to_wire(params) if params is not None else {})
         return from_wire(GetTraceResult, value)
-    def get_version(self, params: GetVersionParams | dict | None = None) -> GetVersionResult:
+    def get_version(self, params: GetVersionParams | dict[str, JsonValue] | None = None) -> GetVersionResult:
         value = self._sender("Mimic.getVersion", to_wire(params) if params is not None else {})
         return from_wire(GetVersionResult, value)
-    def import_profile(self, params: ImportProfileParams | dict) -> ImportProfileResult:
+    def import_profile(self, params: ImportProfileParams | dict[str, JsonValue]) -> ImportProfileResult:
         value = self._sender("Mimic.importProfile", to_wire(params) if params is not None else {})
         return from_wire(ImportProfileResult, value)
-    def pause(self, params: PauseParams | dict | None = None) -> PauseResult:
+    def pause(self, params: PauseParams | dict[str, JsonValue] | None = None) -> PauseResult:
         value = self._sender("Mimic.pause", to_wire(params) if params is not None else {})
         return from_wire(PauseResult, value)
-    def reset_profile_overrides(self, params: ResetProfileOverridesParams | dict) -> ResetProfileOverridesResult:
+    def reset_profile_overrides(self, params: ResetProfileOverridesParams | dict[str, JsonValue]) -> ResetProfileOverridesResult:
         value = self._sender("Mimic.resetProfileOverrides", to_wire(params) if params is not None else {})
         return from_wire(ResetProfileOverridesResult, value)
-    def resume(self, params: ResumeParams | dict | None = None) -> ResumeResult:
+    def resume(self, params: ResumeParams | dict[str, JsonValue] | None = None) -> ResumeResult:
         value = self._sender("Mimic.resume", to_wire(params) if params is not None else {})
         return from_wire(ResumeResult, value)
-    def set_media_profile(self, params: SetMediaProfileParams | dict) -> SetMediaProfileResult:
+    def set_media_profile(self, params: SetMediaProfileParams | dict[str, JsonValue]) -> SetMediaProfileResult:
         value = self._sender("Mimic.setMediaProfile", to_wire(params) if params is not None else {})
         return from_wire(SetMediaProfileResult, value)
-    def set_viewport(self, params: SetViewportParams | dict) -> SetViewportResult:
+    def set_viewport(self, params: SetViewportParams | dict[str, JsonValue]) -> SetViewportResult:
         value = self._sender("Mimic.setViewport", to_wire(params) if params is not None else {})
         return from_wire(SetViewportResult, value)
-    def start_trace(self, params: StartTraceParams | dict | None = None) -> StartTraceResult:
+    def start_trace(self, params: StartTraceParams | dict[str, JsonValue] | None = None) -> StartTraceResult:
         value = self._sender("Mimic.startTrace", to_wire(params) if params is not None else {})
         return from_wire(StartTraceResult, value)
-    def stop_trace(self, params: StopTraceParams | dict | None = None) -> StopTraceResult:
+    def stop_trace(self, params: StopTraceParams | dict[str, JsonValue] | None = None) -> StopTraceResult:
         value = self._sender("Mimic.stopTrace", to_wire(params) if params is not None else {})
         return from_wire(StopTraceResult, value)
-    def update_profile(self, params: UpdateProfileParams | dict) -> UpdateProfileResult:
+    def update_profile(self, params: UpdateProfileParams | dict[str, JsonValue]) -> UpdateProfileResult:
         value = self._sender("Mimic.updateProfile", to_wire(params) if params is not None else {})
         return from_wire(UpdateProfileResult, value)
-    def update_resource_policy(self, params: UpdateResourcePolicyParams | dict) -> UpdateResourcePolicyResult:
+    def update_resource_policy(self, params: UpdateResourcePolicyParams | dict[str, JsonValue]) -> UpdateResourcePolicyResult:
         value = self._sender("Mimic.updateResourcePolicy", to_wire(params) if params is not None else {})
         return from_wire(UpdateResourcePolicyResult, value)
-    def validate_media_profile(self, params: ValidateMediaProfileParams | dict) -> ValidateMediaProfileResult:
+    def validate_media_profile(self, params: ValidateMediaProfileParams | dict[str, JsonValue]) -> ValidateMediaProfileResult:
         value = self._sender("Mimic.validateMediaProfile", to_wire(params) if params is not None else {})
         return from_wire(ValidateMediaProfileResult, value)
-    def validate_resource_policy(self, params: ValidateResourcePolicyParams | dict) -> ValidateResourcePolicyResult:
+    def validate_resource_policy(self, params: ValidateResourcePolicyParams | dict[str, JsonValue]) -> ValidateResourcePolicyResult:
         value = self._sender("Mimic.validateResourcePolicy", to_wire(params) if params is not None else {})
         return from_wire(ValidateResourcePolicyResult, value)
 class AsyncMimicCommands:
     def __init__(self, sender):
         self._sender = sender
-    async def cancel_execution(self, params: CancelExecutionParams | dict | None = None) -> CancelExecutionResult:
+    async def cancel_execution(self, params: CancelExecutionParams | dict[str, JsonValue] | None = None) -> CancelExecutionResult:
         value = await self._sender("Mimic.cancelExecution", to_wire(params) if params is not None else {})
         return from_wire(CancelExecutionResult, value)
-    async def capture_snapshot(self, params: CaptureSnapshotParams | dict | None = None) -> CaptureSnapshotResult:
+    async def capture_snapshot(self, params: CaptureSnapshotParams | dict[str, JsonValue] | None = None) -> CaptureSnapshotResult:
         value = await self._sender("Mimic.captureSnapshot", to_wire(params) if params is not None else {})
         return from_wire(CaptureSnapshotResult, value)
-    async def clear_trace(self, params: ClearTraceParams | dict | None = None) -> ClearTraceResult:
+    async def clear_trace(self, params: ClearTraceParams | dict[str, JsonValue] | None = None) -> ClearTraceResult:
         value = await self._sender("Mimic.clearTrace", to_wire(params) if params is not None else {})
         return from_wire(ClearTraceResult, value)
-    async def configure_context(self, params: ConfigureContextParams | dict) -> ConfigureContextResult:
+    async def configure_context(self, params: ConfigureContextParams | dict[str, JsonValue]) -> ConfigureContextResult:
         value = await self._sender("Mimic.configureContext", to_wire(params) if params is not None else {})
         return from_wire(ConfigureContextResult, value)
-    async def create_context(self, params: CreateContextParams | dict | None = None) -> CreateContextResult:
+    async def create_context(self, params: CreateContextParams | dict[str, JsonValue] | None = None) -> CreateContextResult:
         value = await self._sender("Mimic.createContext", to_wire(params) if params is not None else {})
         return from_wire(CreateContextResult, value)
-    async def export_profile(self, params: ExportProfileParams | dict) -> ExportProfileResult:
+    async def export_profile(self, params: ExportProfileParams | dict[str, JsonValue]) -> ExportProfileResult:
         value = await self._sender("Mimic.exportProfile", to_wire(params) if params is not None else {})
         return from_wire(ExportProfileResult, value)
-    async def generate_profile(self, params: GenerateProfileParams | dict | None = None) -> GenerateProfileResult:
+    async def generate_profile(self, params: GenerateProfileParams | dict[str, JsonValue] | None = None) -> GenerateProfileResult:
         value = await self._sender("Mimic.generateProfile", to_wire(params) if params is not None else {})
         return from_wire(GenerateProfileResult, value)
-    async def get_compatibility_matrix(self, params: GetCompatibilityMatrixParams | dict | None = None) -> GetCompatibilityMatrixResult:
+    async def get_compatibility_matrix(self, params: GetCompatibilityMatrixParams | dict[str, JsonValue] | None = None) -> GetCompatibilityMatrixResult:
         value = await self._sender("Mimic.getCompatibilityMatrix", to_wire(params) if params is not None else {})
         return from_wire(GetCompatibilityMatrixResult, value)
-    async def get_diagnostics(self, params: GetDiagnosticsParams | dict | None = None) -> GetDiagnosticsResult:
+    async def get_diagnostics(self, params: GetDiagnosticsParams | dict[str, JsonValue] | None = None) -> GetDiagnosticsResult:
         value = await self._sender("Mimic.getDiagnostics", to_wire(params) if params is not None else {})
         return from_wire(GetDiagnosticsResult, value)
-    async def get_media_presets(self, params: GetMediaPresetsParams | dict | None = None) -> GetMediaPresetsResult:
+    async def get_media_presets(self, params: GetMediaPresetsParams | dict[str, JsonValue] | None = None) -> GetMediaPresetsResult:
         value = await self._sender("Mimic.getMediaPresets", to_wire(params) if params is not None else {})
         return from_wire(GetMediaPresetsResult, value)
-    async def get_media_profile(self, params: GetMediaProfileParams | dict | None = None) -> GetMediaProfileResult:
+    async def get_media_profile(self, params: GetMediaProfileParams | dict[str, JsonValue] | None = None) -> GetMediaProfileResult:
         value = await self._sender("Mimic.getMediaProfile", to_wire(params) if params is not None else {})
         return from_wire(GetMediaProfileResult, value)
-    async def get_media_sources(self, params: GetMediaSourcesParams | dict | None = None) -> GetMediaSourcesResult:
+    async def get_media_sources(self, params: GetMediaSourcesParams | dict[str, JsonValue] | None = None) -> GetMediaSourcesResult:
         value = await self._sender("Mimic.getMediaSources", to_wire(params) if params is not None else {})
         return from_wire(GetMediaSourcesResult, value)
-    async def get_profile(self, params: GetProfileParams | dict) -> GetProfileResult:
+    async def get_profile(self, params: GetProfileParams | dict[str, JsonValue]) -> GetProfileResult:
         value = await self._sender("Mimic.getProfile", to_wire(params) if params is not None else {})
         return from_wire(GetProfileResult, value)
-    async def get_profile_schema(self, params: GetProfileSchemaParams | dict | None = None) -> GetProfileSchemaResult:
+    async def get_profile_schema(self, params: GetProfileSchemaParams | dict[str, JsonValue] | None = None) -> GetProfileSchemaResult:
         value = await self._sender("Mimic.getProfileSchema", to_wire(params) if params is not None else {})
         return from_wire(GetProfileSchemaResult, value)
-    async def get_resource_policy(self, params: GetResourcePolicyParams | dict) -> GetResourcePolicyResult:
+    async def get_resource_policy(self, params: GetResourcePolicyParams | dict[str, JsonValue]) -> GetResourcePolicyResult:
         value = await self._sender("Mimic.getResourcePolicy", to_wire(params) if params is not None else {})
         return from_wire(GetResourcePolicyResult, value)
-    async def get_resource_policy_schema(self, params: GetResourcePolicySchemaParams | dict | None = None) -> GetResourcePolicySchemaResult:
+    async def get_resource_policy_schema(self, params: GetResourcePolicySchemaParams | dict[str, JsonValue] | None = None) -> GetResourcePolicySchemaResult:
         value = await self._sender("Mimic.getResourcePolicySchema", to_wire(params) if params is not None else {})
         return from_wire(GetResourcePolicySchemaResult, value)
-    async def get_resource_policy_stats(self, params: GetResourcePolicyStatsParams | dict) -> GetResourcePolicyStatsResult:
+    async def get_resource_policy_stats(self, params: GetResourcePolicyStatsParams | dict[str, JsonValue]) -> GetResourcePolicyStatsResult:
         value = await self._sender("Mimic.getResourcePolicyStats", to_wire(params) if params is not None else {})
         return from_wire(GetResourcePolicyStatsResult, value)
-    async def get_status(self, params: GetStatusParams | dict | None = None) -> GetStatusResult:
+    async def get_status(self, params: GetStatusParams | dict[str, JsonValue] | None = None) -> GetStatusResult:
         value = await self._sender("Mimic.getStatus", to_wire(params) if params is not None else {})
         return from_wire(GetStatusResult, value)
-    async def get_trace(self, params: GetTraceParams | dict | None = None) -> GetTraceResult:
+    async def get_trace(self, params: GetTraceParams | dict[str, JsonValue] | None = None) -> GetTraceResult:
         value = await self._sender("Mimic.getTrace", to_wire(params) if params is not None else {})
         return from_wire(GetTraceResult, value)
-    async def get_version(self, params: GetVersionParams | dict | None = None) -> GetVersionResult:
+    async def get_version(self, params: GetVersionParams | dict[str, JsonValue] | None = None) -> GetVersionResult:
         value = await self._sender("Mimic.getVersion", to_wire(params) if params is not None else {})
         return from_wire(GetVersionResult, value)
-    async def import_profile(self, params: ImportProfileParams | dict) -> ImportProfileResult:
+    async def import_profile(self, params: ImportProfileParams | dict[str, JsonValue]) -> ImportProfileResult:
         value = await self._sender("Mimic.importProfile", to_wire(params) if params is not None else {})
         return from_wire(ImportProfileResult, value)
-    async def pause(self, params: PauseParams | dict | None = None) -> PauseResult:
+    async def pause(self, params: PauseParams | dict[str, JsonValue] | None = None) -> PauseResult:
         value = await self._sender("Mimic.pause", to_wire(params) if params is not None else {})
         return from_wire(PauseResult, value)
-    async def reset_profile_overrides(self, params: ResetProfileOverridesParams | dict) -> ResetProfileOverridesResult:
+    async def reset_profile_overrides(self, params: ResetProfileOverridesParams | dict[str, JsonValue]) -> ResetProfileOverridesResult:
         value = await self._sender("Mimic.resetProfileOverrides", to_wire(params) if params is not None else {})
         return from_wire(ResetProfileOverridesResult, value)
-    async def resume(self, params: ResumeParams | dict | None = None) -> ResumeResult:
+    async def resume(self, params: ResumeParams | dict[str, JsonValue] | None = None) -> ResumeResult:
         value = await self._sender("Mimic.resume", to_wire(params) if params is not None else {})
         return from_wire(ResumeResult, value)
-    async def set_media_profile(self, params: SetMediaProfileParams | dict) -> SetMediaProfileResult:
+    async def set_media_profile(self, params: SetMediaProfileParams | dict[str, JsonValue]) -> SetMediaProfileResult:
         value = await self._sender("Mimic.setMediaProfile", to_wire(params) if params is not None else {})
         return from_wire(SetMediaProfileResult, value)
-    async def set_viewport(self, params: SetViewportParams | dict) -> SetViewportResult:
+    async def set_viewport(self, params: SetViewportParams | dict[str, JsonValue]) -> SetViewportResult:
         value = await self._sender("Mimic.setViewport", to_wire(params) if params is not None else {})
         return from_wire(SetViewportResult, value)
-    async def start_trace(self, params: StartTraceParams | dict | None = None) -> StartTraceResult:
+    async def start_trace(self, params: StartTraceParams | dict[str, JsonValue] | None = None) -> StartTraceResult:
         value = await self._sender("Mimic.startTrace", to_wire(params) if params is not None else {})
         return from_wire(StartTraceResult, value)
-    async def stop_trace(self, params: StopTraceParams | dict | None = None) -> StopTraceResult:
+    async def stop_trace(self, params: StopTraceParams | dict[str, JsonValue] | None = None) -> StopTraceResult:
         value = await self._sender("Mimic.stopTrace", to_wire(params) if params is not None else {})
         return from_wire(StopTraceResult, value)
-    async def update_profile(self, params: UpdateProfileParams | dict) -> UpdateProfileResult:
+    async def update_profile(self, params: UpdateProfileParams | dict[str, JsonValue]) -> UpdateProfileResult:
         value = await self._sender("Mimic.updateProfile", to_wire(params) if params is not None else {})
         return from_wire(UpdateProfileResult, value)
-    async def update_resource_policy(self, params: UpdateResourcePolicyParams | dict) -> UpdateResourcePolicyResult:
+    async def update_resource_policy(self, params: UpdateResourcePolicyParams | dict[str, JsonValue]) -> UpdateResourcePolicyResult:
         value = await self._sender("Mimic.updateResourcePolicy", to_wire(params) if params is not None else {})
         return from_wire(UpdateResourcePolicyResult, value)
-    async def validate_media_profile(self, params: ValidateMediaProfileParams | dict) -> ValidateMediaProfileResult:
+    async def validate_media_profile(self, params: ValidateMediaProfileParams | dict[str, JsonValue]) -> ValidateMediaProfileResult:
         value = await self._sender("Mimic.validateMediaProfile", to_wire(params) if params is not None else {})
         return from_wire(ValidateMediaProfileResult, value)
-    async def validate_resource_policy(self, params: ValidateResourcePolicyParams | dict) -> ValidateResourcePolicyResult:
+    async def validate_resource_policy(self, params: ValidateResourcePolicyParams | dict[str, JsonValue]) -> ValidateResourcePolicyResult:
         value = await self._sender("Mimic.validateResourcePolicy", to_wire(params) if params is not None else {})
         return from_wire(ValidateResourcePolicyResult, value)

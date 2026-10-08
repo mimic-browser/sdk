@@ -181,7 +181,7 @@ def python():
         for c in CONTRACT.commands:
             name=pascal(c['name'].split('.')[1]); params=DEFS[name+'Params']
             optional = not params.get('required') and 'oneOf' not in params
-            signature=f'params: {name}Params | dict' + (' | None = None' if optional else '')
+            signature=f'params: {name}Params | dict[str, JsonValue]' + (' | None = None' if optional else '')
             lines += [f'    {"async " if asynchronous else ""}def {snake(c["name"].split(".")[1])}(self, {signature}) -> {name}Result:',f'        value = {"await " if asynchronous else ""}self._sender("{c["name"]}", to_wire(params) if params is not None else {{}})',f'        return from_wire({name}Result, value)']
     return '\n'.join(lines)+'\n'
 
