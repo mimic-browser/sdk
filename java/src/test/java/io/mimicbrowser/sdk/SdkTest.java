@@ -31,11 +31,11 @@ class SdkTest {
             assertThrows(SdkException.class, () -> RuntimeManager.normalizeVersion(invalid));
         var lock = RuntimeManager.defaultLock();
         RuntimeManager.validateLock(lock, null);
-        var corrupt = lock.deepCopy(); corrupt.getAsJsonObject("manifest").addProperty("version", "v0.2.3");
+        var corrupt = lock.deepCopy(); corrupt.getAsJsonObject("manifest").addProperty("version", "v999.0.0");
         assertThrows(SdkException.class, () -> RuntimeManager.validateLock(corrupt, null));
         var mismatch = lock.deepCopy(); mismatch.addProperty("manifestJson", "{}");
         assertThrows(SdkException.class, () -> RuntimeManager.validateLock(mismatch, null));
-        assertThrows(SdkException.class, () -> RuntimeManager.validateLock(lock, "v0.2.3"));
+        assertThrows(SdkException.class, () -> RuntimeManager.validateLock(lock, "v999.0.0"));
     }
     @Test void archiveTraversalRejected() throws Exception {
         var archive = temporary.resolve("unsafe.zip");
@@ -58,7 +58,7 @@ class SdkTest {
     }
     @Test void offlineMissingAndVersionLockConflict() throws Exception {
         var lockPath = temporary.resolve("runtime-lock.json"); Files.writeString(lockPath, RuntimeManager.defaultLock().toString());
-        var conflict = new RuntimeOptions().version("0.2.3").lockFile(lockPath).allowDownload(false);
+        var conflict = new RuntimeOptions().version("999.0.0").lockFile(lockPath).allowDownload(false);
         assertEquals("configuration", assertThrows(SdkException.class, () -> new RuntimeManager().resolveLock(conflict)).kind());
         var missing = new RuntimeOptions().runtimeDirectory(temporary).allowDownload(false);
         assertEquals("offline", assertThrows(SdkException.class, () -> new RuntimeManager().install(missing)).kind());

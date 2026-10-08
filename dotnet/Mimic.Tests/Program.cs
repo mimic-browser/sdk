@@ -29,7 +29,7 @@ Check(RuntimeManager.NormalizeVersion("0.2.2") == "v0.2.2", "Exact pin normaliza
 foreach (var invalid in new[] { "latest", "^0.2.2", "v01.2.2", "0.2", "../../bad", "0.2.2+meta" }) Fails(() => RuntimeManager.NormalizeVersion(invalid), "Accepted unsafe version " + invalid);
 var runtimeLock = RuntimeManager.DefaultLock();
 RuntimeManager.ValidateLock(runtimeLock);
-var corrupt = runtimeLock.DeepClone().AsObject(); corrupt["manifest"]!["version"] = "v0.2.3";
+var corrupt = runtimeLock.DeepClone().AsObject(); corrupt["manifest"]!["version"] = "v999.0.0";
 Fails(() => RuntimeManager.ValidateLock(corrupt), "Accepted mismatched manifest");
 corrupt = runtimeLock.DeepClone().AsObject(); corrupt["manifestJson"] = "{}";
 Fails(() => RuntimeManager.ValidateLock(corrupt), "Accepted corrupt manifest bytes");
@@ -41,7 +41,7 @@ try
     Fails(() => RuntimeManager.ExtractArchive(archive, Path.Combine(temporary, "tree"), "root", true), "Accepted path traversal archive");
     Check(!File.Exists(Path.Combine(temporary, "escape")), "Archive escaped extraction");
     var lockPath = Path.Combine(temporary, "runtime-lock.json"); await File.WriteAllTextAsync(lockPath, runtimeLock.ToJsonString());
-    try { await new RuntimeManager().ResolveLockAsync(new() { Version = "0.2.3", LockFile = lockPath, AllowDownload = false }); throw new Exception("Accepted conflicting explicit lock"); }
+    try { await new RuntimeManager().ResolveLockAsync(new() { Version = "999.0.0", LockFile = lockPath, AllowDownload = false }); throw new Exception("Accepted conflicting explicit lock"); }
     catch (Mimic.Sdk.RuntimeException error) { Check(error.Kind == "configuration", "Conflict error kind"); }
     try { await new RuntimeManager().InstallAsync(new() { RuntimeDirectory = temporary, AllowDownload = false }); throw new Exception("Offline install unexpectedly worked"); }
     catch (Mimic.Sdk.RuntimeException error) { Check(error.Kind == "offline", "Offline error kind"); }

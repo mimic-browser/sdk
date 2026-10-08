@@ -39,7 +39,7 @@ check(RuntimeManager::normalizeVersion('0.2.2') === 'v0.2.2', 'Version normaliza
 foreach (['latest', '^0.2.2', 'v01.2.2', '0.2', '../../escape', '0.2.2+meta'] as $invalid) { fails(fn() => RuntimeManager::normalizeVersion($invalid), 'configuration'); }
 $lock = RuntimeManager::defaultLock(); RuntimeManager::validateLock($lock);
 $bad = clone $lock; $bad->manifestJson = '{}'; fails(fn() => RuntimeManager::validateLock($bad), 'integrity');
-fails(fn() => RuntimeManager::validateLock($lock, 'v0.2.3'), 'configuration');
+fails(fn() => RuntimeManager::validateLock($lock, 'v999.0.0'), 'configuration');
 $temporary = sys_get_temp_dir() . '/mimic-php-unit-' . RuntimeManager::uuid(); RuntimeManager::mkdir($temporary);
 try {
     $zip = new ZipArchive(); $archive = "$temporary/unsafe.zip"; $zip->open($archive, ZipArchive::CREATE); $zip->addFromString('../escape', 'bad'); $zip->close();
@@ -48,7 +48,7 @@ try {
     $manager = new RuntimeManager();
     fails(fn() => $manager->install(new RuntimeOptions(runtimeDirectory: $temporary, allowDownload: false)), 'offline');
     $lockPath = "$temporary/lock.json"; RuntimeManager::writeJson($lockPath, $lock);
-    fails(fn() => $manager->resolveLock(new RuntimeOptions(version: '0.2.3', lockFile: $lockPath, allowDownload: false)), 'configuration');
+    fails(fn() => $manager->resolveLock(new RuntimeOptions(version: '999.0.0', lockFile: $lockPath, allowDownload: false)), 'configuration');
     file_put_contents("$temporary/mimic", 'fixture');
     $explicit = $manager->install(new RuntimeOptions(version: '0.9.9', executablePath: "$temporary/mimic", allowDownload: false));
     check($explicit->release === 'v0.9.9', 'Explicit executable resolved a release online');
