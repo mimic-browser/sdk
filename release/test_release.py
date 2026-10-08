@@ -142,7 +142,14 @@ class ReleaseTests(unittest.TestCase):
         from ci import pyppeteer_python
         _, commands = qualify.commands("python", "runtime")
         native = [command for command in commands if command[0] == str(pyppeteer_python())]
-        self.assertEqual([command[1:] for command in native], [["tests/pyppeteer_integration.py"], ["tests/bridge.py", "--pyppeteer"]])
+        self.assertEqual(
+            [command[1:] for command in native],
+            [
+                ["tests/pyppeteer_integration.py"],
+                ["tests/page_lifecycle.py", "Pyppeteer"],
+                ["tests/bridge.py", "--pyppeteer"],
+            ],
+        )
 
     def test_registry_resume_retains_verified_receipt_and_rejects_changed_local_bytes(self):
         with tempfile.TemporaryDirectory() as directory:
