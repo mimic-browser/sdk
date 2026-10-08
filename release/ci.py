@@ -87,7 +87,7 @@ def main():
         key = os.environ.get("MAVEN_SIGNING_KEY")
         if not key: raise release.ReleaseError("Selected Maven publication requires the dedicated MAVEN_SIGNING_KEY secret")
         home = release.ROOT / ".build/sdk-gnupg"; home.mkdir(mode=0o700, parents=True, exist_ok=True)
-        result = subprocess.run(["gpg", "--homedir", str(home), "--batch", "--no-tty", "--import"], input=key, text=True)
+        result = subprocess.run(["gpg", "--homedir", str(home), "--batch", "--no-tty", "--import"], input=key, text=True, capture_output=True)
         if result.returncode: raise release.ReleaseError("Cannot import dedicated noninteractive signing key")
         with open(os.environ["GITHUB_ENV"], "a", encoding="utf-8") as environment: environment.write("GNUPGHOME=" + str(home) + "\n")
     elif args.operation == "runtime": runtime(args.url, args.archive_sha256, args.binary_sha256)

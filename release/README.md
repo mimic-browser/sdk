@@ -89,10 +89,15 @@ receipts; it first recovers already uploaded matching artifacts from the registr
 A registry's temporary indexing delay leaves the release incomplete. A byte
 mismatch is an error, never permission to overwrite or bump a version.
 
-Preserve `.build/release` and publication state as CI artifacts. Resume in the
-same source checkout with the retained artifacts/receipts and toolchain paths.
-Native artifact paths are absolute and must be remapped consistently when moving
-the receipt directory; never silently rebuild a partially published release.
+The workflow retains `.build/release`, including its frozen `plan.json`, native
+packages and publication receipts. To resume, dispatch `sdk-release.yml` at the
+same Git commit and with the same plan, setting `resume_run` to the completed
+earlier run ID. The workflow verifies the repository, workflow and source commit
+before downloading that run's artifact, then checks plan identity, package input
+hashes, artifact bytes and retained state. Partial builds continue from their
+verified artifacts. Native artifact paths must still resolve in the same hosted
+checkout layout; resume never rewrites their identities or silently rebuilds a
+partially published release.
 
 | Registry      | Required CI configuration                                                                                                     | Publication identity                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
@@ -120,7 +125,11 @@ Configure registry credentials, noninteractive signing and mirror access before
 enabling publication. The publisher requires those configurations and a
 compatible officially released default runtime.
 Maven Central requires verification of the `io.github.mimic-browser` namespace
-through the organization's GitHub ownership. Packagist requires initial submission of the PHP mirror
+through the organization's GitHub ownership. Before Maven upload, CI verifies a
+signature from the dedicated key against an independently retrieved public key.
+If the public key is absent, CI distributes only its public material through the
+Ubuntu keyserver and verifies it again. A valid signing subkey is supported.
+Packagist requires initial submission of the PHP mirror
 and a configured webhook before its first version can be indexed.
 Central bundle handling follows the official [Publisher API](https://central.sonatype.org/publish/publish-portal-api/)
 and [artifact requirements](https://central.sonatype.org/publish/requirements/).

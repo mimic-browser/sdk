@@ -1,0 +1,16 @@
+{
+  "kind": "sdk-release-plan",
+  "createdAt": "2026-10-08T10:32:56.683805+00:00",
+  "sdkRevision": "519a16c77cd41535183a0df6c796d19ec1460a7b",
+  "schemaSha256": "ea792e2f194bf831f5494bedd65a7112881e45695b3af3d504367c317684e7a6",
+  "runtimeLockSha256": "ee2ad99a4062155c2ee5c0334a9c6c6a11dae295ba6592705705f99e692d5672",
+  "packages": {
+    "php": {
+      "name": "mimic-browser/sdk",
+      "version": "0.1.0",
+      "registry": "packagist",
+      "inputDigest": "0837b8b5a45d04744b419040b46fa970f71c529a2d944635cf6af7c9b58ef732",
+      "requires": []
+    }
+  }
+}

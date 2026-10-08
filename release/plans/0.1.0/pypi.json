@@ -1,0 +1,16 @@
+{
+  "kind": "sdk-release-plan",
+  "createdAt": "2026-10-08T10:32:55.814929+00:00",
+  "sdkRevision": "519a16c77cd41535183a0df6c796d19ec1460a7b",
+  "schemaSha256": "ea792e2f194bf831f5494bedd65a7112881e45695b3af3d504367c317684e7a6",
+  "runtimeLockSha256": "ee2ad99a4062155c2ee5c0334a9c6c6a11dae295ba6592705705f99e692d5672",
+  "packages": {
+    "python": {
+      "name": "mimic-browser",
+      "version": "0.1.0",
+      "registry": "pypi",
+      "inputDigest": "f3078d5430e32cd069f110eb2f4f8be37322a6a980e0725e287bf7be1d5fb046",
+      "requires": []
+    }
+  }
+}

@@ -16,6 +16,7 @@ import zipfile
 
 import release
 import mirror_auth
+import maven_signing
 
 
 def empty_mirror_tree(root, workspace):
@@ -50,6 +51,9 @@ def maven(package, progress, save):
             raise release.ReleaseError("Prior upload outcome is unknown: recover its Central deployment ID into the receipt before retrying")
         with tempfile.TemporaryDirectory(prefix="mimic-central-") as temporary:
             root = Path(temporary)
+            authority = maven_signing.signing_fingerprint(maven_signing.run(
+                ["--batch", "--no-tty", "--with-colons", "--fingerprint", "--list-secret-keys"],
+                "Cannot inspect the dedicated Maven signing key"))
             group, name = package["name"].split(":")
             prefix = group.replace(".", "/") + "/" + name + "/" + package["version"] + "/"
             payload = io.BytesIO()
@@ -57,8 +61,8 @@ def maven(package, progress, save):
                 for item in package["artifacts"]:
                     path = Path(item["file"])
                     signature = root / (path.name + ".asc")
-                    command = ["gpg", "--batch", "--yes", "--no-tty", "--pinentry-mode", "loopback", "--passphrase-fd", "0", "--armor", "--detach-sign", "--output", str(signature), str(path)]
-                    result = subprocess.run(command, input=os.getenv("MAVEN_SIGNING_PASSPHRASE", "") + "\n", text=True)
+                    command = ["gpg", "--batch", "--yes", "--no-tty", "--pinentry-mode", "loopback", "--passphrase-fd", "0", "--local-user", authority, "--armor", "--detach-sign", "--output", str(signature), str(path)]
+                    result = subprocess.run(command, input=os.getenv("MAVEN_SIGNING_PASSPHRASE", "") + "\n", text=True, capture_output=True)
                     if result.returncode:
                         raise release.ReleaseError("Noninteractive Maven artifact signing failed")
                     data = path.read_bytes()
