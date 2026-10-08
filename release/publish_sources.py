@@ -29,11 +29,20 @@ def empty_mirror_tree(root, workspace):
         else: shutil.rmtree(path)
 
 
+def maven_token(environment):
+    """Central Portal expects the base64-encoded Portal token pair as bearer auth."""
+    if environment.get("MAVEN_CENTRAL_TOKEN"):
+        return environment["MAVEN_CENTRAL_TOKEN"]
+    username = environment.get("MAVEN_CENTRAL_USERNAME")
+    password = environment.get("MAVEN_CENTRAL_PASSWORD")
+    if not username or not password:
+        raise release.ReleaseError("Maven publication requires Central Portal username and password tokens")
+    return base64.b64encode((username + ":" + password).encode()).decode()
+
+
 def maven(package, progress, save):
     """Use Central's supported bundle API; retain deployment ID before status checks."""
-    token = os.environ.get("MAVEN_CENTRAL_TOKEN")
-    if not token:
-        raise release.ReleaseError("MAVEN_CENTRAL_TOKEN must contain the Portal's base64 username:password token")
+    token = maven_token(os.environ)
     headers = {"Authorization":"Bearer " + token, "User-Agent":"Mimic-SDK-Release/0.1"}
     if not progress.get("deploymentId"):
         if progress.get("state") == "uploading":

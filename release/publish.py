@@ -24,13 +24,15 @@ def check_credentials(packages, environment):
         "nuget": ("NUGET_API_KEY",),
         "crates": ("CARGO_REGISTRY_TOKEN",),
         "rubygems": ("GEM_HOST_API_KEY",),
-        "maven": ("MAVEN_CENTRAL_TOKEN", "GNUPGHOME"),
+        "maven": ("GNUPGHOME",),
         "packagist": ("PHP_MIRROR_TOKEN",),
     }
     missing = set()
     for package in packages.values():
         registry = package["registry"]
         missing.update(name for name in required.get(registry, ()) if not environment.get(name))
+        if registry == "maven":
+            publish_sources.maven_token(environment)
         if registry == "pypi":
             names = (("TWINE_USERNAME", "TWINE_PASSWORD") if environment.get("TWINE_PASSWORD")
                      else ("ACTIONS_ID_TOKEN_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"))
