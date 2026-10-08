@@ -1,0 +1,7 @@
+<Project>
+  <!-- Keep release symbols useful without embedding the builder's checkout path. -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Release' Or '$(ContinuousIntegrationBuild)' == 'true'">
+    <Deterministic>true</Deterministic>
+    <PathMap>$(MSBuildThisFileDirectory)=/_/dotnet/</PathMap>
+  </PropertyGroup>
+</Project>

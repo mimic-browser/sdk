@@ -75,6 +75,21 @@ class ReleaseTests(unittest.TestCase):
                 with self.assertRaisesRegex(release.ReleaseError, "Private file"):
                     release.inspect_archive(path, "npm")
 
+    def test_embedded_checkout_paths_are_rejected_without_stripping_symbols(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "package.nupkg"
+            for encoding in ("utf-8", "utf-16-le"):
+                with zipfile.ZipFile(path, "w") as archive:
+                    archive.writestr("lib/net8.0/Example.dll", b"RSDS" + (str(release.ROOT) + "/obj/Example.pdb").encode(encoding))
+                with self.assertRaisesRegex(release.ReleaseError, "Local checkout path"):
+                    release.inspect_archive(path, "nuget")
+            with zipfile.ZipFile(path, "w") as archive:
+                archive.writestr("lib/net8.0/Example.dll", b"RSDS/_/dotnet/Example/obj/Example.pdb")
+            release.inspect_archive(path, "nuget")
+        packages = release.catalog()
+        for key in ("dotnet-core", "dotnet-playwright", "dotnet-puppeteer"):
+            self.assertIn(release.ROOT / "dotnet/Directory.Build.props", release.source_files(packages[key]))
+
     def test_publication_preflights_whole_selected_set_without_secret_values(self):
         import publish
         packages = {"node": {"registry": "npm"}, "python": {"registry": "pypi"}, "core": {"registry": "nuget"}}

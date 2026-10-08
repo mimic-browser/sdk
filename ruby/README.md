@@ -34,6 +34,8 @@ The returned browser, context and page are actual Ferrum objects. `connect`
 attaches without installing or starting a runtime; closing it preserves the
 external process and other clients. `launch` owns startup and bounded cleanup.
 All launches are headless and bind an OS-assigned loopback port.
+Ferrum uses a dedicated WebSocket for each Page. A reverse proxy must forward
+both the browser endpoint and `/devtools/page/*` on the same origin.
 
 `new_context(profile:, media:, resource_policy:, proxy:)` applies Mimic settings
 before returning the native context. A managed profile uses the runtime's

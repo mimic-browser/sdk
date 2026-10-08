@@ -227,6 +227,9 @@ def inspect_archive(path: Path, registry: str):
             raise ReleaseError(f"Unsafe package entry: {name}")
         if any(part in {".build", ".tools", ".git", "internal-notes", ".env", ".npmrc", ".pypirc", "credentials.toml"} for part in normalized.split("/")):
             raise ReleaseError(f"Private file in package: {name}")
+        checkout_paths = {str(ROOT), ROOT.as_posix(), str(ROOT).replace("\\", "/")}
+        if any(path.encode(encoding) in data for path in checkout_paths for encoding in ("utf-8", "utf-16-le")):
+            raise ReleaseError(f"Local checkout path embedded in package: {name}")
         if normalized in files:
             raise ReleaseError(f"Duplicate package entry: {name}")
         files[normalized] = sha(data)

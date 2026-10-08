@@ -21,7 +21,12 @@ module MimicSDK
         @mimic = Client.new(@transport)
         version = @mimic.get_version
         raise RuntimeError, 'Endpoint is not Mimic' if version.version.to_s.empty? || version.chrome_version.to_s.empty?
-        @browser = ::Ferrum::Browser.new(ws_url: @transport.url, timeout: timeout, process_timeout: timeout)
+        # Ferrum resolves target creation before its flattened session may be
+        # attached. A dedicated target socket binds each Page immediately and
+        # avoids caching a SessionClient with a missing session ID.
+        @browser = ::Ferrum::Browser.new(
+          ws_url: @transport.url, timeout: timeout, process_timeout: timeout, flatten: false
+        )
       rescue StandardError
         close
         raise
