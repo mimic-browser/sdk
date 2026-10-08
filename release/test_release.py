@@ -48,6 +48,40 @@ class ReleaseTests(unittest.TestCase):
             with self.assertRaisesRegex(release.ReleaseError, "version update"):
                 release.make_plan(["php"], plan)
 
+    def test_composer_archive_projects_version_only_into_staging(self):
+        package = release.catalog()["php"]
+        original = (release.ROOT / "php/composer.json").read_bytes()
+        def composer(command, directory):
+            if command[1] != "archive": return
+            self.assertNotEqual(directory, release.ROOT / "php")
+            metadata = release.read(directory / "composer.json")
+            self.assertEqual(metadata["version"], package["version"])
+            output = Path(command[command.index("--dir") + 1]) / "mimic-browser-sdk-0.1.0.zip"
+            with zipfile.ZipFile(output, "w") as archive:
+                archive.writestr("composer.json", (directory / "composer.json").read_bytes())
+        with tempfile.TemporaryDirectory() as directory, patch.object(release, "execute", side_effect=composer):
+            release.pack_package("php", package, Path(directory))
+        self.assertEqual((release.ROOT / "php/composer.json").read_bytes(), original)
+        self.assertNotIn("version", json.loads(original))
+
+    def test_composer_registry_verification_allows_only_selected_version_projection(self):
+        with tempfile.TemporaryDirectory() as directory:
+            local, remote = Path(directory) / "local.zip", Path(directory) / "remote.zip"
+            def archive(path, prefix, metadata, source=b"same"):
+                with zipfile.ZipFile(path, "w") as output:
+                    output.writestr(prefix + "composer.json", json.dumps(metadata))
+                    output.writestr(prefix + "src/Client.php", source)
+            metadata = {"name":"mimic-browser/sdk", "require":{"php":"^8.2"}}
+            archive(local, "", {**metadata, "version":"0.1.0"})
+            archive(remote, "mirror-tag/", metadata)
+            expected = release.normalized_zip(local, False, "0.1.0")
+            self.assertEqual(expected, release.normalized_zip(remote, True, "0.1.0"))
+            archive(remote, "mirror-tag/", {**metadata, "version":"0.2.0"})
+            with self.assertRaisesRegex(release.ReleaseError, "version differs"):
+                release.normalized_zip(remote, True, "0.1.0")
+            archive(remote, "mirror-tag/", metadata, b"changed")
+            self.assertNotEqual(expected, release.normalized_zip(remote, True, "0.1.0"))
+
     def test_changed_inputs_or_lock_invalidate_plan(self):
         plan = release.make_plan(["php"])
         plan["packages"]["php"]["inputDigest"] = "changed"

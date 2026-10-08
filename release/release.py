@@ -288,7 +288,19 @@ def pack_package(key, package, output):
         execute(["gem", "build", next(directory.glob("*.gemspec")), "--output", destination / f"{package['name']}-{package['version']}.gem"], directory)
     elif registry == "packagist":
         execute(["composer", "validate", "--no-interaction"], directory)
-        execute(["composer", "archive", "--format=zip", "--dir", destination, "--no-interaction"], directory)
+        # A standalone Composer artifact has no Git tag from which to infer its
+        # version. Project the selected version into a private staging copy;
+        # the source repository and Packagist mirror stay tag-versioned.
+        with tempfile.TemporaryDirectory(prefix="mimic-composer-") as temporary:
+            staged = Path(temporary)
+            for source in source_files(package):
+                target = staged / source.relative_to(directory)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source, target)
+            metadata = read(staged / "composer.json")
+            metadata["version"] = package["version"]
+            write(staged / "composer.json", metadata)
+            execute(["composer", "archive", "--format=zip", "--dir", destination, "--no-interaction"], staged)
     elif registry == "go":
         execute(["go", "list", "-m"], directory)
         prefix = package["name"] + "@v" + package["version"] + "/"
@@ -405,7 +417,7 @@ def verify_registry(build_receipt, state_path):
                     path.write_bytes(data)
                     remote = inspect_archive(path, package["registry"])
                     if package["registry"] == "packagist":
-                        if normalized_zip(Path(item["file"]), False) != normalized_zip(path, True):
+                        if normalized_zip(Path(item["file"]), False, package["version"]) != normalized_zip(path, True, package["version"]):
                             raise ReleaseError(f"Registry source contents differ: {key}")
                     elif remote["contentSha256"] != item["contentSha256"]:
                         raise ReleaseError(f"Registry module contents differ: {key}")
@@ -417,9 +429,25 @@ def verify_registry(build_receipt, state_path):
     return state
 
 
-def normalized_zip(path, strip_prefix):
+def composer_source_metadata(data, version):
+    metadata = json.loads(data)
+    declared = metadata.pop("version", None)
+    if declared is not None and declared != version:
+        raise ReleaseError("Composer artifact version differs from selected release")
+    return json.dumps(metadata, sort_keys=True, separators=(",", ":")).encode()
+
+
+def normalized_zip(path, strip_prefix, composer_version=None):
     with zipfile.ZipFile(path) as archive:
-        return {(entry.filename.split("/", 1)[1] if strip_prefix else entry.filename):sha(archive.read(entry)) for entry in archive.infolist() if not entry.is_dir()}
+        files = {}
+        for entry in archive.infolist():
+            if entry.is_dir(): continue
+            name = entry.filename.split("/", 1)[1] if strip_prefix else entry.filename
+            data = archive.read(entry)
+            if composer_version is not None and name == "composer.json":
+                data = composer_source_metadata(data, composer_version)
+            files[name] = sha(data)
+        return files
 
 
 def publication_handoff(plan, receipt, qualifications):

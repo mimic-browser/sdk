@@ -122,6 +122,13 @@ def php(package, source_revision, progress, save):
                     path = root / entry.filename
                     path.parent.mkdir(parents=True, exist_ok=True)
                     path.write_bytes(source.read(entry))
+        # The standalone ZIP needs a version, whereas the mirrored source gets
+        # its version from the immutable tag. Preserve the exact source metadata.
+        canonical = (release.ROOT / "php/composer.json").read_bytes()
+        packaged = (root / "composer.json").read_bytes()
+        if release.composer_source_metadata(packaged, package["version"]) != release.composer_source_metadata(canonical, package["version"]):
+            raise release.ReleaseError("Composer artifact metadata differs from selected source")
+        (root / "composer.json").write_bytes(canonical)
         git(["add", "--all"], root)
         git(["-c", "user.name=Mimic SDK Release", "-c", "user.email=releases@mimic.boo", "commit", "-m", f"release: PHP {package['version']} from SDK {source_revision}"], root)
         progress["mirrorCommit"] = git(["rev-parse", "HEAD"], root, capture=True)
