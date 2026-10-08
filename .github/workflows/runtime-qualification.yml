@@ -46,4 +46,6 @@ jobs:
         with:
           name: runtime-compatibility-evidence
           path: .build/*qualification*.json
+          include-hidden-files: true
+          if-no-files-found: error
       # Deliberately no publication credentials, package-version edits, lock updates or publish invocation.
