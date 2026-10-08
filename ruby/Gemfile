@@ -1,4 +1,4 @@
 source 'https://rubygems.org'
 gemspec
-gem 'ferrum', '~> 0.18'
+gem 'ferrum', '= 0.18.0'
 gem 'minitest', '>= 5', '< 7'

@@ -4,6 +4,8 @@ node_modules/
 __pycache__/
 *.pyc
 .venv/
+python/build/
+python/.pytest_cache/
 dotnet/**/bin/
 examples/dotnet/**/bin/
 obj/
@@ -11,6 +13,7 @@ target/
 vendor/
 .bundle/
 *.gem
+ruby/Gemfile.lock
 dist/
 *.egg-info/
 .DS_Store
