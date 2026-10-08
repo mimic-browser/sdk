@@ -1,0 +1,34 @@
+{
+  "kind": "sdk-release-plan",
+  "createdAt": "2026-10-08T13:21:04.450980+00:00",
+  "sdkRevision": "107e4f60fb1f05b650146da1f41b10d6a80700bf",
+  "schemaSha256": "ea792e2f194bf831f5494bedd65a7112881e45695b3af3d504367c317684e7a6",
+  "runtimeLockSha256": "cb1bc54297b102a30c3a4526004180a48d770a912e1ab41e40f3607ba605ae80",
+  "packages": {
+    "dotnet-core": {
+      "name": "mimic-browser",
+      "version": "0.1.1",
+      "registry": "nuget",
+      "inputDigest": "df46d353d113f0a8ff71bbcb08d38fb61a6d9169273a9456aa2f9405585947e6",
+      "requires": []
+    },
+    "dotnet-playwright": {
+      "name": "mimic-browser.Playwright",
+      "version": "0.1.1",
+      "registry": "nuget",
+      "inputDigest": "8ead083b488e03542d716ef3393cfad6d24caa8211036cb1efb548a4446a10f7",
+      "requires": [
+        "dotnet-core"
+      ]
+    },
+    "dotnet-puppeteer": {
+      "name": "mimic-browser.PuppeteerSharp",
+      "version": "0.1.1",
+      "registry": "nuget",
+      "inputDigest": "d1a788ec14bd0b6bc318c806a9c4415b0c7a685ad15a578b2f2f00998f217b1b",
+      "requires": [
+        "dotnet-core"
+      ]
+    }
+  }
+}

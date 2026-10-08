@@ -1,0 +1,83 @@
+{
+  "kind": "sdk-release-plan",
+  "createdAt": "2026-10-08T13:21:04.765803+00:00",
+  "sdkRevision": "107e4f60fb1f05b650146da1f41b10d6a80700bf",
+  "schemaSha256": "ea792e2f194bf831f5494bedd65a7112881e45695b3af3d504367c317684e7a6",
+  "runtimeLockSha256": "cb1bc54297b102a30c3a4526004180a48d770a912e1ab41e40f3607ba605ae80",
+  "packages": {
+    "node": {
+      "name": "mimic-browser",
+      "version": "0.1.1",
+      "registry": "npm",
+      "inputDigest": "b1ad25b0b157755b8ca0b51740040c0015031dec6855ec294f6870bd1809be5a",
+      "requires": []
+    },
+    "python": {
+      "name": "mimic-browser",
+      "version": "0.1.1",
+      "registry": "pypi",
+      "inputDigest": "0c942bf0ffdf6816ff1df4add7319eeb30270baeb2cc2d1bac0ca20affa497fb",
+      "requires": []
+    },
+    "dotnet-core": {
+      "name": "mimic-browser",
+      "version": "0.1.1",
+      "registry": "nuget",
+      "inputDigest": "df46d353d113f0a8ff71bbcb08d38fb61a6d9169273a9456aa2f9405585947e6",
+      "requires": []
+    },
+    "dotnet-playwright": {
+      "name": "mimic-browser.Playwright",
+      "version": "0.1.1",
+      "registry": "nuget",
+      "inputDigest": "8ead083b488e03542d716ef3393cfad6d24caa8211036cb1efb548a4446a10f7",
+      "requires": [
+        "dotnet-core"
+      ]
+    },
+    "dotnet-puppeteer": {
+      "name": "mimic-browser.PuppeteerSharp",
+      "version": "0.1.1",
+      "registry": "nuget",
+      "inputDigest": "d1a788ec14bd0b6bc318c806a9c4415b0c7a685ad15a578b2f2f00998f217b1b",
+      "requires": [
+        "dotnet-core"
+      ]
+    },
+    "java": {
+      "name": "boo.mimic:mimic-browser",
+      "version": "0.1.1",
+      "registry": "maven",
+      "inputDigest": "3c7d8e6330406b3c0db43a303ee733f0c567d7589205e0c7ee2f4dcd13fc4703",
+      "requires": []
+    },
+    "go": {
+      "name": "github.com/mimic-browser/sdk/go",
+      "version": "0.1.1",
+      "registry": "go",
+      "inputDigest": "5f4fb623d4db7659f9f5e0c5fc98dd54d7af5908dfb05d5c9c8a24c11149b046",
+      "requires": []
+    },
+    "rust": {
+      "name": "mimic-browser",
+      "version": "0.1.1",
+      "registry": "crates",
+      "inputDigest": "92f27aa43b53aa54ee13de86943e8e613634026383d23cccf6afb6ff72b543c1",
+      "requires": []
+    },
+    "ruby": {
+      "name": "mimic-browser",
+      "version": "0.1.1",
+      "registry": "rubygems",
+      "inputDigest": "53216563f91e1c64d8572d4515f788feb289b0d4b7d017f2b5aff7b710b6c39e",
+      "requires": []
+    },
+    "php": {
+      "name": "mimic-browser/sdk",
+      "version": "0.1.1",
+      "registry": "packagist",
+      "inputDigest": "8767c0adab2bafa7784b22e46900b2d2261f7d46de8109ea83c677560ff7683a",
+      "requires": []
+    }
+  }
+}

@@ -1,15 +1,15 @@
 {
   "kind": "sdk-release-plan",
-  "createdAt": "2026-10-08T13:21:04.284200+00:00",
+  "createdAt": "2026-10-08T13:21:04.537280+00:00",
   "sdkRevision": "107e4f60fb1f05b650146da1f41b10d6a80700bf",
   "schemaSha256": "ea792e2f194bf831f5494bedd65a7112881e45695b3af3d504367c317684e7a6",
   "runtimeLockSha256": "cb1bc54297b102a30c3a4526004180a48d770a912e1ab41e40f3607ba605ae80",
   "packages": {
-    "node": {
-      "name": "mimic-browser",
+    "go": {
+      "name": "github.com/mimic-browser/sdk/go",
       "version": "0.1.1",
-      "registry": "npm",
-      "inputDigest": "b1ad25b0b157755b8ca0b51740040c0015031dec6855ec294f6870bd1809be5a",
+      "registry": "go",
+      "inputDigest": "5f4fb623d4db7659f9f5e0c5fc98dd54d7af5908dfb05d5c9c8a24c11149b046",
       "requires": []
     }
   }
