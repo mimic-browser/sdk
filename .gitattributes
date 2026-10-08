@@ -1,2 +1,2 @@
 # Published manifest bytes are covered by SHA256SUMS; never normalize newlines.
-release/runtime-manifest.json -text
+release/runtime-manifest.json -text whitespace=cr-at-eol
