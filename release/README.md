@@ -6,21 +6,21 @@ explicitly; language-only changes do not select other languages. A schema change
 runs deterministic generation and all target checks, then releases only changed
 packaged output. Docs alone never initiate publication.
 
-SDK source is distributed from [GitHub](https://github.com/mimic-browser/sdk).
-The native registries are not enabled yet. Source installation and local
-packaging do not invoke any publisher; the registry workflow below is an
-independent, explicit release operation.
+See the [main README](../README.md) for the current published release and
+installation status. This guide describes the release process. Source
+installation and local packaging do not invoke a publisher.
 
-The immutable default is the official v0.2.3 runtime. Registry publication
-remains disabled until it is explicitly configured and every selected adapter
-passes against that exact official executable. An unreleased development
+The immutable default runtime is recorded in [`runtime-lock.json`](runtime-lock.json).
+Registry publication requires explicit configuration and every selected adapter
+to pass against that exact official executable. An unreleased development
 runtime cannot satisfy the publication gate.
 
 After a compatible official runtime is published, intentionally update all
-packaged pins from its verified manifest and `SHA256SUMS`:
+packaged pins from its verified manifest and `SHA256SUMS`. Set `RUNTIME_VERSION`
+to the exact published runtime tag selected for this SDK release:
 
 ```sh
-python release/pin_runtime.py v0.2.3
+python release/pin_runtime.py "$RUNTIME_VERSION"
 ```
 
 The updater preserves the original manifest bytes and verifies both platform
@@ -54,7 +54,7 @@ original pinned release archive used by installer tests:
 ```sh
 python release/qualify.py --build .build/release/build.json \
   --runtime /absolute/path/mimic --runtime-sha256 <sha256> \
-  --archive /absolute/path/mimic-v0.2.3-linux-amd64.tar.gz \
+  --archive /absolute/path/runtime-release.tar.gz \
   --output .build/release/qualification.json
 ```
 

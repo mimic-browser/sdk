@@ -7,6 +7,6 @@ Run your existing browser automation client with a managed Mimic runtime.
 - Use Playwright or Puppeteer from JavaScript/TypeScript; Playwright sync/async or Pyppeteer from Python; Playwright or PuppeteerSharp from C#; Playwright from Java/Kotlin; Rod or chromedp from Go; chromiumoxide from Rust; Ferrum from Ruby; and chrome-php from PHP.
 - Configure coherent environment profiles, context isolation, resource policies and media sources through the documented Mimic capabilities.
 
-Start with the [SDK quickstart](https://mimic.boo/sdk/) or the [source installation guide](https://github.com/mimic-browser/sdk#readme). This release is distributed through GitHub; package registry publication will follow separately.
+Start with the [SDK quickstart](https://mimic.boo/sdk/) or the [installation guide](https://github.com/mimic-browser/sdk#readme). The main README records current package availability.
 
 The default runtime is Mimic v0.2.3 for Windows and Linux amd64. Browser support follows Mimic's documented compatibility boundaries.
