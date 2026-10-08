@@ -1,0 +1,16 @@
+{
+  "kind": "sdk-release-plan",
+  "createdAt": "2026-10-08T11:25:59.691058+00:00",
+  "sdkRevision": "f6c5000bc6bce85ae9129b13669707f6fd391535",
+  "schemaSha256": "ea792e2f194bf831f5494bedd65a7112881e45695b3af3d504367c317684e7a6",
+  "runtimeLockSha256": "ee2ad99a4062155c2ee5c0334a9c6c6a11dae295ba6592705705f99e692d5672",
+  "packages": {
+    "node": {
+      "name": "mimic-browser",
+      "version": "0.1.1",
+      "registry": "npm",
+      "inputDigest": "a0b480d876877837c789561f52bbbb261c29a963e86b253bc282005088935937",
+      "requires": []
+    }
+  }
+}
