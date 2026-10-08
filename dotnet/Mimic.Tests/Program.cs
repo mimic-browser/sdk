@@ -47,6 +47,16 @@ try
     catch (Mimic.Sdk.RuntimeException error) { Check(error.Kind == "offline", "Offline error kind"); }
     var capture = new CaptureTransport();
     var client = new MimicClient(capture);
+    var typedProfile = new JsonObject { ["generate"] = new JsonObject() };
+    var typedConfiguration = new ContextConfiguration
+    {
+        Profile = typedProfile,
+        Media = Optional<MediaConfiguration>.Null()
+    };
+    await client.Context("native-context").ConfigureAsync(typedConfiguration);
+    Check(capture.Method == "Mimic.configureContext" && capture.Parameters!["browserContextId"]!.GetValue<string>() == "native-context", "Typed configuration context scope");
+    Check(capture.Parameters!.ContainsKey("media") && capture.Parameters["media"] is null && !capture.Parameters.ContainsKey("proxy") && !capture.Parameters.ContainsKey("disposeOnDetach"), "Typed configuration preserves omission and explicit null");
+    Check(!typedProfile.ContainsKey("browserContextId") && !typedConfiguration.ToWire().ContainsKey("browserContextId"), "Typed configuration does not mutate caller settings");
     var raw = JsonNode.Parse("{\"unknown\":null,\"large\":9007199254740991,\"values\":[false,0,null]}")!.AsObject();
     await client.Experimental.SendAsync("Mimic.futureCommand", raw);
     Check(capture.Method == "Mimic.futureCommand" && JsonNode.DeepEquals(capture.Parameters, raw), "Experimental dispatch altered JSON");

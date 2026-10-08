@@ -57,6 +57,9 @@ public sealed class PuppeteerSession : IAsyncDisposable
         return Mimic.Context(context.Id ?? throw new ArgumentException("Default context has no explicit Context ID; use NewContextAsync"));
     }
 
+    public Task<IBrowserContext> NewConfiguredContextAsync(ContextConfiguration configuration, BrowserContextOptions? options = null, CancellationToken cancellationToken = default, Func<ContextSetup, CancellationToken, Task<MediaConfiguration>>? mediaFactory = null)
+        => NewConfiguredContextAsync(configuration.ToWire(), options, cancellationToken, mediaFactory);
+
     public async Task<IBrowserContext> NewConfiguredContextAsync(JsonObject configuration, BrowserContextOptions? options = null, CancellationToken cancellationToken = default, Func<ContextSetup, CancellationToken, Task<MediaConfiguration>>? mediaFactory = null)
     {
         configuration = configuration.DeepClone().AsObject();

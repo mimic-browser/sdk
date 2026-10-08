@@ -89,6 +89,9 @@ public sealed class PlaywrightSession : IAsyncDisposable
         }
     }
 
+    public Task<IBrowserContext> NewConfiguredContextAsync(ContextConfiguration configuration, BrowserNewContextOptions? options = null, CancellationToken cancellationToken = default, Func<ContextSetup, CancellationToken, Task<MediaConfiguration>>? mediaFactory = null)
+        => NewConfiguredContextAsync(configuration.ToWire(), options, cancellationToken, mediaFactory);
+
     public async Task<IBrowserContext> NewConfiguredContextAsync(JsonObject configuration, BrowserNewContextOptions? options = null, CancellationToken cancellationToken = default, Func<ContextSetup, CancellationToken, Task<MediaConfiguration>>? mediaFactory = null)
     {
         configuration = configuration.DeepClone().AsObject();

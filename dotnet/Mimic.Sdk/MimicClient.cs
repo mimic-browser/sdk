@@ -16,16 +16,22 @@ public sealed class MimicClient(IProtocolTransport transport) : IProtocolTranspo
 public sealed class MimicContext(IProtocolTransport transport, string id)
 {
     public string Id { get; } = id;
+    public Task<JsonObject> ConfigureAsync(ContextConfiguration configuration, CancellationToken cancellationToken = default)
+        => ConfigureAsync(configuration.ToWire(), cancellationToken);
     public Task<JsonObject> ConfigureAsync(JsonObject configuration, CancellationToken cancellationToken = default)
         => CallAsync("Mimic.configureContext", configuration, cancellationToken);
     public Task<JsonObject> GetMediaProfileAsync(CancellationToken cancellationToken = default)
         => CallAsync("Mimic.getMediaProfile", null, cancellationToken);
     public Task<JsonObject> SetMediaProfileAsync(JsonObject media, CancellationToken cancellationToken = default)
         => CallAsync("Mimic.setMediaProfile", media, cancellationToken);
+    public Task<JsonObject> SetMediaProfileAsync(MediaConfiguration media, CancellationToken cancellationToken = default)
+        => SetMediaProfileAsync(Wire.Encode(media), cancellationToken);
     public Task<JsonObject> GetResourcePolicyAsync(CancellationToken cancellationToken = default)
         => CallAsync("Mimic.getResourcePolicy", null, cancellationToken);
     public Task<JsonObject> SetResourcePolicyAsync(JsonObject policy, CancellationToken cancellationToken = default)
         => CallAsync("Mimic.updateResourcePolicy", new JsonObject { ["policy"] = policy.DeepClone() }, cancellationToken);
+    public Task<JsonObject> SetResourcePolicyAsync(ResourcePolicy policy, CancellationToken cancellationToken = default)
+        => SetResourcePolicyAsync(Wire.Encode(policy), cancellationToken);
     public Task<JsonObject> CallAsync(string method, JsonObject? parameters = null, CancellationToken cancellationToken = default)
     {
         var arguments = parameters?.DeepClone().AsObject() ?? new JsonObject();

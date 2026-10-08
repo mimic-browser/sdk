@@ -91,6 +91,22 @@ v0.2.3 runtime. Public Playwright Optional-null settings disable its default
 viewport and media emulation for managed profiles. Conflicting identity, geometry
 or media options are rejected before Context creation. Supplied options are copied.
 
+For editor completion, pass `ContextConfiguration` with generated field types
+alongside native `Browser.NewContextOptions`:
+
+```java
+var settings = new io.mimicbrowser.sdk.ContextConfiguration();
+var profile = new com.google.gson.JsonObject();
+profile.add("generate", new com.google.gson.JsonObject());
+settings.profile = io.mimicbrowser.sdk.Generated.OptionalValue.of(profile);
+settings.resourcePolicy = io.mimicbrowser.sdk.Generated.OptionalValue.of(
+    new io.mimicbrowser.sdk.Generated.ResourcePolicy());
+var context = session.newConfiguredContext(settings, new Browser.NewContextOptions());
+```
+
+Context capabilities also accept generated media and resource-policy objects.
+Raw JSON overloads remain available for explicit low-level use.
+
 The overload with a `Function<ContextSetup, Generated.MediaConfiguration>` media
 factory runs after the blank probe is closed. `setup.browserContextId()` is
 explicit input to `setup.mimic().commands().getMediaSources(params)`; source

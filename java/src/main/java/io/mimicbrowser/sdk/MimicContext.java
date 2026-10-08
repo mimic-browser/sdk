@@ -19,10 +19,13 @@ public final class MimicContext {
     }
     public JsonObject getMediaProfile() { return send("Mimic.getMediaProfile", null); }
     public JsonObject configure(JsonObject configuration) { return send("Mimic.configureContext", configuration); }
+    public JsonObject configure(ContextConfiguration configuration) { return configure(configuration.toWire()); }
     public JsonObject setMediaProfile(JsonObject profile) { return send("Mimic.setMediaProfile", profile); }
+    public JsonObject setMediaProfile(Generated.MediaConfiguration profile) { return setMediaProfile(Generated.toWire(profile).getAsJsonObject()); }
     public JsonObject getResourcePolicy() { return send("Mimic.getResourcePolicy", null); }
     public JsonObject setResourcePolicy(JsonObject policy) {
         var parameters = new JsonObject(); parameters.add("policy", policy.deepCopy());
         return send("Mimic.updateResourcePolicy", parameters);
     }
+    public JsonObject setResourcePolicy(Generated.ResourcePolicy policy) { return setResourcePolicy(Generated.toWire(policy).getAsJsonObject()); }
 }

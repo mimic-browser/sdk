@@ -9,6 +9,7 @@ import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import io.mimicbrowser.sdk.MimicClient;
 import io.mimicbrowser.sdk.ContextSetup;
+import io.mimicbrowser.sdk.ContextConfiguration;
 import io.mimicbrowser.sdk.Generated;
 import io.mimicbrowser.sdk.MimicContext;
 import io.mimicbrowser.sdk.RuntimeManager;
@@ -75,6 +76,12 @@ public final class PlaywrightSession implements AutoCloseable {
         } catch (RuntimeException error) { ownedContexts.remove(context); if (!closed) context.close(); throw error; }
     }
     public BrowserContext newContext() { return newContext(null, null, null); }
+    public BrowserContext newConfiguredContext(ContextConfiguration configuration, Browser.NewContextOptions options) {
+        return newConfiguredContext(configuration.toWire(), options);
+    }
+    public BrowserContext newConfiguredContext(ContextConfiguration configuration, Browser.NewContextOptions options, java.util.function.Function<ContextSetup, Generated.MediaConfiguration> mediaFactory) {
+        return newConfiguredContext(configuration.toWire(), options, mediaFactory);
+    }
     public BrowserContext newConfiguredContext(JsonObject configuration, Browser.NewContextOptions options) {
         return newConfiguredContext(configuration, options, null);
     }

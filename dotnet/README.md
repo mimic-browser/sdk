@@ -83,6 +83,24 @@ identity, geometry or media options are rejected before a Context is created.
 PuppeteerSharp sessions default to `DefaultViewport = null`; callers using
 managed profiles must retain that setting.
 
+Use `Mimic.Sdk.ContextConfiguration` for typed Mimic settings and the native
+framework options for automation settings. For example:
+
+```csharp
+using Mimic.Sdk;
+using Mimic.Sdk.Generated;
+
+var settings = new ContextConfiguration
+{
+    Profile = new System.Text.Json.Nodes.JsonObject { ["generate"] = new System.Text.Json.Nodes.JsonObject() },
+    ResourcePolicy = new ResourcePolicy()
+};
+var context = await session.NewConfiguredContextAsync(settings);
+```
+
+Context capabilities also accept typed `MediaConfiguration` and `ResourcePolicy`.
+Raw JSON overloads remain available for explicit low-level use.
+
 Both helpers accept an asynchronous `mediaFactory` returning a generated
 `MediaConfiguration`. Its `ContextSetup` provides the actual `BrowserContextId`
 and the same `Mimic` client; call `setup.Mimic.Commands.GetMediaSourcesAsync(new()
