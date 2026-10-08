@@ -1,6 +1,6 @@
 # Mimic for Java and Kotlin
 
-Requires Java 17 or newer. `io.github.mimic-browser:mimic-browser` contains the native runtime
+Requires Java 17 or newer. `boo.mimic:mimic-browser` contains the native runtime
 manager and typed extension API. Playwright Java is an optional Maven dependency;
 add `com.microsoft.playwright:playwright:1.63.0` when importing the
 `io.mimicbrowser.sdk.playwright` adapter. No Chromium download or framework launcher

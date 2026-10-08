@@ -104,7 +104,7 @@ partially published release.
 | npm           | npm trusted publishing or `NODE_AUTH_TOKEN` through setup-node                                                                | `mimic-browser` native version                                                                     |
 | PyPI          | GitHub trusted publisher for `sdk-release.yml` and environment `sdk-production`; `id-token: write`                            | `mimic-browser` wheel and sdist                                                                    |
 | NuGet         | GitHub trusted publisher through `NuGet/login` (account `moreveal`)                                                           | Independently selected `mimic-browser`, `mimic-browser.Playwright`, `mimic-browser.PuppeteerSharp` |
-| Maven Central | `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `GPG_PRIVATE_KEY`, `GPG_PASSPHRASE` in `sdk-production`                   | `io.github.mimic-browser:mimic-browser`, JAR/sources/Javadoc/POM                                   |
+| Maven Central | `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `GPG_PRIVATE_KEY`, `GPG_PASSPHRASE` in `sdk-production`                   | `boo.mimic:mimic-browser`, JAR/sources/Javadoc/POM                                                 |
 | Go            | Authenticated SDK origin with tag-write permission                                                                            | `go/vX.Y.Z` points at the exact SDK source commit                                                  |
 | crates.io     | `CARGO_REGISTRY_TOKEN`                                                                                                        | `mimic-browser` crate; clean checkout and locked dependencies                                      |
 | RubyGems      | GitHub trusted publisher through `rubygems/configure-rubygems-credentials`                                                    | `mimic-browser` gem                                                                                |
@@ -124,8 +124,8 @@ outcome requires recovery of the existing deployment ID rather than a duplicate.
 Configure registry credentials, noninteractive signing and mirror access before
 enabling publication. The publisher requires those configurations and a
 compatible officially released default runtime.
-Maven Central requires verification of the `io.github.mimic-browser` namespace
-through the organization's GitHub ownership. Before Maven upload, CI verifies a
+Maven Central requires verification of the `boo.mimic` namespace
+by proving control of the `mimic.boo` domain. Before Maven upload, CI verifies a
 signature from the dedicated key against an independently retrieved public key.
 If the public key is absent, CI distributes only its public material through the
 Ubuntu keyserver and verifies it again. A valid signing subkey is supported.

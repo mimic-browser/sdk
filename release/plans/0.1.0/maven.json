@@ -1,15 +1,15 @@
 {
   "kind": "sdk-release-plan",
-  "createdAt": "2026-10-08T10:32:56.160137+00:00",
-  "sdkRevision": "519a16c77cd41535183a0df6c796d19ec1460a7b",
+  "createdAt": "2026-10-08T11:11:19.606881+00:00",
+  "sdkRevision": "8660642499036d94508b1fb0ea15d0c0f906d7c0",
   "schemaSha256": "ea792e2f194bf831f5494bedd65a7112881e45695b3af3d504367c317684e7a6",
   "runtimeLockSha256": "ee2ad99a4062155c2ee5c0334a9c6c6a11dae295ba6592705705f99e692d5672",
   "packages": {
     "java": {
-      "name": "io.github.mimic-browser:mimic-browser",
+      "name": "boo.mimic:mimic-browser",
       "version": "0.1.0",
       "registry": "maven",
-      "inputDigest": "b0018d95e22914d0d1c33e44db7aacb4fa780e75a457ff3047889eb21fc62901",
+      "inputDigest": "0bb0b90d47900425540539fbc5a2a9be76bc44287d1a8f20e456c5d7d73200ae",
       "requires": []
     }
   }

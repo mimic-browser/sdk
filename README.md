@@ -4,25 +4,24 @@ Use the browser automation API you already know, with a managed Mimic runtime
 and typed Mimic capabilities beside it. Browser, Context, Page and Locator
 objects come from the selected framework. The SDK does not imitate their APIs.
 
-Install the SDK directly from [GitHub](https://github.com/mimic-browser/sdk).
-Registry packages are not published yet; each language guide shows a source
-installation using its native package manager or build tool.
+Packages are available from npm, PyPI, crates.io, RubyGems, Packagist, and the
+Go module proxy. NuGet adapter packages and Maven Central publication are pending.
+[GitHub source installation](https://github.com/mimic-browser/sdk) remains
+available through each language's native package manager or build tool.
 
 ## Happy path
 
 Install the [Node package](node/README.md):
 
 ```sh
-npm install git+https://github.com/mimic-browser/sdk.git
+npm install mimic-browser playwright-core@1.63.0
 ```
 
-Use the client already installed in your project. For the Playwright example
-below, install `playwright-core@1.63.0` if needed; Puppeteer uses the separate
+The command installs the optional Playwright client used below. Puppeteer uses the separate
 `puppeteer-core@25.10.0` client and `mimic-browser/puppeteer` import. Both clients
 remain optional. The core package never installs a framework for you.
 
-Git installation compiles the package automatically. The eventual npm package
-name is `mimic-browser`.
+Git installation also works and compiles the package automatically.
 
 ```typescript
 import { launch } from "mimic-browser/playwright";
@@ -46,7 +45,7 @@ process. Importing a package neither downloads nor starts anything.
 For [Python](python/README.md):
 
 ```sh
-python -m pip install "mimic-browser @ git+https://github.com/mimic-browser/sdk.git#subdirectory=python"
+python -m pip install mimic-browser
 python -m pip install playwright==1.63.0
 ```
 
@@ -76,16 +75,16 @@ await browser.close(); // Disconnects this externally connected Playwright clien
 
 ## Choose your language and client
 
-| Language                | Native package / module                                   | Optional framework integration                        |
-| ----------------------- | --------------------------------------------------------- | ----------------------------------------------------- |
-| JavaScript / TypeScript | [`mimic-browser`](node/README.md)                         | Playwright, Puppeteer                                 |
-| Python                  | [`mimic-browser`, import `mimic`](python/README.md)       | Playwright sync/async; optional Pyppeteer             |
-| C# / .NET               | [`mimic-browser`](dotnet/README.md)                       | Playwright, PuppeteerSharp, separate adapter packages |
-| Java / Kotlin           | [`io.github.mimic-browser:mimic-browser`](java/README.md) | Playwright; Kotlin uses the JVM API                   |
-| Go                      | [`github.com/mimic-browser/sdk/go`](go/README.md)         | Rod, chromedp subpackages                             |
-| Rust                    | [`mimic-browser`](rust/README.md)                         | chromiumoxide feature                                 |
-| Ruby                    | [`mimic-browser`](ruby/README.md)                         | Ferrum, optional require                              |
-| PHP                     | [`mimic-browser/sdk`](php/README.md)                      | chrome-php, optional adapter                          |
+| Language                | Native package / module                             | Optional framework integration                        |
+| ----------------------- | --------------------------------------------------- | ----------------------------------------------------- |
+| JavaScript / TypeScript | [`mimic-browser`](node/README.md)                   | Playwright, Puppeteer                                 |
+| Python                  | [`mimic-browser`, import `mimic`](python/README.md) | Playwright sync/async; optional Pyppeteer             |
+| C# / .NET               | [`mimic-browser`](dotnet/README.md)                 | Playwright, PuppeteerSharp, separate adapter packages |
+| Java / Kotlin           | [`boo.mimic:mimic-browser`](java/README.md)         | Playwright; Kotlin uses the JVM API                   |
+| Go                      | [`github.com/mimic-browser/sdk/go`](go/README.md)   | Rod, chromedp subpackages                             |
+| Rust                    | [`mimic-browser`](rust/README.md)                   | chromiumoxide feature                                 |
+| Ruby                    | [`mimic-browser`](ruby/README.md)                   | Ferrum, optional require                              |
+| PHP                     | [`mimic-browser/sdk`](php/README.md)                | chrome-php, optional adapter                          |
 
 Framework dependencies are explicit and optional. Their genuine APIs retain
 their own conventions; Mimic extensions use camelCase in JS/Java/PHP,

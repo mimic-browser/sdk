@@ -88,7 +88,7 @@ class MavenSigningTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             artifact = Path(directory) / "package.jar"
             artifact.write_bytes(b"artifact")
-            package = {"name": "io.github.mimic-browser:mimic-browser", "version": "0.1.0",
+            package = {"name": "boo.mimic:mimic-browser", "version": "0.1.0",
                        "artifacts": [{"file": str(artifact)}]}
             calls = []
             def subprocess_run(arguments, **options):
