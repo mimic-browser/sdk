@@ -6,6 +6,8 @@ mod cache;
 #[cfg(feature = "chromiumoxide")]
 pub mod chromiumoxide;
 pub mod generated;
+#[cfg(feature = "chromiumoxide")]
+mod page_attachment;
 pub mod runtime;
 pub mod transport;
 

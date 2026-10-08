@@ -10,8 +10,8 @@ use ::chromiumoxide::cdp::browser_protocol::target::CreateBrowserContextParams;
 use ::chromiumoxide::handler::HandlerConfig;
 use ::chromiumoxide::Page;
 use futures_util::StreamExt;
-use serde_json::json;
 use std::future::Future;
+use std::sync::Arc;
 use std::time::Duration;
 use tokio::task::JoinHandle;
 
@@ -21,6 +21,10 @@ pub struct Session {
     runtime: Option<RuntimeProcess>,
     handler: Option<JoinHandle<Result<()>>>,
     contexts: Vec<BrowserContextId>,
+    pages: Arc<crate::page_attachment::Attachments>,
+    page_events: Option<JoinHandle<()>>,
+    closed: bool,
+    close_finished: bool,
 }
 
 /// Access to the newly created Context before any user Page exists. Source IDs
@@ -71,12 +75,25 @@ impl Session {
             }
             Ok(())
         });
+        let pages = Arc::new(crate::page_attachment::Attachments::default());
+        let mut events = client.transport.subscribe();
+        let observed = pages.clone();
+        let page_events = tokio::spawn(async move {
+            while let Ok(event) = events.recv().await {
+                observed.invalidate(&event);
+            }
+            observed.invalidate_all(); // Closed or lagged: stale handles cannot be reused.
+        });
         Ok(Self {
             browser,
             mimic: client,
             runtime: None,
             handler: Some(handler),
             contexts: Vec::new(),
+            pages,
+            page_events: Some(page_events),
+            closed: false,
+            close_finished: false,
         })
     }
 
@@ -122,6 +139,9 @@ impl Session {
         F: FnOnce(ContextSetup) -> Fut,
         Fut: Future<Output = Result<Option<MediaConfiguration>>>,
     {
+        if self.closed {
+            return Err(Error::Closed("integration session closed".into()));
+        }
         if !options.browser_context_id.is_empty() {
             return Err(Error::Invalid(
                 "new_context assigns browser_context_id; leave it empty".into(),
@@ -208,23 +228,29 @@ impl Session {
     /// Attach a separate, explicit CDP session to this native Page. Framework
     /// session IDs are connection-local and cannot be reused on the SDK socket.
     pub async fn for_page(&self, page: &Page) -> Result<Client> {
-        let response = self
-            .mimic
-            .call(
-                "Target.attachToTarget",
-                Some(json!({
-                    "targetId": page.target_id().as_ref(), "flatten": true
-                })),
-            )
-            .await?;
-        let id = response["sessionId"]
-            .as_str()
-            .ok_or_else(|| Error::Invalid("Target.attachToTarget omitted sessionId".into()))?;
-        Ok(self.mimic.session(id))
+        self.pages
+            .for_target(self.mimic.clone(), page.target_id().as_ref().to_owned())
+            .await
+    }
+
+    /// Release the SDK attachment without closing the native Page or its session.
+    /// All extension Clients previously returned for that Page become closed.
+    pub async fn detach_page(&self, page: &Page) -> Result<()> {
+        self.pages
+            .detach(&self.mimic, page.target_id().as_ref())
+            .await
     }
 
     pub async fn close(&mut self) -> Result<()> {
-        let mut failure = None;
+        if self.close_finished {
+            return Ok(());
+        }
+        self.closed = true;
+        let mut failure = self.pages.close(&self.mimic).await.err();
+        if let Some(events) = self.page_events.take() {
+            events.abort();
+            let _ = events.await;
+        }
         for context in self.contexts.drain(..) {
             if let Err(error) = self.browser.dispose_browser_context(context).await {
                 failure.get_or_insert(Error::from(error));
@@ -255,12 +281,20 @@ impl Session {
         } else {
             self.mimic.transport.close().await;
         }
+        self.close_finished = true;
         failure.map_or(Ok(()), Err)
     }
 }
 
 impl Drop for Session {
     fn drop(&mut self) {
+        self.pages.invalidate_all();
+        if !self.close_finished {
+            self.mimic.transport.abort();
+        }
+        if let Some(events) = self.page_events.take() {
+            events.abort();
+        }
         if let Some(handler) = self.handler.take() {
             handler.abort();
         }

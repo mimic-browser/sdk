@@ -3,6 +3,7 @@ package rod
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -10,6 +11,7 @@ import (
 	native "github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/cdp"
 	mimic "github.com/mimic-browser/sdk/go"
+	"github.com/mimic-browser/sdk/go/internal/pageattachment"
 )
 
 type connection struct {
@@ -35,6 +37,7 @@ type Session struct {
 	mu         sync.Mutex
 	contexts   []*native.Browser
 	closed     bool
+	pages      *pageattachment.Registry
 }
 
 func Connect(ctx context.Context, endpoint string) (*Session, error) {
@@ -95,7 +98,7 @@ func attach(ctx context.Context, t *mimic.Transport) (*Session, error) {
 		unsubscribe()
 		return nil, err
 	}
-	return &Session{Browser: b, Mimic: client, transport: t, connection: conn}, nil
+	return &Session{Browser: b, Mimic: client, transport: t, connection: conn, pages: pageattachment.New(t)}, nil
 }
 
 // NewContext returns a genuine Rod incognito Browser. Context creation and
@@ -129,7 +132,19 @@ func (s *Session) NewContext(ctx context.Context, media *mimic.MediaConfiguratio
 	return b, nil
 }
 func (s *Session) ForPage(page *native.Page) *mimic.Client {
-	return mimic.NewClient(s.transport, string(page.SessionID))
+	if page == nil || page.GetContext().Err() != nil {
+		return s.pages.Borrow("", "")
+	}
+	return s.pages.Borrow(string(page.TargetID), string(page.SessionID))
+}
+
+// DetachPage releases only the SDK extension handle. Rod owns the underlying
+// native session, which remains attached and usable by the original Page.
+func (s *Session) DetachPage(ctx context.Context, page *native.Page) error {
+	if page == nil {
+		return fmt.Errorf("native page is required")
+	}
+	return s.pages.Detach(ctx, string(page.TargetID))
 }
 
 // NewConfiguredContext installs a coherent Mimic profile before any user page
@@ -210,13 +225,14 @@ func (s *Session) Close() error {
 	s.mu.Unlock()
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
+	err := s.pages.Close(ctx)
 	for _, b := range contexts {
 		_ = b.Context(ctx).Close()
 	}
 	s.connection.cancel()
 	s.connection.unsubscribe()
 	if s.Runtime != nil {
-		return s.Runtime.Close()
+		return errors.Join(err, s.Runtime.Close())
 	}
-	return s.transport.Close()
+	return errors.Join(err, s.transport.Close())
 }

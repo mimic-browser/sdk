@@ -220,6 +220,13 @@ impl Transport {
             }
         }
     }
+    #[cfg(feature = "chromiumoxide")]
+    pub(crate) fn abort(&self) {
+        self.state.fail_all("integration session dropped");
+        if let Some(task) = self.task.lock().unwrap().take() {
+            task.abort();
+        }
+    }
 }
 impl Drop for Transport {
     fn drop(&mut self) {
@@ -235,6 +242,7 @@ pub struct Client {
     pub transport: Arc<Transport>,
     pub session_id: Option<String>,
     pub timeout: Duration,
+    attachment_active: Option<Arc<AtomicBool>>,
 }
 impl Client {
     pub fn new(transport: Arc<Transport>) -> Self {
@@ -242,6 +250,7 @@ impl Client {
             transport,
             session_id: None,
             timeout: Duration::from_secs(30),
+            attachment_active: None,
         }
     }
     pub fn session(&self, session_id: impl Into<String>) -> Self {
@@ -251,9 +260,24 @@ impl Client {
         }
     }
     pub async fn call(&self, method: &str, params: Option<Value>) -> Result<Value> {
+        if self
+            .attachment_active
+            .as_ref()
+            .is_some_and(|active| !active.load(Ordering::Acquire))
+        {
+            return Err(Error::Closed("page extension attachment closed".into()));
+        }
         self.transport
             .call(method, params, self.session_id.as_deref(), self.timeout)
             .await
+    }
+    #[cfg(feature = "chromiumoxide")]
+    pub(crate) fn bound_session(&self, id: String, active: Arc<AtomicBool>) -> Self {
+        Self {
+            session_id: Some(id),
+            attachment_active: Some(active),
+            ..self.clone()
+        }
     }
     pub fn experimental(&self) -> Experimental {
         Experimental {

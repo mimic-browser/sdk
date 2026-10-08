@@ -59,6 +59,22 @@ func TestRealChromedpOwnedAndAttached(t *testing.T) {
 	if _, err = pageMimic.Experimental.Call(ctx, "getTrace", map[string]any{}); err != nil {
 		t.Fatal(err)
 	}
+	if again, err := s.ForPage(s.Context); err != nil || again != pageMimic {
+		t.Fatalf("page cache: %v", err)
+	}
+	if err := s.DetachPage(s.Context); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := pageMimic.Experimental.Call(ctx, "getTrace", map[string]any{}); err == nil {
+		t.Fatal("detached handle still usable")
+	}
+	var number int
+	if err := native.Run(s.Context, native.Evaluate(`1+2`, &number)); err != nil || number != 3 {
+		t.Fatalf("SDK detach affected native Page: %d %v", number, err)
+	}
+	if again, err := s.ForPage(s.Context); err != nil || again == pageMimic {
+		t.Fatalf("reattach: %v", err)
+	}
 	if os.Getenv("MIMIC_SDK_TEST_CONFIGURE") == "1" {
 		configured, err := ConnectConfigured(ctx, s.Runtime.Endpoint, mimic.ConfigureContextParams{Profile: mimic.Some(json.RawMessage(`{"generate":{"seed":"go-chromedp"}}`))})
 		if err != nil {

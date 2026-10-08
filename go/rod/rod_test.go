@@ -53,8 +53,25 @@ func TestRealRodOwnedAndAttached(t *testing.T) {
 	if _, err = attached.ForPage(p).Experimental.Call(ctx, "getTrace", map[string]any{}); err != nil {
 		t.Fatal(err)
 	}
+	pageMimic := attached.ForPage(p)
+	if pageMimic != attached.ForPage(p) {
+		t.Fatal("native Page handle not cached")
+	}
+	if err := attached.DetachPage(ctx, p); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := pageMimic.Experimental.Call(ctx, "getTrace", map[string]any{}); err == nil {
+		t.Fatal("detached handle still usable")
+	}
+	if value, err := p.Eval(`() => 1+2`); err != nil || value.Value.Int() != 3 {
+		t.Fatalf("SDK detach affected native Rod session: %v %v", value, err)
+	}
+	pageMimic = attached.ForPage(p)
 	if err = attached.Close(); err != nil {
 		t.Fatal(err)
+	}
+	if _, err := pageMimic.Experimental.Call(ctx, "getTrace", map[string]any{}); err == nil {
+		t.Fatal("closed owner retained page extension")
 	}
 	if _, err = s.Mimic.GetVersion(ctx, mimic.GetVersionParams{}); err != nil {
 		t.Fatalf("attached close killed owner: %v", err)

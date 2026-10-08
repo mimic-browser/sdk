@@ -3,6 +3,7 @@ package chromedp
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"sync"
 	"time"
@@ -10,6 +11,7 @@ import (
 	"github.com/chromedp/cdproto/target"
 	native "github.com/chromedp/chromedp"
 	mimic "github.com/mimic-browser/sdk/go"
+	"github.com/mimic-browser/sdk/go/internal/pageattachment"
 )
 
 type Session struct {
@@ -22,6 +24,8 @@ type Session struct {
 	contextCancel   context.CancelFunc
 	once            sync.Once
 	contextID       string
+	pages           *pageattachment.Registry
+	closeErr        error
 }
 
 func Connect(ctx context.Context, endpoint string, options ...native.ContextOption) (*Session, error) {
@@ -146,7 +150,7 @@ func attach(ctx context.Context, endpoint string, t *mimic.Transport, configurat
 		cleanup()
 		return nil, err
 	}
-	return &Session{Context: page, Browser: native.FromContext(page).Browser, Mimic: client, transport: t, allocatorCancel: allocatorCancel, contextCancel: pageCancel, contextID: owned.BrowserContextID}, nil
+	return &Session{Context: page, Browser: native.FromContext(page).Browser, Mimic: client, transport: t, allocatorCancel: allocatorCancel, contextCancel: pageCancel, contextID: owned.BrowserContextID, pages: pageattachment.New(t)}, nil
 }
 
 // ForPage attaches the extension connection to a real chromedp target. Session
@@ -156,26 +160,31 @@ func (s *Session) ForPage(ctx context.Context) (*mimic.Client, error) {
 	if page == nil || page.Target == nil {
 		return nil, fmt.Errorf("chromedp target is not initialized")
 	}
-	var result struct {
-		SessionID string `json:"sessionId"`
+	return s.pages.Attach(ctx, string(page.Target.TargetID))
+}
+
+// DetachPage closes the SDK attachment while retaining the native chromedp
+// target and its own session. Previously returned extension handles stop working.
+func (s *Session) DetachPage(ctx context.Context) error {
+	page := native.FromContext(ctx)
+	if page == nil || page.Target == nil {
+		return fmt.Errorf("chromedp target is not initialized")
 	}
-	if err := s.Mimic.Call(ctx, "Target.attachToTarget", map[string]any{"targetId": page.Target.TargetID, "flatten": true}, &result); err != nil {
-		return nil, err
-	}
-	return mimic.NewClient(s.transport, result.SessionID), nil
+	return s.pages.Detach(ctx, string(page.Target.TargetID))
 }
 func (s *Session) Close() error {
 	s.once.Do(func() {
-		s.contextCancel()
-		s.allocatorCancel()
 		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 		defer cancel()
+		s.closeErr = s.pages.Close(ctx)
+		s.contextCancel()
+		s.allocatorCancel()
 		_ = s.Mimic.Call(ctx, "Target.disposeBrowserContext", map[string]any{"browserContextId": s.contextID}, nil)
 		if s.Runtime != nil {
-			_ = s.Runtime.Close()
+			s.closeErr = errors.Join(s.closeErr, s.Runtime.Close())
 		} else {
-			_ = s.transport.Close()
+			s.closeErr = errors.Join(s.closeErr, s.transport.Close())
 		}
 	})
-	return nil
+	return s.closeErr
 }
