@@ -4,9 +4,9 @@ Use the browser automation API you already know, with a managed Mimic runtime
 and typed Mimic capabilities beside it. Browser, Context, Page and Locator
 objects come from the selected framework. The SDK does not imitate their APIs.
 
-The latest published SDK release is **0.1.0**, available from npm, PyPI, NuGet,
+The latest published SDK release is **0.1.1**, available from npm, PyPI, NuGet,
 Maven Central, crates.io, RubyGems, Packagist, and the Go module proxy.
-The `main` branch is preparing **0.1.1**; that version is not published yet.
+[Release notes](release/notes/0.1.1.md) describe the current release.
 [GitHub source installation](https://github.com/mimic-browser/sdk) remains
 available through each language's native package manager or build tool.
 
