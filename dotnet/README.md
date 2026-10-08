@@ -8,25 +8,23 @@ events, options, and automation methods.
 Package IDs describe installation; C# namespaces remain `Mimic.Sdk`,
 `Mimic.Playwright` and `Mimic.PuppeteerSharp`.
 
-Install from the GitHub source repository. NuGet packages are not published yet;
-the example builds the actual SDK projects through native project references:
-
-```sh
-git clone https://github.com/mimic-browser/sdk.git
-cd sdk
-dotnet run --project examples/dotnet/Example.csproj
-```
-
-For a new project inside that checkout, use a source reference; NuGet
-publication is not required:
+Create an application and add the adapter for the framework you use. It includes
+the core package as a dependency:
 
 ```sh
 dotnet new console --framework net8.0 --name MimicExample
-dotnet add MimicExample/MimicExample.csproj reference dotnet/Mimic.Playwright/Mimic.Playwright.csproj
+cd MimicExample
+dotnet add package mimic-browser.Playwright --version 0.1.0
 ```
 
-Put the following in `MimicExample/Program.cs`, then run
-`dotnet run --project MimicExample`. The SDK installs Mimic on first launch.
+For PuppeteerSharp, select its adapter instead:
+
+```sh
+dotnet add package mimic-browser.PuppeteerSharp --version 0.1.0
+```
+
+Save this Playwright example as `Program.cs`, then run `dotnet run`.
+The SDK installs Mimic on first launch.
 
 ```csharp
 using Mimic.Playwright;
@@ -39,6 +37,21 @@ await page.GotoAsync("https://example.com");
 Console.WriteLine(await page.TitleAsync());
 var version = await session.Mimic.Commands.GetVersionAsync();
 ```
+
+The equivalent PuppeteerSharp application uses its native context and page:
+
+```csharp
+using Mimic.PuppeteerSharp;
+
+await using var session = await PuppeteerSession.LaunchAsync();
+var context = await session.NewContextAsync();
+var page = await context.NewPageAsync();
+await page.GoToAsync("https://example.com");
+Console.WriteLine(await page.GetTitleAsync());
+```
+
+For runtime management and typed Mimic commands without either automation client,
+install only `dotnet add package mimic-browser --version 0.1.0`.
 
 The first launch installs the pinned, verified runtime into the shared OS cache.
 `AllowDownload = false` requires a complete verified cache. `ExecutablePath` uses
@@ -102,6 +115,10 @@ dotnet run --project dotnet/Mimic.Tests -- --integration /absolute/path/to/mimic
 dotnet run --project dotnet/Mimic.Tests -- --integration-candidate /absolute/path/to/mimic
 dotnet run --project dotnet/Mimic.Tests -- --install /tmp/mimic-sdk-cache
 ```
+
+For SDK development, clone `https://github.com/mimic-browser/sdk.git` and run
+`dotnet run --project examples/dotnet/Example.csproj` from the checkout. That
+example uses project references to the local SDK source.
 
 The tests include shared generated wire cases, integrity, exact pins, offline
 selection, archive traversal, real framework objects, context setup, errors,
