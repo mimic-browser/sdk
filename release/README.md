@@ -114,7 +114,7 @@ Source-producing Go, Cargo and Packagist publication cannot use this recovery.
 
 | Registry      | Required CI configuration                                                                                                     | Publication identity                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
-| npm           | npm trusted publishing or `NODE_AUTH_TOKEN` through setup-node                                                                | `mimic-browser` native version                                                                     |
+| npm           | GitHub trusted publisher for `sdk-release.yml` and environment `sdk-production`; `id-token: write`                            | `mimic-browser` native version                                                                     |
 | PyPI          | GitHub trusted publisher for `sdk-release.yml` and environment `sdk-production`; `id-token: write`                            | `mimic-browser` wheel and sdist                                                                    |
 | NuGet         | GitHub trusted publisher through `NuGet/login` (account `moreveal`)                                                           | Independently selected `mimic-browser`, `mimic-browser.Playwright`, `mimic-browser.PuppeteerSharp` |
 | Maven Central | `MAVEN_CENTRAL_USERNAME`, `MAVEN_CENTRAL_PASSWORD`, `GPG_PRIVATE_KEY`, `GPG_PASSPHRASE` in `sdk-production`                   | `boo.mimic:mimic-browser`, JAR/sources/Javadoc/POM                                                 |
@@ -126,6 +126,10 @@ Source-producing Go, Cargo and Packagist publication cannot use this recovery.
 PyPI authentication exchanges the GitHub OIDC identity for a short-lived upload
 token immediately before publishing the selected Python package. No `PYPI_TOKEN`
 secret is required. Other registry credentials are unchanged.
+
+npm publication uses GitHub OIDC without an `NPM_TOKEN` secret or
+`NODE_AUTH_TOKEN` fallback. A new npm trusted publisher must complete its first
+successful publication within two days to validate its repository identity.
 
 The PHP mirror contains no separately edited implementation. Only verified
 `sdk/php` package contents enter it. Go/Packagist registries construct their own
