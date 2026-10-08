@@ -45,10 +45,10 @@ for (const [name, integration] of Object.entries({ playwright, puppeteer })) {
         (await session.mimic.experimental.getVersion()).version,
         pinnedRelease,
       );
-      // Unknown Mimic extensions use the runtime's generic -32000 error.
+      // Unknown extensions preserve CDP's MethodNotFound error code.
       await assert.rejects(
         session.mimic.experimental.call("doesNotExistYet", { x: null }),
-        (error) => error instanceof ProtocolError && error.code === -32000,
+        (error) => error instanceof ProtocolError && error.code === -32601,
       );
       const context = await session.newContext({
         media: { devices: [] },

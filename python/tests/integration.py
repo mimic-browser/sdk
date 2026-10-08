@@ -44,7 +44,7 @@ class SyncTests(unittest.TestCase):
             self.assertEqual(session.mimic.experimental.getVersion()["version"], PINNED_RELEASE)
             with self.assertRaises(ProtocolError) as caught:
                 session.mimic.experimental.call("unknownFutureCommand", None)
-            self.assertEqual(caught.exception.code, -32000)
+            self.assertEqual(caught.exception.code, -32601)
             context = session.new_context(media={"devices": []}, resource_policy={"presets": ["noVisualAssets"]})
             page = context.new_page()
             page.goto(URL)
