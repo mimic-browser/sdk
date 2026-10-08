@@ -82,7 +82,33 @@ await session.mimic.experimental.newContributorCommand({"enabled": True})
 await session.mimic.experimental.call("newContributorCommand", {"enabled": True})
 page_mimic = await session.for_page(page)
 await page_mimic.start_trace()
+await page_mimic.detach()  # Releases only this extension attachment.
 ```
+
+Repeated `for_page(page)` calls share one active handle. Native `page.close()`
+automatically releases it. Explicit `close()` and `detach()` are idempotent and
+leave the Page open; the sync API also supports `with page_mimic`, and async
+integrations support `async with page_mimic`. Released handles have `closed ==
+True` and reject stable and experimental calls. Session teardown waits for late
+attachments and pending detach operations before closing the shared transport.
+
+Playwright options keep their native Python spelling:
+`session.new_context(locale="en-US", viewport={"width": 800, "height": 600})`.
+An optional `framework={...}` bag accepts the same native options; supplying a
+key in both places raises `TypeError` before creating a context. The SDK's
+top-level `proxy` configures a managed Mimic profile. Use `framework={"proxy":
+{"server": "http://localhost:8080"}}` to request Playwright's ordinary native
+proxy option, subject to runtime support. Managed profiles reject competing
+native proxy and emulation settings.
+
+The wheel includes `py.typed` and explicit signatures for runtime options,
+generated Mimic models and native Page/Context results. Playwright keyword
+signatures are generated from the qualified framework, so IDE completion and
+type checkers catch unknown keywords and invalid values without a manually
+maintained copy. Contributors check signature drift with
+`python tools/generate_api_typing.py --check`; after installing a wheel and
+`mypy` in a separate environment, run `python tools/check_typing.py --python
+<environment-python>` to verify positive and negative consumers.
 
 Experimental names retain exact wire spelling. Access and introspection are
 inert; explicit `call` supports names colliding with Python members. Stable and

@@ -8,12 +8,11 @@ from dataclasses import dataclass
 from ..generated import AsyncMimicCommands, to_wire
 from ..protocol import AsyncExperimental, CDPConnection
 from ..runtime import RuntimeManager, RuntimeError
+from .._page import AsyncPageBindings, AsyncMimicExtensions
 
 
 def _extensions(sender):
-    handle = AsyncMimicCommands(sender)
-    handle.experimental = AsyncExperimental(sender)
-    return handle
+    return AsyncMimicExtensions(sender)
 
 
 @dataclass(frozen=True)
@@ -26,7 +25,8 @@ class IntegrationSession:
     def __init__(self):
         self.runtime = self.browser = self.connection = self._driver = None
         self._owned_driver = False
-        self._contexts, self._sessions = [], []
+        self._contexts = []
+        self._pages = AsyncPageBindings(self)
         self._inflight = set()
         self._closed = False
         self._close_task = None
@@ -51,13 +51,17 @@ class IntegrationSession:
             await self.close()
             raise
 
-    async def new_context(self, *, media=None, resource_policy=None, profile=None, proxy=None, **options):
+    async def new_context(self, *, media=None, resource_policy=None, profile=None, proxy=None, framework=None, **options):
         if self._closed:
             raise RuntimeError("Integration session closed")
+        if framework is not None:
+            if options.keys() & framework.keys():
+                raise TypeError("Native context option supplied both as keyword and in framework")
+            options = {**framework, **options}
         completion = asyncio.get_running_loop().create_future()
         self._inflight.add(completion)
         operation = asyncio.create_task(self._new_context(media=media, resource_policy=resource_policy,
-                                                         profile=profile, proxy=proxy, _acquired=completion, **options))
+                                                         profile=profile, proxy=proxy, _acquired=completion, _options=options))
         try:
             return await asyncio.shield(operation)
         except asyncio.CancelledError:
@@ -74,11 +78,12 @@ class IntegrationSession:
             if not completion.done():
                 completion.set_result(None)
 
-    async def _new_context(self, *, media=None, resource_policy=None, profile=None, proxy=None, _acquired=None, **options):
+    async def _new_context(self, *, media=None, resource_policy=None, profile=None, proxy=None, _acquired=None, _options=None):
+        options = {} if _options is None else _options
         managed = profile is not None or proxy is not None
         if managed:
             conflicting = {"viewport", "no_viewport", "screen", "device_scale_factor", "is_mobile", "has_touch", "user_agent",
-                           "locale", "timezone_id", "color_scheme", "reduced_motion", "forced_colors", "contrast"}
+                           "locale", "timezone_id", "color_scheme", "reduced_motion", "forced_colors", "contrast", "proxy"}
             if any(key in options for key in conflicting):
                 raise RuntimeError("Managed profile owns emulation; configure it in the profile")
             options.update(no_viewport=True, color_scheme="null", reduced_motion="null", forced_colors="null", contrast="null")
@@ -133,15 +138,13 @@ class IntegrationSession:
             raise
 
     async def for_page(self, page):
-        session = await page.context.new_cdp_session(page)
-        try:
-            target_id = (await session.send("Target.getTargetInfo"))["targetInfo"]["targetId"]
-        finally:
-            await session.detach()
-        session_id = (await self.connection.call_async("Target.attachToTarget", {"targetId": target_id,
-                                                                                "flatten": True}))["sessionId"]
-        self._sessions.append(session_id)
-        return _extensions(lambda method, params: self.connection.call_async(method, params, session_id))
+        async def target_info():
+            session = await page.context.new_cdp_session(page)
+            try:
+                return (await session.send("Target.getTargetInfo"))["targetInfo"]["targetId"]
+            finally:
+                await session.detach()
+        return await self._pages.for_page(page, target_info, page.is_closed)
 
     async def close(self):
         if self._close_task is None:
@@ -155,6 +158,7 @@ class IntegrationSession:
 
     async def _close(self):
         await asyncio.gather(*self._inflight, return_exceptions=True)
+        await self._pages.close()
         failures = self.close_errors
         for context in reversed(self._contexts):
             try:
@@ -181,10 +185,13 @@ class IntegrationSession:
         await self.close()
 
 
-async def launch(*, playwright=None, engine="v8", **runtime_options):
+async def launch(*, playwright=None, engine="v8", runtime_version=None, lock=None,
+                 executable_path=None, runtime_dir=None, allow_download=None, timeout=60):
     # Shield ownership acquisition: cancellation waits for a started process so it
     # can always be closed, rather than abandoning a still-running worker thread.
-    task = asyncio.create_task(asyncio.to_thread(RuntimeManager(**runtime_options).launch, engine=engine))
+    manager = RuntimeManager(runtime_version=runtime_version, lock=lock, executable_path=executable_path,
+                             runtime_dir=runtime_dir, allow_download=allow_download, timeout=timeout)
+    task = asyncio.create_task(asyncio.to_thread(manager.launch, engine=engine))
     try:
         runtime = await asyncio.shield(task)
     except asyncio.CancelledError:

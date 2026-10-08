@@ -22,11 +22,20 @@ import urllib.request
 import uuid
 import zipfile
 from datetime import datetime, timezone
+from typing import Literal, TypedDict
 
 from .protocol import CDPConnection
 
 BASE = "https://github.com/mimic-browser/runtime/releases/download"
 SHA = re.compile(r"[0-9a-f]{64}\Z")
+PathValue = str | os.PathLike[str]
+Engine = Literal["v8", "quickjs", "goja"]
+
+
+class RuntimeIdentity(TypedDict):
+    version: str
+    chromeVersion: str
+    baseProfile: str
 
 
 class RuntimeError(Exception):

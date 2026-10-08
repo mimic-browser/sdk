@@ -8,12 +8,14 @@ from .playwright.async_api import _extensions, ContextSetup
 from .generated import to_wire
 from .protocol import CDPConnection, websocket_endpoint
 from .runtime import RuntimeManager, RuntimeError
+from ._page import AsyncPageBindings
 
 
 class IntegrationSession:
     def __init__(self):
         self.runtime = self.browser = self.connection = None
         self._contexts = []
+        self._pages = AsyncPageBindings(self)
         self._inflight = set()
         self._closed = False
         self._close_task = None
@@ -107,13 +109,13 @@ class IntegrationSession:
             raise
 
     async def for_page(self, page):
-        protocol = await page.target.createCDPSession()
-        try:
-            target_id = (await protocol.send("Target.getTargetInfo"))["targetInfo"]["targetId"]
-        finally:
-            await protocol.detach()
-        session_id = (await self.connection.call_async("Target.attachToTarget", {"targetId": target_id, "flatten": True}))["sessionId"]
-        return _extensions(lambda method, params: self.connection.call_async(method, params, session_id))
+        async def target_info():
+            protocol = await page.target.createCDPSession()
+            try:
+                return (await protocol.send("Target.getTargetInfo"))["targetInfo"]["targetId"]
+            finally:
+                await protocol.detach()
+        return await self._pages.for_page(page, target_info, page.isClosed)
 
     async def close(self):
         if self._close_task is None:
@@ -127,6 +129,7 @@ class IntegrationSession:
 
     async def _close(self):
         await asyncio.gather(*self._inflight, return_exceptions=True)
+        await self._pages.close()
         for context in reversed(self._contexts):
             try:
                 await context.close()
@@ -149,8 +152,11 @@ class IntegrationSession:
         await self.close()
 
 
-async def launch(*, engine="v8", **runtime_options):
-    task = asyncio.create_task(asyncio.to_thread(RuntimeManager(**runtime_options).launch, engine=engine))
+async def launch(*, engine="v8", runtime_version=None, lock=None, executable_path=None,
+                 runtime_dir=None, allow_download=None, timeout=60):
+    manager = RuntimeManager(runtime_version=runtime_version, lock=lock, executable_path=executable_path,
+                             runtime_dir=runtime_dir, allow_download=allow_download, timeout=timeout)
+    task = asyncio.create_task(asyncio.to_thread(manager.launch, engine=engine))
     try:
         runtime = await asyncio.shield(task)
     except asyncio.CancelledError:

@@ -19,4 +19,4 @@ test = ["pytest>=8,<10", "websockets>=14,<16"]
 mimic-sdk = "mimic.runtime:main"
 
 [tool.setuptools.package-data]
-mimic = ["runtime-lock.json"]
+mimic = ["runtime-lock.json", "py.typed", "**/*.pyi"]

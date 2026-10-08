@@ -57,12 +57,17 @@ def check(key, package, build, directory):
         peers = [name + "@" + metadata.get("devDependencies", {}).get(name, version) for name, version in metadata["peerDependencies"].items()]
         run(["npm", "install", "--ignore-scripts", "--no-audit", "--no-fund", *peers], directory)
         run(["node", "--input-type=module", "-e", "await import('mimic-browser/playwright'); await import('mimic-browser/puppeteer');"], directory)
+        run(["npm", "install", "--ignore-scripts", "--no-audit", "--no-fund", "typescript@5.9.3", "@types/node@22"], directory)
+        shutil.copyfile(release.ROOT / "node/test/types.ts", directory / "types.ts")
+        run(["node", directory / "node_modules/typescript/bin/tsc", "--noEmit", "--strict", "--skipLibCheck", "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", "types.ts"], directory)
     elif registry == "pypi":
         run(["python", "-m", "venv", directory / "venv"], directory)
         python = directory / "venv" / ("Scripts/python.exe" if os.name == "nt" else "bin/python")
         wheel = next(path for path in files if path.suffix == ".whl")
         run([python, "-m", "pip", "install", wheel], directory)
         run([python, "-c", "import mimic; from mimic import RuntimeManager; from mimic.playwright.sync_api import launch; from mimic.playwright.async_api import launch as launch_async; from mimic.pyppeteer import launch as launch_pyppeteer; import importlib.util; assert all(importlib.util.find_spec(name) is None for name in ('playwright', 'pyppeteer', 'mimic_sdk'))"], directory)
+        run([python, "-m", "pip", "install", str(wheel) + "[playwright]", "mypy==1.18.2"], directory)
+        run([python, release.ROOT / "python/tools/check_typing.py", "--python", python], directory)
     elif registry == "nuget":
         feed = directory / "feed"; feed.mkdir()
         for selected in build["packages"].values():

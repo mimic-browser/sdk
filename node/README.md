@@ -91,7 +91,19 @@ await session.mimic.experimental.call("newContributorCommand", {
 });
 const pageMimic = await session.forPage(page);
 await pageMimic.startTrace();
+await pageMimic.detach(); // Releases only this extension attachment.
 ```
+
+Repeated `forPage(page)` calls share one active handle. Native `page.close()`
+automatically releases it; explicit `close()` and `detach()` are idempotent and
+leave the Page open. A released handle reports `closed: true` and rejects new
+stable and experimental calls. Calling `forPage` again on an open Page creates
+a new attachment. Session teardown waits for in-progress attachment and detach
+operations before closing the shared transport.
+
+TypeScript retains each framework's native context and connection option types.
+For example, Playwright `newContext({framework: {locale: "en-US"}})` offers the
+same native option names and value types as `browser.newContext`.
 
 Unknown dynamic names retain their exact spelling. `then`, symbols, inspection
 and serialization are inert; reserved names remain available through `call`.

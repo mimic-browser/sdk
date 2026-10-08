@@ -1,0 +1,29 @@
+from pathlib import Path
+from typing import Awaitable, Callable
+from pyppeteer.browser import Browser, BrowserContext
+from pyppeteer.page import Page
+from .generated import JsonValue, MediaConfiguration, ProfileSelection, Proxy, ResourcePolicy
+from ._page import AsyncMimicExtensions, AsyncPageMimic
+from .playwright.async_api import ContextSetup as ContextSetup
+from .protocol import CDPConnection
+from .runtime import Engine, PathValue, RuntimeIdentity, RuntimeProcess
+
+MediaValue = MediaConfiguration | dict[str, JsonValue]
+MediaFactory = Callable[[ContextSetup], MediaValue | Awaitable[MediaValue]]
+class IntegrationSession:
+    browser: Browser
+    connection: CDPConnection
+    mimic: AsyncMimicExtensions
+    runtime: RuntimeProcess | None
+    identity: RuntimeIdentity
+    close_errors: list[Exception]
+    def __init__(self) -> None: ...
+    @classmethod
+    async def open(cls, endpoint: str, *, runtime: RuntimeProcess | None = ..., timeout: float = ...) -> IntegrationSession: ...
+    async def new_context(self, *, media: MediaValue | MediaFactory | None = ..., resource_policy: ResourcePolicy | dict[str, JsonValue] | None = ..., profile: ProfileSelection | dict[str, JsonValue] | None = ..., proxy: Proxy | dict[str, JsonValue] | None = ...) -> BrowserContext: ...
+    async def for_page(self, page: Page) -> AsyncPageMimic: ...
+    async def close(self) -> None: ...
+    async def __aenter__(self) -> IntegrationSession: ...
+    async def __aexit__(self, *args: object) -> None: ...
+async def launch(*, engine: Engine = ..., runtime_version: str | None = ..., lock: dict[str, JsonValue] | str | Path | None = ..., executable_path: PathValue | None = ..., runtime_dir: PathValue | None = ..., allow_download: bool | None = ..., timeout: float = ...) -> IntegrationSession: ...
+async def connect(endpoint: str, *, timeout: float = ...) -> IntegrationSession: ...

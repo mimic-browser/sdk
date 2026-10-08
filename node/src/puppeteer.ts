@@ -3,15 +3,40 @@ import puppeteer, {
   type BrowserContext,
   type Page,
   type ConnectOptions,
+  type BrowserContextOptions,
 } from "puppeteer-core";
 import {
   IntegrationSession,
   launchIntegration,
   type Adapter,
-  type LaunchOptions,
+  type LaunchOptions as IntegrationLaunchOptions,
+  type ContextSettings as IntegrationContextSettings,
 } from "./integration.js";
 
-const adapter: Adapter<Browser, BrowserContext, Page> = {
+export type FrameworkOptions = Omit<
+  ConnectOptions,
+  "browserURL" | "browserWSEndpoint" | "transport"
+>;
+export type LaunchOptions = IntegrationLaunchOptions<FrameworkOptions>;
+export type ContextSettings = IntegrationContextSettings<BrowserContextOptions>;
+const adapter: Adapter<
+  Browser,
+  BrowserContext,
+  Page,
+  BrowserContextOptions,
+  FrameworkOptions
+> = {
+  validateOptions(options) {
+    if (
+      ["browserURL", "browserWSEndpoint", "transport"].some((key) =>
+        Object.hasOwn(options, key),
+      )
+    ) {
+      throw new Error(
+        "The SDK owns the Puppeteer endpoint and transport; pass the endpoint to connect()",
+      );
+    }
+  },
   attach: (endpoint, options) =>
     puppeteer.connect({
       defaultViewport: null,
@@ -39,6 +64,13 @@ const adapter: Adapter<Browser, BrowserContext, Page> = {
   closeContext: (context) => context.close(),
   newPage: (context) => context.newPage(),
   closePage: (page) => page.close(),
+  isPageClosed: (page) => page.isClosed(),
+  onPageClose(page, callback) {
+    page.on("close", callback);
+    return () => {
+      page.off("close", callback);
+    };
+  },
   async targetInfo(page) {
     const session = await page.createCDPSession();
     try {
@@ -57,16 +89,16 @@ export function launch(options: LaunchOptions = {}) {
 export function connect(
   endpoint: string,
   options: {
-    framework?: ConnectOptions;
+    framework?: FrameworkOptions;
     timeout?: number;
     signal?: AbortSignal;
   } = {},
 ) {
-  return IntegrationSession.connect(adapter, endpoint, options as any);
+  return IntegrationSession.connect(adapter, endpoint, options);
 }
 export { IntegrationSession } from "./integration.js";
 export type {
   ContextSetup,
-  ContextSettings,
   MediaFactory,
+  PageExtensions,
 } from "./integration.js";

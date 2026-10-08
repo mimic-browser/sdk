@@ -22,8 +22,8 @@ def commands(group, runtime, media_fixture=None):
     maven = os.getenv("MIMIC_RELEASE_MVN", "mvn")
     php = os.getenv("MIMIC_RELEASE_PHP", "php")
     table = {
-        "node": ("node", [["npm", "run", "build"], ["npm", "test"], ["node", "--test", "test/transport.mjs", "test/integration.mjs", "test/bridge.mjs"]]),
-        "python": ("python", [["python", "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"], ["python", "tests/transport.py"], ["python", "tests/integration.py"], ["python", "tests/bridge.py"], [str(pyppeteer_python()), "tests/pyppeteer_integration.py"], [str(pyppeteer_python()), "tests/bridge.py", "--pyppeteer"]]),
+        "node": ("node", [["npm", "run", "build"], ["npm", "test"], ["node", "--test", "test/transport.mjs", "test/integration.mjs", "test/bridge.mjs", "test/page-lifecycle.mjs"]]),
+        "python": ("python", [["python", "-m", "unittest", "discover", "-s", "tests", "-p", "test_*.py"], ["python", "tools/generate_api_typing.py", "--check"], ["python", "tests/transport.py"], ["python", "tests/integration.py"], ["python", "tests/bridge.py"], ["python", "tests/page_lifecycle.py", "Sync", "AsyncPlaywright"], [str(pyppeteer_python()), "tests/pyppeteer_integration.py"], [str(pyppeteer_python()), "tests/page_lifecycle.py", "Pyppeteer"], [str(pyppeteer_python()), "tests/bridge.py", "--pyppeteer"]]),
         "dotnet": (".", [["dotnet", "run", "--project", "dotnet/Mimic.Tests", "--no-launch-profile", "--", "--integration-candidate", runtime], ["python", fixture, dotnet, "run", "--no-build", "--project", "dotnet/Mimic.Tests", "--", "--transport", "{endpoint}"]]),
         "java": ("java", [["mvn", "-B", "-ntp", "test-compile", "exec:java", "-Dexec.mainClass=io.mimicbrowser.sdk.IntegrationCheck", "-Dexec.classpathScope=test", "-Dexec.args=--candidate " + runtime], ["python", fixture, maven, "-B", "-ntp", "exec:java", "-Dexec.mainClass=io.mimicbrowser.sdk.ProtocolCheck", "-Dexec.classpathScope=test", "-Dexec.args={endpoint}"]]),
         "go": ("go", [["go", "test", "-v", "./..."]]),

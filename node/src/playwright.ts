@@ -4,17 +4,26 @@ import {
   type BrowserContext,
   type Page,
   type ConnectOverCDPOptions,
+  type BrowserContextOptions,
 } from "playwright-core";
 import {
   IntegrationSession,
   launchIntegration,
   type Adapter,
-  type LaunchOptions,
+  type LaunchOptions as IntegrationLaunchOptions,
+  type ContextSettings as IntegrationContextSettings,
 } from "./integration.js";
 
-const adapter: Adapter<Browser, BrowserContext, Page> = {
-  attach: (endpoint, options) =>
-    chromium.connectOverCDP(endpoint, options as ConnectOverCDPOptions),
+export type LaunchOptions = IntegrationLaunchOptions<ConnectOverCDPOptions>;
+export type ContextSettings = IntegrationContextSettings<BrowserContextOptions>;
+const adapter: Adapter<
+  Browser,
+  BrowserContext,
+  Page,
+  BrowserContextOptions,
+  ConnectOverCDPOptions
+> = {
+  attach: (endpoint, options) => chromium.connectOverCDP(endpoint, options),
   disconnect: (browser) => browser.close(),
   newContext: (browser, options) => browser.newContext(options),
   managedOptions(options) {
@@ -49,6 +58,13 @@ const adapter: Adapter<Browser, BrowserContext, Page> = {
   closeContext: (context) => context.close(),
   newPage: (context) => context.newPage(),
   closePage: (page) => page.close(),
+  isPageClosed: (page) => page.isClosed(),
+  onPageClose(page, callback) {
+    page.on("close", callback);
+    return () => {
+      page.off("close", callback);
+    };
+  },
   async targetInfo(page) {
     const session = await page.context().newCDPSession(page);
     try {
@@ -73,11 +89,11 @@ export function connect(
     signal?: AbortSignal;
   } = {},
 ) {
-  return IntegrationSession.connect(adapter, endpoint, options as any);
+  return IntegrationSession.connect(adapter, endpoint, options);
 }
 export { IntegrationSession } from "./integration.js";
 export type {
   ContextSetup,
-  ContextSettings,
   MediaFactory,
+  PageExtensions,
 } from "./integration.js";

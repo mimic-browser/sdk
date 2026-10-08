@@ -5,12 +5,11 @@ from dataclasses import dataclass
 from ..generated import MimicCommands, to_wire
 from ..protocol import CDPConnection, Experimental
 from ..runtime import RuntimeManager, RuntimeError
+from .._page import PageBindings, MimicExtensions
 
 
 def _extensions(sender):
-    handle = MimicCommands(sender)
-    handle.experimental = Experimental(sender)
-    return handle
+    return MimicExtensions(sender)
 
 
 @dataclass(frozen=True)
@@ -22,7 +21,8 @@ class ContextSetup:
 class IntegrationSession:
     def __init__(self, endpoint, *, runtime=None, playwright=None, timeout=30):
         self.runtime, self._driver, self._owned_driver = runtime, playwright, playwright is None
-        self._contexts, self._sessions = [], []
+        self._contexts = []
+        self._pages = PageBindings(self)
         self._closed = False
         self.close_errors = []
         self.browser = None
@@ -41,13 +41,17 @@ class IntegrationSession:
             self.close()
             raise
 
-    def new_context(self, *, media=None, resource_policy=None, profile=None, proxy=None, **options):
+    def new_context(self, *, media=None, resource_policy=None, profile=None, proxy=None, framework=None, **options):
         if self._closed:
             raise RuntimeError("Integration session closed")
+        if framework is not None:
+            if options.keys() & framework.keys():
+                raise TypeError("Native context option supplied both as keyword and in framework")
+            options = {**framework, **options}
         managed = profile is not None or proxy is not None
         if managed:
             conflicting = {"viewport", "no_viewport", "screen", "device_scale_factor", "is_mobile", "has_touch", "user_agent",
-                           "locale", "timezone_id", "color_scheme", "reduced_motion", "forced_colors", "contrast"}
+                           "locale", "timezone_id", "color_scheme", "reduced_motion", "forced_colors", "contrast", "proxy"}
             if any(key in options for key in conflicting):
                 raise RuntimeError("Managed profile owns emulation; configure it in the profile")
             options.update(no_viewport=True, color_scheme="null", reduced_motion="null", forced_colors="null", contrast="null")
@@ -94,21 +98,20 @@ class IntegrationSession:
             raise
 
     def for_page(self, page):
-        session = page.context.new_cdp_session(page)
-        try:
-            target_id = session.send("Target.getTargetInfo")["targetInfo"]["targetId"]
-        finally:
-            session.detach()
-        session_id = self.connection.call("Target.attachToTarget", {"targetId": target_id,
-                                                                   "flatten": True})["sessionId"]
-        self._sessions.append(session_id)
-        return _extensions(lambda method, params: self.connection.call(method, params, session_id))
+        def target_info():
+            session = page.context.new_cdp_session(page)
+            try:
+                return session.send("Target.getTargetInfo")["targetInfo"]["targetId"]
+            finally:
+                session.detach()
+        return self._pages.for_page(page, target_info, page.is_closed)
 
     def close(self):
         if self._closed:
             return
         self._closed = True
         failures = self.close_errors
+        self._pages.close()
         for context in reversed(self._contexts):
             try:
                 context.close()
@@ -134,8 +137,10 @@ class IntegrationSession:
         self.close()
 
 
-def launch(*, playwright=None, engine="v8", **runtime_options):
-    runtime = RuntimeManager(**runtime_options).launch(engine=engine)
+def launch(*, playwright=None, engine="v8", runtime_version=None, lock=None,
+           executable_path=None, runtime_dir=None, allow_download=None, timeout=60):
+    runtime = RuntimeManager(runtime_version=runtime_version, lock=lock, executable_path=executable_path,
+                             runtime_dir=runtime_dir, allow_download=allow_download, timeout=timeout).launch(engine=engine)
     return IntegrationSession(runtime.endpoint, runtime=runtime, playwright=playwright)
 
 

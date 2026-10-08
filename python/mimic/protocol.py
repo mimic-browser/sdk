@@ -169,6 +169,17 @@ class CDPConnection:
             if not future.done():
                 future.cancel()
 
+    def cancel_session(self, session_id):
+        """Reject Page calls promptly when their owned attachment is released."""
+        with self._lock:
+            pending = [future for future in self._pending.values()
+                       if future.session_id == session_id]
+        for future in pending:
+            try:
+                future.set_exception(ConnectionClosed("Page extension handle closed"))
+            except concurrent.futures.InvalidStateError:
+                pass
+
     def close(self):
         self._socket.close()
         if threading.current_thread() is not self._reader:
