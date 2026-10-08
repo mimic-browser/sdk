@@ -35,8 +35,10 @@ both the browser endpoint and `/devtools/page/*` on the same origin.
 
 `new_context(profile:, media:, resource_policy:, proxy:)` applies Mimic settings
 before returning the native context. A managed profile uses the runtime's
-configure-context bridge. `for_page(page)` creates a page extension session on
-the owned raw connection. Framework session IDs are never copied across sockets.
+configure-context bridge. `for_page(page)` reuses one page capability handle on
+the owned raw connection. Call `handle.close` to detach it early; the native Page
+remains open. Closing the Page or integration invalidates the handle and removes
+its cache entry. Framework session IDs are never copied across sockets.
 
 `media:` also accepts a callable. It receives
 `ContextSetup(browser_context_id:, mimic:)` after native Context creation and
@@ -60,7 +62,10 @@ the adapter's ownership mutex; a failing callback disposes its new Context.
 Media configuration alone keeps ordinary CDP emulation available; only an
 explicit environment profile or proxy selects managed Context configuration.
 
-Typed capabilities use snake_case methods and generated models. `UNSET` omits a
+Runtime and adapter methods expose explicit keyword parameters. Generated models
+also expose named constructors, for example
+`Generated::MediaConfiguration.new(devices: [])`, and documented field/result
+types for editor completion. Typed capabilities use snake_case methods. `UNSET` omits a
 value, while `nil` remains JSON null. Raw wire names retain their exact spelling:
 
 ```ruby
@@ -75,7 +80,7 @@ dispatcher serves generated and experimental calls. `ProtocolError` retains
 after dispatch does not imply rollback and does not cause automatic retries.
 
 `RuntimeManager.new(runtime_version:, lock_file:, executable_path:, runtime_dir:,
-allow_download:, archive_path:, startup_timeout:, cancelled:)` follows the shared
+allow_download:, archive_path:, startup_timeout:, lock_timeout:, cancelled:)` follows the shared
 runtime contract. It provides `resolve_lock`, `install`, `launch`, `list`,
 `verify` and explicit `prune`. The packaged pin is v0.2.3. Exact archives and
 executables are hash-verified; all languages reuse the same OS cache and leases.

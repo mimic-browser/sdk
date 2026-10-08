@@ -214,9 +214,9 @@ module MimicSDK
 
   class Experimental
     def initialize(sender) = (@sender = sender)
-    def call(name, params = UNSET, **options)
+    def call(name, params = UNSET, timeout: 30, cancelled: nil)
       raise ArgumentError, 'Expected an exact unqualified wire command leaf' unless name.is_a?(String) && name.match?(/\A[^.\s]+\z/)
-      @sender.call("Mimic.#{name}", params, **options)
+      @sender.call("Mimic.#{name}", params, timeout: timeout, cancelled: cancelled)
     end
     def method_missing(name, *args, **options)
       return super if name.to_s.start_with?('_') || %i[to_ary to_hash to_json inspect].include?(name)
@@ -233,8 +233,63 @@ module MimicSDK
       super(self)
       @experimental = Experimental.new(self)
     end
-    def call(method, params = UNSET, **options)
-      @transport.call_raw(method, params, session_id: @session_id, **options)
+    def call(method, params = UNSET, timeout: 30, cancelled: nil)
+      @transport.call_raw(method, params, session_id: @session_id, timeout: timeout, cancelled: cancelled)
+    end
+  end
+
+  # A capability client owns only its extra CDP attachment, never the native Page.
+  class PageClient < Client
+    attr_reader :session_id
+
+    def initialize(transport, session_id:, detach:)
+      super(transport, session_id: session_id)
+      @detach = detach
+      @state = Mutex.new
+      @close_changed = ConditionVariable.new
+      @closed = false
+      @closing = false
+    end
+
+    def closed? = @state.synchronize { @closed }
+
+    def call(method, params = UNSET, timeout: 30, cancelled: nil)
+      raise IOError, 'Page capability attachment closed' if closed?
+      super(method, params, timeout: timeout, cancelled: cancelled)
+    end
+
+    def invalidate
+      @state.synchronize do
+        @closed = true
+        @detach = nil unless @closing
+        !@closing
+      end
+    end
+
+    def close
+      detach = @state.synchronize do
+        @close_changed.wait(@state) while @closing
+        if @closed
+          raise @close_error if @close_error
+          return
+        end
+        @closed = true
+        @closing = true
+        @detach
+      end
+      begin
+        detach.call(self)
+        nil
+      rescue StandardError => error
+        @state.synchronize { @close_error = error }
+        raise
+      ensure
+        @state.synchronize do
+          @closing = false
+          @detach = nil
+          @close_changed.broadcast
+        end
+      end
     end
   end
 end

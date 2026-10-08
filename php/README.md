@@ -42,9 +42,26 @@ Install `chrome-php/chrome:^1.16` only when using this adapter. It has no native
 Context class, so `newContext` returns an explicit Mimic capability handle and
 `newPage($context)` returns a real Chrome PHP Page. Configuration is applied
 before page creation. `forPage($page)` resolves the page's actual Context.
+`forPageCommands($page)` returns a cached page command handle. Its `commands`
+property exposes generated methods and typed results. Call `close()` to release
+that extra attachment without closing the native Page; native Page and session
+closure invalidate the handle automatically.
 Generated/imported profiles, proxy, media and resource policies are accepted by
 `newContext`; the runtime enforces profile coherence. The bundled v0.2.3 runtime
 provides the `Mimic.configureContext` bridge for managed profiles.
+
+Use `RuntimeOptions` named arguments and generated models for editor completion:
+
+```php
+$configuration = new \Mimic\Sdk\Generated\CreateContextParams();
+$configuration->media = new \Mimic\Sdk\Generated\MediaConfiguration();
+$configuration->media->devices = [];
+$context = $session->newContext($configuration);
+```
+
+Existing JSON arrays/objects remain accepted. Native connection settings use
+Chrome PHP's ordinary options array; the adapter documents its supported keys
+with array-shape annotations rather than imitating the client's API.
 
 The optional second `newContext` argument is a media factory:
 `function (ContextSetup $setup): Generated\MediaConfiguration`. It receives the

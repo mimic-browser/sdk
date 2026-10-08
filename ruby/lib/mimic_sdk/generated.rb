@@ -51,825 +51,3181 @@ module MimicSDK
       FIELDS = {width: "width", height: "height", frame_rate: "frameRate"}.freeze
       TYPES = {width: nil, height: nil, frame_rate: nil}.freeze
       REQUIRED = [:width, :height, :frame_rate].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :width
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :height
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :frame_rate
+      # @param width [Integer]
+      # @param height [Integer]
+      # @param frame_rate [Numeric]
+      def initialize(
+        width: UNSET,
+        height: UNSET,
+        frame_rate: UNSET
+      )
+        @width = width
+        @height = height
+        @frame_rate = frame_rate
+      end
     end
     class CancelExecutionParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class CancelExecutionResult < Model
       FIELDS = {cancelled: "cancelled"}.freeze
       TYPES = {cancelled: nil}.freeze
       REQUIRED = [:cancelled].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :cancelled
+      # @param cancelled [Boolean]
+      def initialize(
+        cancelled: UNSET
+      )
+        @cancelled = cancelled
+      end
     end
     class CaptureSnapshotParams < Model
       FIELDS = {interrupt: "interrupt"}.freeze
       TYPES = {interrupt: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :interrupt
+      # @param interrupt [Boolean]
+      def initialize(
+        interrupt: UNSET
+      )
+        @interrupt = interrupt
+      end
     end
     class CaptureSnapshotResult < Model
       FIELDS = {url: "url", files: "files", warnings: "warnings", timings_ms: "timingsMs"}.freeze
       TYPES = {url: nil, files: [:map, nil], warnings: [:array, nil], timings_ms: [:map, nil]}.freeze
       REQUIRED = [:url, :files, :warnings, :timings_ms].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :url
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :files
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :warnings
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :timings_ms
+      # @param url [String]
+      # @param files [Hash]
+      # @param warnings [Array<String>]
+      # @param timings_ms [Hash]
+      def initialize(
+        url: UNSET,
+        files: UNSET,
+        warnings: UNSET,
+        timings_ms: UNSET
+      )
+        @url = url
+        @files = files
+        @warnings = warnings
+        @timings_ms = timings_ms
+      end
     end
     class ClearTraceParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class ClearTraceResult < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class ConfigureContextParams < Model
       FIELDS = {profile: "profile", proxy: "proxy", resource_policy: "resourcePolicy", media: "media", browser_context_id: "browserContextId"}.freeze
       TYPES = {profile: "ProfileSelection", proxy: "Proxy", resource_policy: "ResourcePolicy", media: "MediaConfiguration", browser_context_id: nil}.freeze
       REQUIRED = [:browser_context_id].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Object] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [Proxy] UNSET until assigned when omitted.
+      attr_accessor :proxy
+      # @return [ResourcePolicy] UNSET until assigned when omitted.
+      attr_accessor :resource_policy
+      # @return [MediaConfiguration] UNSET until assigned when omitted.
+      attr_accessor :media
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @param profile [Object]
+      # @param proxy [Proxy]
+      # @param resource_policy [ResourcePolicy]
+      # @param media [MediaConfiguration]
+      # @param browser_context_id [String]
+      def initialize(
+        profile: UNSET,
+        proxy: UNSET,
+        resource_policy: UNSET,
+        media: UNSET,
+        browser_context_id: UNSET
+      )
+        @profile = profile
+        @proxy = proxy
+        @resource_policy = resource_policy
+        @media = media
+        @browser_context_id = browser_context_id
+      end
     end
     class ConfigureContextResult < Model
       FIELDS = {profile: "profile", profile_id: "profileId", mode: "mode", warnings: "warnings", browser_context_id: "browserContextId", media: "media"}.freeze
       TYPES = {profile: nil, profile_id: nil, mode: nil, warnings: [:array, nil], browser_context_id: nil, media: "MediaProfile"}.freeze
       REQUIRED = [:profile, :profile_id, :mode, :warnings, :browser_context_id].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile_id
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :mode
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :warnings
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @return [MediaProfile] UNSET until assigned when omitted.
+      attr_accessor :media
+      # @param profile [String]
+      # @param profile_id [String]
+      # @param mode [String]
+      # @param warnings [Array<String>]
+      # @param browser_context_id [String]
+      # @param media [MediaProfile]
+      def initialize(
+        profile: UNSET,
+        profile_id: UNSET,
+        mode: UNSET,
+        warnings: UNSET,
+        browser_context_id: UNSET,
+        media: UNSET
+      )
+        @profile = profile
+        @profile_id = profile_id
+        @mode = mode
+        @warnings = warnings
+        @browser_context_id = browser_context_id
+        @media = media
+      end
     end
     class CreateContextParams < Model
       FIELDS = {profile: "profile", proxy: "proxy", resource_policy: "resourcePolicy", dispose_on_detach: "disposeOnDetach", media: "media"}.freeze
       TYPES = {profile: "ProfileSelection", proxy: "Proxy", resource_policy: "ResourcePolicy", dispose_on_detach: nil, media: "MediaConfiguration"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Object] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [Proxy] UNSET until assigned when omitted.
+      attr_accessor :proxy
+      # @return [ResourcePolicy] UNSET until assigned when omitted.
+      attr_accessor :resource_policy
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :dispose_on_detach
+      # @return [MediaConfiguration] UNSET until assigned when omitted.
+      attr_accessor :media
+      # @param profile [Object]
+      # @param proxy [Proxy]
+      # @param resource_policy [ResourcePolicy]
+      # @param dispose_on_detach [Boolean]
+      # @param media [MediaConfiguration]
+      def initialize(
+        profile: UNSET,
+        proxy: UNSET,
+        resource_policy: UNSET,
+        dispose_on_detach: UNSET,
+        media: UNSET
+      )
+        @profile = profile
+        @proxy = proxy
+        @resource_policy = resource_policy
+        @dispose_on_detach = dispose_on_detach
+        @media = media
+      end
     end
     class CreateContextResult < Model
       FIELDS = {profile: "profile", profile_id: "profileId", mode: "mode", warnings: "warnings", browser_context_id: "browserContextId", media: "media"}.freeze
       TYPES = {profile: nil, profile_id: nil, mode: nil, warnings: [:array, nil], browser_context_id: nil, media: "MediaProfile"}.freeze
       REQUIRED = [:profile, :profile_id, :mode, :warnings, :browser_context_id].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile_id
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :mode
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :warnings
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @return [MediaProfile] UNSET until assigned when omitted.
+      attr_accessor :media
+      # @param profile [String]
+      # @param profile_id [String]
+      # @param mode [String]
+      # @param warnings [Array<String>]
+      # @param browser_context_id [String]
+      # @param media [MediaProfile]
+      def initialize(
+        profile: UNSET,
+        profile_id: UNSET,
+        mode: UNSET,
+        warnings: UNSET,
+        browser_context_id: UNSET,
+        media: UNSET
+      )
+        @profile = profile
+        @profile_id = profile_id
+        @mode = mode
+        @warnings = warnings
+        @browser_context_id = browser_context_id
+        @media = media
+      end
     end
     class DiagnosticCost < Model
       FIELDS = {count: "count", ns: "ns"}.freeze
       TYPES = {count: nil, ns: nil}.freeze
       REQUIRED = [:count, :ns].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :count
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :ns
+      # @param count [Integer]
+      # @param ns [Integer]
+      def initialize(
+        count: UNSET,
+        ns: UNSET
+      )
+        @count = count
+        @ns = ns
+      end
     end
     class Diagnostics < Model
       FIELDS = {enabled: "enabled", host_only: "hostOnly", costs: "costs", cpu_profiles: "cpu_profiles", realms: "realms"}.freeze
       TYPES = {enabled: nil, host_only: nil, costs: [:map, "DiagnosticCost"], cpu_profiles: [:map, nil], realms: [:array, "RealmDiagnostics"]}.freeze
       REQUIRED = [:enabled].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :enabled
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :host_only
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :costs
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :cpu_profiles
+      # @return [Array<RealmDiagnostics>] UNSET until assigned when omitted.
+      attr_accessor :realms
+      # @param enabled [Boolean]
+      # @param host_only [Boolean]
+      # @param costs [Hash]
+      # @param cpu_profiles [Hash]
+      # @param realms [Array<RealmDiagnostics>]
+      def initialize(
+        enabled: UNSET,
+        host_only: UNSET,
+        costs: UNSET,
+        cpu_profiles: UNSET,
+        realms: UNSET
+      )
+        @enabled = enabled
+        @host_only = host_only
+        @costs = costs
+        @cpu_profiles = cpu_profiles
+        @realms = realms
+      end
     end
     class Empty < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class EnvironmentAudio < Model
       FIELDS = {sample_rate: "sampleRate", channels: "channels", buffer_duration: "bufferDuration", max_buffer_frames: "maxBufferFrames"}.freeze
       TYPES = {sample_rate: nil, channels: nil, buffer_duration: nil, max_buffer_frames: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :sample_rate
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :channels
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :buffer_duration
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_buffer_frames
+      # @param sample_rate [Numeric]
+      # @param channels [Integer]
+      # @param buffer_duration [Numeric]
+      # @param max_buffer_frames [Integer]
+      def initialize(
+        sample_rate: UNSET,
+        channels: UNSET,
+        buffer_duration: UNSET,
+        max_buffer_frames: UNSET
+      )
+        @sample_rate = sample_rate
+        @channels = channels
+        @buffer_duration = buffer_duration
+        @max_buffer_frames = max_buffer_frames
+      end
     end
     class EnvironmentCapabilities < Model
       FIELDS = {storage_quota_bytes: "storageQuotaBytes", devices: "devices", media: "media", keyboard_layout: "keyboardLayout"}.freeze
       TYPES = {storage_quota_bytes: nil, devices: "EnvironmentDeviceCapabilities", media: "EnvironmentMediaCapabilities", keyboard_layout: [:map, nil]}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :storage_quota_bytes
+      # @return [EnvironmentDeviceCapabilities] UNSET until assigned when omitted.
+      attr_accessor :devices
+      # @return [EnvironmentMediaCapabilities] UNSET until assigned when omitted.
+      attr_accessor :media
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :keyboard_layout
+      # @param storage_quota_bytes [Integer]
+      # @param devices [EnvironmentDeviceCapabilities]
+      # @param media [EnvironmentMediaCapabilities]
+      # @param keyboard_layout [Hash]
+      def initialize(
+        storage_quota_bytes: UNSET,
+        devices: UNSET,
+        media: UNSET,
+        keyboard_layout: UNSET
+      )
+        @storage_quota_bytes = storage_quota_bytes
+        @devices = devices
+        @media = media
+        @keyboard_layout = keyboard_layout
+      end
     end
     class EnvironmentDeviceCapabilities < Model
       FIELDS = {bluetooth_available: "bluetoothAvailable", posture: "posture"}.freeze
       TYPES = {bluetooth_available: nil, posture: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :bluetooth_available
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :posture
+      # @param bluetooth_available [Boolean]
+      # @param posture [String]
+      def initialize(
+        bluetooth_available: UNSET,
+        posture: UNSET
+      )
+        @bluetooth_available = bluetooth_available
+        @posture = posture
+      end
     end
     class EnvironmentDisplay < Model
       FIELDS = {width: "width", height: "height", available_width: "availableWidth", available_height: "availableHeight", device_scale_factor: "deviceScaleFactor", color_depth: "colorDepth", orientation: "orientation"}.freeze
       TYPES = {width: nil, height: nil, available_width: nil, available_height: nil, device_scale_factor: nil, color_depth: nil, orientation: "EnvironmentScreenOrientation"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :width
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :height
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :available_width
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :available_height
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :device_scale_factor
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :color_depth
+      # @return [EnvironmentScreenOrientation] UNSET until assigned when omitted.
+      attr_accessor :orientation
+      # @param width [Integer]
+      # @param height [Integer]
+      # @param available_width [Integer]
+      # @param available_height [Integer]
+      # @param device_scale_factor [Numeric]
+      # @param color_depth [Integer]
+      # @param orientation [EnvironmentScreenOrientation]
+      def initialize(
+        width: UNSET,
+        height: UNSET,
+        available_width: UNSET,
+        available_height: UNSET,
+        device_scale_factor: UNSET,
+        color_depth: UNSET,
+        orientation: UNSET
+      )
+        @width = width
+        @height = height
+        @available_width = available_width
+        @available_height = available_height
+        @device_scale_factor = device_scale_factor
+        @color_depth = color_depth
+        @orientation = orientation
+      end
     end
     class EnvironmentFonts < Model
       FIELDS = {serif: "serif", sans_serif: "sansSerif", monospace: "monospace", system_u_i: "systemUI", system: "system", fallback: "fallback"}.freeze
       TYPES = {serif: nil, sans_serif: nil, monospace: nil, system_u_i: nil, system: [:map, nil], fallback: [:array, nil]}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :serif
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :sans_serif
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :monospace
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :system_u_i
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :system
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :fallback
+      # @param serif [String]
+      # @param sans_serif [String]
+      # @param monospace [String]
+      # @param system_u_i [String]
+      # @param system [Hash]
+      # @param fallback [Array<String>]
+      def initialize(
+        serif: UNSET,
+        sans_serif: UNSET,
+        monospace: UNSET,
+        system_u_i: UNSET,
+        system: UNSET,
+        fallback: UNSET
+      )
+        @serif = serif
+        @sans_serif = sans_serif
+        @monospace = monospace
+        @system_u_i = system_u_i
+        @system = system
+        @fallback = fallback
+      end
     end
     class EnvironmentGPUAdapter < Model
       FIELDS = {vendor: "vendor", architecture: "architecture", device: "device", description: "description", subgroup_min_size: "subgroupMinSize", subgroup_max_size: "subgroupMaxSize", is_fallback_adapter: "isFallbackAdapter", features: "features", limits: "limits", wgsl_language_features: "wgslLanguageFeatures", initialization_delay_millis: "initializationDelayMillis"}.freeze
       TYPES = {vendor: nil, architecture: nil, device: nil, description: nil, subgroup_min_size: nil, subgroup_max_size: nil, is_fallback_adapter: nil, features: [:array, nil], limits: [:map, nil], wgsl_language_features: [:array, nil], initialization_delay_millis: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :vendor
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :architecture
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :device
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :description
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :subgroup_min_size
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :subgroup_max_size
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :is_fallback_adapter
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :features
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :limits
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :wgsl_language_features
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :initialization_delay_millis
+      # @param vendor [String]
+      # @param architecture [String]
+      # @param device [String]
+      # @param description [String]
+      # @param subgroup_min_size [Integer]
+      # @param subgroup_max_size [Integer]
+      # @param is_fallback_adapter [Boolean]
+      # @param features [Array<String>]
+      # @param limits [Hash]
+      # @param wgsl_language_features [Array<String>]
+      # @param initialization_delay_millis [Numeric]
+      def initialize(
+        vendor: UNSET,
+        architecture: UNSET,
+        device: UNSET,
+        description: UNSET,
+        subgroup_min_size: UNSET,
+        subgroup_max_size: UNSET,
+        is_fallback_adapter: UNSET,
+        features: UNSET,
+        limits: UNSET,
+        wgsl_language_features: UNSET,
+        initialization_delay_millis: UNSET
+      )
+        @vendor = vendor
+        @architecture = architecture
+        @device = device
+        @description = description
+        @subgroup_min_size = subgroup_min_size
+        @subgroup_max_size = subgroup_max_size
+        @is_fallback_adapter = is_fallback_adapter
+        @features = features
+        @limits = limits
+        @wgsl_language_features = wgsl_language_features
+        @initialization_delay_millis = initialization_delay_millis
+      end
     end
     class EnvironmentGraphics < Model
       FIELDS = {vendor: "vendor", renderer: "renderer", max_texture_size: "maxTextureSize", web_g_l_capabilities_j_s_o_n: "webGLCapabilitiesJSON", web_g_p_u: "webGPU", web_g_p_u_adapters: "webGPUAdapters"}.freeze
       TYPES = {vendor: nil, renderer: nil, max_texture_size: nil, web_g_l_capabilities_j_s_o_n: nil, web_g_p_u: "EnvironmentGPUAdapter", web_g_p_u_adapters: [:map, "EnvironmentGPUAdapter"]}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :vendor
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :renderer
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_texture_size
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :web_g_l_capabilities_j_s_o_n
+      # @return [EnvironmentGPUAdapter] UNSET until assigned when omitted.
+      attr_accessor :web_g_p_u
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :web_g_p_u_adapters
+      # @param vendor [String]
+      # @param renderer [String]
+      # @param max_texture_size [Integer]
+      # @param web_g_l_capabilities_j_s_o_n [String]
+      # @param web_g_p_u [EnvironmentGPUAdapter]
+      # @param web_g_p_u_adapters [Hash]
+      def initialize(
+        vendor: UNSET,
+        renderer: UNSET,
+        max_texture_size: UNSET,
+        web_g_l_capabilities_j_s_o_n: UNSET,
+        web_g_p_u: UNSET,
+        web_g_p_u_adapters: UNSET
+      )
+        @vendor = vendor
+        @renderer = renderer
+        @max_texture_size = max_texture_size
+        @web_g_l_capabilities_j_s_o_n = web_g_l_capabilities_j_s_o_n
+        @web_g_p_u = web_g_p_u
+        @web_g_p_u_adapters = web_g_p_u_adapters
+      end
     end
     class EnvironmentHardware < Model
       FIELDS = {cpu_performance: "cpuPerformance", cpu_performance_known: "cpuPerformanceKnown", logical_processors: "logicalProcessors", device_memory_g_b: "deviceMemoryGB"}.freeze
       TYPES = {cpu_performance: nil, cpu_performance_known: nil, logical_processors: nil, device_memory_g_b: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :cpu_performance
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :cpu_performance_known
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :logical_processors
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :device_memory_g_b
+      # @param cpu_performance [Integer]
+      # @param cpu_performance_known [Boolean]
+      # @param logical_processors [Integer]
+      # @param device_memory_g_b [Numeric]
+      def initialize(
+        cpu_performance: UNSET,
+        cpu_performance_known: UNSET,
+        logical_processors: UNSET,
+        device_memory_g_b: UNSET
+      )
+        @cpu_performance = cpu_performance
+        @cpu_performance_known = cpu_performance_known
+        @logical_processors = logical_processors
+        @device_memory_g_b = device_memory_g_b
+      end
     end
     class EnvironmentICEProfile < Model
       FIELDS = {host_candidate_count: "hostCandidateCount", reflexive_candidate_count: "reflexiveCandidateCount", port_offsets: "portOffsets", reflexive_port_offsets: "reflexivePortOffsets", public_address: "publicAddress", network_cost: "networkCost", host_delay_millis: "hostDelayMillis", reflexive_delay_millis: "reflexiveDelayMillis", end_delay_millis: "endDelayMillis"}.freeze
       TYPES = {host_candidate_count: nil, reflexive_candidate_count: nil, port_offsets: [:array, nil], reflexive_port_offsets: [:array, nil], public_address: nil, network_cost: nil, host_delay_millis: nil, reflexive_delay_millis: nil, end_delay_millis: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :host_candidate_count
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :reflexive_candidate_count
+      # @return [Array<Integer>] UNSET until assigned when omitted.
+      attr_accessor :port_offsets
+      # @return [Array<Integer>] UNSET until assigned when omitted.
+      attr_accessor :reflexive_port_offsets
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :public_address
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :network_cost
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :host_delay_millis
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :reflexive_delay_millis
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :end_delay_millis
+      # @param host_candidate_count [Integer]
+      # @param reflexive_candidate_count [Integer]
+      # @param port_offsets [Array<Integer>]
+      # @param reflexive_port_offsets [Array<Integer>]
+      # @param public_address [String]
+      # @param network_cost [Integer]
+      # @param host_delay_millis [Numeric]
+      # @param reflexive_delay_millis [Numeric]
+      # @param end_delay_millis [Numeric]
+      def initialize(
+        host_candidate_count: UNSET,
+        reflexive_candidate_count: UNSET,
+        port_offsets: UNSET,
+        reflexive_port_offsets: UNSET,
+        public_address: UNSET,
+        network_cost: UNSET,
+        host_delay_millis: UNSET,
+        reflexive_delay_millis: UNSET,
+        end_delay_millis: UNSET
+      )
+        @host_candidate_count = host_candidate_count
+        @reflexive_candidate_count = reflexive_candidate_count
+        @port_offsets = port_offsets
+        @reflexive_port_offsets = reflexive_port_offsets
+        @public_address = public_address
+        @network_cost = network_cost
+        @host_delay_millis = host_delay_millis
+        @reflexive_delay_millis = reflexive_delay_millis
+        @end_delay_millis = end_delay_millis
+      end
     end
     class EnvironmentIdentity < Model
       FIELDS = {user_agent: "userAgent", platform: "platform", metadata: "metadata"}.freeze
       TYPES = {user_agent: nil, platform: nil, metadata: "EnvironmentUserAgentMetadata"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :user_agent
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :platform
+      # @return [EnvironmentUserAgentMetadata] UNSET until assigned when omitted.
+      attr_accessor :metadata
+      # @param user_agent [String]
+      # @param platform [String]
+      # @param metadata [EnvironmentUserAgentMetadata]
+      def initialize(
+        user_agent: UNSET,
+        platform: UNSET,
+        metadata: UNSET
+      )
+        @user_agent = user_agent
+        @platform = platform
+        @metadata = metadata
+      end
     end
     class EnvironmentLocale < Model
       FIELDS = {reduce_accept_language: "reduceAcceptLanguage", languages: "languages", intl_locale: "intlLocale", timezone: "timezone"}.freeze
       TYPES = {reduce_accept_language: nil, languages: [:array, nil], intl_locale: nil, timezone: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :reduce_accept_language
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :languages
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :intl_locale
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :timezone
+      # @param reduce_accept_language [Boolean]
+      # @param languages [Array<String>]
+      # @param intl_locale [String]
+      # @param timezone [String]
+      def initialize(
+        reduce_accept_language: UNSET,
+        languages: UNSET,
+        intl_locale: UNSET,
+        timezone: UNSET
+      )
+        @reduce_accept_language = reduce_accept_language
+        @languages = languages
+        @intl_locale = intl_locale
+        @timezone = timezone
+      end
     end
     class EnvironmentMediaCapabilities < Model
       FIELDS = {rtp: "rtp", formats: "formats", kinds: "kinds", supported_constraints: "supportedConstraints"}.freeze
       TYPES = {rtp: [:map, "EnvironmentRTPMediaCatalog"], formats: "EnvironmentMediaFormatCatalog", kinds: [:array, nil], supported_constraints: [:array, nil]}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :rtp
+      # @return [EnvironmentMediaFormatCatalog] UNSET until assigned when omitted.
+      attr_accessor :formats
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :kinds
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :supported_constraints
+      # @param rtp [Hash]
+      # @param formats [EnvironmentMediaFormatCatalog]
+      # @param kinds [Array<String>]
+      # @param supported_constraints [Array<String>]
+      def initialize(
+        rtp: UNSET,
+        formats: UNSET,
+        kinds: UNSET,
+        supported_constraints: UNSET
+      )
+        @rtp = rtp
+        @formats = formats
+        @kinds = kinds
+        @supported_constraints = supported_constraints
+      end
     end
     class EnvironmentMediaContainerPolicy < Model
       FIELDS = {codecs: "codecs", default_codec: "defaultCodec", media_source: "mediaSource"}.freeze
       TYPES = {codecs: [:array, nil], default_codec: nil, media_source: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :codecs
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :default_codec
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :media_source
+      # @param codecs [Array<String>]
+      # @param default_codec [String]
+      # @param media_source [Boolean]
+      def initialize(
+        codecs: UNSET,
+        default_codec: UNSET,
+        media_source: UNSET
+      )
+        @codecs = codecs
+        @default_codec = default_codec
+        @media_source = media_source
+      end
     end
     class EnvironmentMediaFormatCatalog < Model
       FIELDS = {containers: "containers", efficient_video: "efficientVideo"}.freeze
       TYPES = {containers: [:map, "EnvironmentMediaContainerPolicy"], efficient_video: [:array, nil]}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :containers
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :efficient_video
+      # @param containers [Hash]
+      # @param efficient_video [Array<String>]
+      def initialize(
+        containers: UNSET,
+        efficient_video: UNSET
+      )
+        @containers = containers
+        @efficient_video = efficient_video
+      end
     end
     class EnvironmentNetwork < Model
       FIELDS = {save_data: "saveData", online: "online", effective_type: "effectiveType", downlink_mbps: "downlinkMbps", rtt_millis: "rttMillis", cookies_enabled: "cookiesEnabled", wire_profile: "wireProfile", ice: "ice", proxy: "proxy"}.freeze
       TYPES = {save_data: nil, online: nil, effective_type: nil, downlink_mbps: nil, rtt_millis: nil, cookies_enabled: nil, wire_profile: nil, ice: "EnvironmentICEProfile", proxy: "EnvironmentProxy"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :save_data
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :online
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :effective_type
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :downlink_mbps
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :rtt_millis
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :cookies_enabled
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :wire_profile
+      # @return [EnvironmentICEProfile] UNSET until assigned when omitted.
+      attr_accessor :ice
+      # @return [EnvironmentProxy] UNSET until assigned when omitted.
+      attr_accessor :proxy
+      # @param save_data [Boolean]
+      # @param online [Boolean]
+      # @param effective_type [String]
+      # @param downlink_mbps [Numeric]
+      # @param rtt_millis [Numeric]
+      # @param cookies_enabled [Boolean]
+      # @param wire_profile [String]
+      # @param ice [EnvironmentICEProfile]
+      # @param proxy [EnvironmentProxy]
+      def initialize(
+        save_data: UNSET,
+        online: UNSET,
+        effective_type: UNSET,
+        downlink_mbps: UNSET,
+        rtt_millis: UNSET,
+        cookies_enabled: UNSET,
+        wire_profile: UNSET,
+        ice: UNSET,
+        proxy: UNSET
+      )
+        @save_data = save_data
+        @online = online
+        @effective_type = effective_type
+        @downlink_mbps = downlink_mbps
+        @rtt_millis = rtt_millis
+        @cookies_enabled = cookies_enabled
+        @wire_profile = wire_profile
+        @ice = ice
+        @proxy = proxy
+      end
     end
     class EnvironmentPreferences < Model
       FIELDS = {color_scheme: "colorScheme", system_colors: "systemColors", reduced_motion: "reducedMotion", do_not_track: "doNotTrack"}.freeze
       TYPES = {color_scheme: nil, system_colors: [:map, [:map, nil]], reduced_motion: nil, do_not_track: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :color_scheme
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :system_colors
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :reduced_motion
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :do_not_track
+      # @param color_scheme [String]
+      # @param system_colors [Hash]
+      # @param reduced_motion [Boolean]
+      # @param do_not_track [Boolean]
+      def initialize(
+        color_scheme: UNSET,
+        system_colors: UNSET,
+        reduced_motion: UNSET,
+        do_not_track: UNSET
+      )
+        @color_scheme = color_scheme
+        @system_colors = system_colors
+        @reduced_motion = reduced_motion
+        @do_not_track = do_not_track
+      end
     end
     class EnvironmentProfile < Model
       FIELDS = {schema_version: "schemaVersion", base_profile: "baseProfile", identity: "identity", display: "display", window: "window", hardware: "hardware", locale: "locale", graphics: "graphics", audio: "audio", fonts: "fonts", preferences: "preferences", network: "network", permissions: "permissions", capabilities: "capabilities", features: "features", timing: "timing"}.freeze
       TYPES = {schema_version: nil, base_profile: nil, identity: "EnvironmentIdentity", display: "EnvironmentDisplay", window: "EnvironmentWindow", hardware: "EnvironmentHardware", locale: "EnvironmentLocale", graphics: "EnvironmentGraphics", audio: "EnvironmentAudio", fonts: "EnvironmentFonts", preferences: "EnvironmentPreferences", network: "EnvironmentNetwork", permissions: [:map, nil], capabilities: "EnvironmentCapabilities", features: [:map, nil], timing: "EnvironmentTiming"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :schema_version
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :base_profile
+      # @return [EnvironmentIdentity] UNSET until assigned when omitted.
+      attr_accessor :identity
+      # @return [EnvironmentDisplay] UNSET until assigned when omitted.
+      attr_accessor :display
+      # @return [EnvironmentWindow] UNSET until assigned when omitted.
+      attr_accessor :window
+      # @return [EnvironmentHardware] UNSET until assigned when omitted.
+      attr_accessor :hardware
+      # @return [EnvironmentLocale] UNSET until assigned when omitted.
+      attr_accessor :locale
+      # @return [EnvironmentGraphics] UNSET until assigned when omitted.
+      attr_accessor :graphics
+      # @return [EnvironmentAudio] UNSET until assigned when omitted.
+      attr_accessor :audio
+      # @return [EnvironmentFonts] UNSET until assigned when omitted.
+      attr_accessor :fonts
+      # @return [EnvironmentPreferences] UNSET until assigned when omitted.
+      attr_accessor :preferences
+      # @return [EnvironmentNetwork] UNSET until assigned when omitted.
+      attr_accessor :network
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :permissions
+      # @return [EnvironmentCapabilities] UNSET until assigned when omitted.
+      attr_accessor :capabilities
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :features
+      # @return [EnvironmentTiming] UNSET until assigned when omitted.
+      attr_accessor :timing
+      # @param schema_version [Integer]
+      # @param base_profile [String]
+      # @param identity [EnvironmentIdentity]
+      # @param display [EnvironmentDisplay]
+      # @param window [EnvironmentWindow]
+      # @param hardware [EnvironmentHardware]
+      # @param locale [EnvironmentLocale]
+      # @param graphics [EnvironmentGraphics]
+      # @param audio [EnvironmentAudio]
+      # @param fonts [EnvironmentFonts]
+      # @param preferences [EnvironmentPreferences]
+      # @param network [EnvironmentNetwork]
+      # @param permissions [Hash]
+      # @param capabilities [EnvironmentCapabilities]
+      # @param features [Hash]
+      # @param timing [EnvironmentTiming]
+      def initialize(
+        schema_version: UNSET,
+        base_profile: UNSET,
+        identity: UNSET,
+        display: UNSET,
+        window: UNSET,
+        hardware: UNSET,
+        locale: UNSET,
+        graphics: UNSET,
+        audio: UNSET,
+        fonts: UNSET,
+        preferences: UNSET,
+        network: UNSET,
+        permissions: UNSET,
+        capabilities: UNSET,
+        features: UNSET,
+        timing: UNSET
+      )
+        @schema_version = schema_version
+        @base_profile = base_profile
+        @identity = identity
+        @display = display
+        @window = window
+        @hardware = hardware
+        @locale = locale
+        @graphics = graphics
+        @audio = audio
+        @fonts = fonts
+        @preferences = preferences
+        @network = network
+        @permissions = permissions
+        @capabilities = capabilities
+        @features = features
+        @timing = timing
+      end
     end
     class EnvironmentProxy < Model
       FIELDS = {server: "server", username: "username", password: "password"}.freeze
       TYPES = {server: nil, username: nil, password: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :server
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :username
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :password
+      # @param server [String]
+      # @param username [String]
+      # @param password [String]
+      def initialize(
+        server: UNSET,
+        username: UNSET,
+        password: UNSET
+      )
+        @server = server
+        @username = username
+        @password = password
+      end
     end
     class EnvironmentRTPCodec < Model
       FIELDS = {name: "name", clock_rate: "clockRate", channels: "channels", parameters: "parameters", sender_parameters: "senderParameters", feedback: "feedback", payload: "payload", rtx_payload: "rtxPayload", redundant: "redundant"}.freeze
       TYPES = {name: nil, clock_rate: nil, channels: nil, parameters: nil, sender_parameters: nil, feedback: [:array, nil], payload: nil, rtx_payload: nil, redundant: [:array, nil]}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :name
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :clock_rate
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :channels
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :parameters
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :sender_parameters
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :feedback
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :payload
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :rtx_payload
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :redundant
+      # @param name [String]
+      # @param clock_rate [Integer]
+      # @param channels [Integer]
+      # @param parameters [String]
+      # @param sender_parameters [String]
+      # @param feedback [Array<String>]
+      # @param payload [Integer]
+      # @param rtx_payload [Integer]
+      # @param redundant [Array<String>]
+      def initialize(
+        name: UNSET,
+        clock_rate: UNSET,
+        channels: UNSET,
+        parameters: UNSET,
+        sender_parameters: UNSET,
+        feedback: UNSET,
+        payload: UNSET,
+        rtx_payload: UNSET,
+        redundant: UNSET
+      )
+        @name = name
+        @clock_rate = clock_rate
+        @channels = channels
+        @parameters = parameters
+        @sender_parameters = sender_parameters
+        @feedback = feedback
+        @payload = payload
+        @rtx_payload = rtx_payload
+        @redundant = redundant
+      end
     end
     class EnvironmentRTPMediaCatalog < Model
       FIELDS = {codecs: "codecs", sender_order: "senderOrder", receiver_order: "receiverOrder", offer_order: "offerOrder", header_extensions: "headerExtensions", receiver_r_t_t: "receiverRTT"}.freeze
       TYPES = {codecs: [:map, "EnvironmentRTPCodec"], sender_order: [:array, nil], receiver_order: [:array, nil], offer_order: [:array, nil], header_extensions: [:array, nil], receiver_r_t_t: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :codecs
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :sender_order
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :receiver_order
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :offer_order
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :header_extensions
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :receiver_r_t_t
+      # @param codecs [Hash]
+      # @param sender_order [Array<String>]
+      # @param receiver_order [Array<String>]
+      # @param offer_order [Array<String>]
+      # @param header_extensions [Array<String>]
+      # @param receiver_r_t_t [Boolean]
+      def initialize(
+        codecs: UNSET,
+        sender_order: UNSET,
+        receiver_order: UNSET,
+        offer_order: UNSET,
+        header_extensions: UNSET,
+        receiver_r_t_t: UNSET
+      )
+        @codecs = codecs
+        @sender_order = sender_order
+        @receiver_order = receiver_order
+        @offer_order = offer_order
+        @header_extensions = header_extensions
+        @receiver_r_t_t = receiver_r_t_t
+      end
     end
     class EnvironmentScreenOrientation < Model
       FIELDS = {type: "type", angle: "angle"}.freeze
       TYPES = {type: nil, angle: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :type
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :angle
+      # @param type [String]
+      # @param angle [Integer]
+      def initialize(
+        type: UNSET,
+        angle: UNSET
+      )
+        @type = type
+        @angle = angle
+      end
     end
     class EnvironmentTiming < Model
       FIELDS = {execution_scale: "executionScale", navigation_scale: "navigationScale", network_scale: "networkScale"}.freeze
       TYPES = {execution_scale: nil, navigation_scale: nil, network_scale: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :execution_scale
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :navigation_scale
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :network_scale
+      # @param execution_scale [Numeric]
+      # @param navigation_scale [Numeric]
+      # @param network_scale [Numeric]
+      def initialize(
+        execution_scale: UNSET,
+        navigation_scale: UNSET,
+        network_scale: UNSET
+      )
+        @execution_scale = execution_scale
+        @navigation_scale = navigation_scale
+        @network_scale = network_scale
+      end
     end
     class EnvironmentUserAgentBrand < Model
       FIELDS = {brand: "brand", version: "version", full_version: "fullVersion"}.freeze
       TYPES = {brand: nil, version: nil, full_version: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :brand
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :version
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :full_version
+      # @param brand [String]
+      # @param version [String]
+      # @param full_version [String]
+      def initialize(
+        brand: UNSET,
+        version: UNSET,
+        full_version: UNSET
+      )
+        @brand = brand
+        @version = version
+        @full_version = full_version
+      end
     end
     class EnvironmentUserAgentMetadata < Model
       FIELDS = {brands: "brands", full_version_list: "fullVersionList", form_factors: "formFactors", full_version: "fullVersion", platform: "platform", platform_version: "platformVersion", architecture: "architecture", model: "model", bitness: "bitness", mobile: "mobile", wow64: "wow64"}.freeze
       TYPES = {brands: [:array, "EnvironmentUserAgentBrand"], full_version_list: [:array, "EnvironmentUserAgentBrand"], form_factors: [:array, nil], full_version: nil, platform: nil, platform_version: nil, architecture: nil, model: nil, bitness: nil, mobile: nil, wow64: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Array<EnvironmentUserAgentBrand>] UNSET until assigned when omitted.
+      attr_accessor :brands
+      # @return [Array<EnvironmentUserAgentBrand>] UNSET until assigned when omitted.
+      attr_accessor :full_version_list
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :form_factors
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :full_version
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :platform
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :platform_version
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :architecture
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :model
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :bitness
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :mobile
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :wow64
+      # @param brands [Array<EnvironmentUserAgentBrand>]
+      # @param full_version_list [Array<EnvironmentUserAgentBrand>]
+      # @param form_factors [Array<String>]
+      # @param full_version [String]
+      # @param platform [String]
+      # @param platform_version [String]
+      # @param architecture [String]
+      # @param model [String]
+      # @param bitness [String]
+      # @param mobile [Boolean]
+      # @param wow64 [Boolean]
+      def initialize(
+        brands: UNSET,
+        full_version_list: UNSET,
+        form_factors: UNSET,
+        full_version: UNSET,
+        platform: UNSET,
+        platform_version: UNSET,
+        architecture: UNSET,
+        model: UNSET,
+        bitness: UNSET,
+        mobile: UNSET,
+        wow64: UNSET
+      )
+        @brands = brands
+        @full_version_list = full_version_list
+        @form_factors = form_factors
+        @full_version = full_version
+        @platform = platform
+        @platform_version = platform_version
+        @architecture = architecture
+        @model = model
+        @bitness = bitness
+        @mobile = mobile
+        @wow64 = wow64
+      end
     end
     class EnvironmentWindow < Model
       FIELDS = {x: "x", y: "y", outer_width: "outerWidth", outer_height: "outerHeight", viewport_width: "viewportWidth", viewport_height: "viewportHeight"}.freeze
       TYPES = {x: nil, y: nil, outer_width: nil, outer_height: nil, viewport_width: nil, viewport_height: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :x
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :y
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :outer_width
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :outer_height
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :viewport_width
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :viewport_height
+      # @param x [Integer]
+      # @param y [Integer]
+      # @param outer_width [Integer]
+      # @param outer_height [Integer]
+      # @param viewport_width [Integer]
+      # @param viewport_height [Integer]
+      def initialize(
+        x: UNSET,
+        y: UNSET,
+        outer_width: UNSET,
+        outer_height: UNSET,
+        viewport_width: UNSET,
+        viewport_height: UNSET
+      )
+        @x = x
+        @y = y
+        @outer_width = outer_width
+        @outer_height = outer_height
+        @viewport_width = viewport_width
+        @viewport_height = viewport_height
+      end
     end
     class ExecutionStatus < Model
       FIELDS = {running: "running", task_id: "taskId", source: "source", phase: "phase", elapsed_ms: "elapsedMs"}.freeze
       TYPES = {running: nil, task_id: nil, source: nil, phase: nil, elapsed_ms: nil}.freeze
       REQUIRED = [:running, :task_id, :source, :phase, :elapsed_ms].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :running
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :task_id
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :source
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :phase
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :elapsed_ms
+      # @param running [Boolean]
+      # @param task_id [Integer]
+      # @param source [String]
+      # @param phase [String]
+      # @param elapsed_ms [Integer]
+      def initialize(
+        running: UNSET,
+        task_id: UNSET,
+        source: UNSET,
+        phase: UNSET,
+        elapsed_ms: UNSET
+      )
+        @running = running
+        @task_id = task_id
+        @source = source
+        @phase = phase
+        @elapsed_ms = elapsed_ms
+      end
     end
     class ExportProfileParams < Model
       FIELDS = {profile: "profile"}.freeze
       TYPES = {profile: nil}.freeze
       REQUIRED = [:profile].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @param profile [String]
+      def initialize(
+        profile: UNSET
+      )
+        @profile = profile
+      end
     end
     class ExportProfileResult < Model
       FIELDS = {profile: "profile", warnings: "warnings"}.freeze
       TYPES = {profile: "ProfileDescriptor", warnings: [:array, nil]}.freeze
       REQUIRED = [:profile, :warnings].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [ProfileDescriptor] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :warnings
+      # @param profile [ProfileDescriptor]
+      # @param warnings [Array<String>]
+      def initialize(
+        profile: UNSET,
+        warnings: UNSET
+      )
+        @profile = profile
+        @warnings = warnings
+      end
     end
     class GenerateProfileOptions < Model
       FIELDS = {browser: "browser", version: "version", platform: "platform", seed: "seed"}.freeze
       TYPES = {browser: nil, version: nil, platform: nil, seed: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :version
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :platform
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :seed
+      # @param browser [String]
+      # @param version [Integer]
+      # @param platform [String]
+      # @param seed [String]
+      def initialize(
+        browser: UNSET,
+        version: UNSET,
+        platform: UNSET,
+        seed: UNSET
+      )
+        @browser = browser
+        @version = version
+        @platform = platform
+        @seed = seed
+      end
     end
     class GenerateProfileParams < Model
       FIELDS = {browser: "browser", version: "version", platform: "platform", seed: "seed"}.freeze
       TYPES = {browser: nil, version: nil, platform: nil, seed: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :version
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :platform
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :seed
+      # @param browser [String]
+      # @param version [Integer]
+      # @param platform [String]
+      # @param seed [String]
+      def initialize(
+        browser: UNSET,
+        version: UNSET,
+        platform: UNSET,
+        seed: UNSET
+      )
+        @browser = browser
+        @version = version
+        @platform = platform
+        @seed = seed
+      end
     end
     class GenerateProfileResult < Model
       FIELDS = {profile: "profile", profile_id: "profileId", mode: "mode", warnings: "warnings"}.freeze
       TYPES = {profile: nil, profile_id: nil, mode: nil, warnings: [:array, nil]}.freeze
       REQUIRED = [:profile, :profile_id, :mode, :warnings].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile_id
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :mode
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :warnings
+      # @param profile [String]
+      # @param profile_id [String]
+      # @param mode [String]
+      # @param warnings [Array<String>]
+      def initialize(
+        profile: UNSET,
+        profile_id: UNSET,
+        mode: UNSET,
+        warnings: UNSET
+      )
+        @profile = profile
+        @profile_id = profile_id
+        @mode = mode
+        @warnings = warnings
+      end
     end
     class GenerateProfileSelection < Model
       FIELDS = {generate: "generate"}.freeze
       TYPES = {generate: "GenerateProfileOptions"}.freeze
       REQUIRED = [:generate].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [GenerateProfileOptions] UNSET until assigned when omitted.
+      attr_accessor :generate
+      # @param generate [GenerateProfileOptions]
+      def initialize(
+        generate: UNSET
+      )
+        @generate = generate
+      end
     end
     class GetCompatibilityMatrixParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class GetCompatibilityMatrixResult < Model
       FIELDS = {chrome_version: "chromeVersion", protocol: "protocol", extensions: "extensions"}.freeze
       TYPES = {chrome_version: nil, protocol: [:array, "ProtocolCoverage"], extensions: [:array, "ProtocolCoverage"]}.freeze
       REQUIRED = [:chrome_version, :protocol, :extensions].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :chrome_version
+      # @return [Array<ProtocolCoverage>] UNSET until assigned when omitted.
+      attr_accessor :protocol
+      # @return [Array<ProtocolCoverage>] UNSET until assigned when omitted.
+      attr_accessor :extensions
+      # @param chrome_version [String]
+      # @param protocol [Array<ProtocolCoverage>]
+      # @param extensions [Array<ProtocolCoverage>]
+      def initialize(
+        chrome_version: UNSET,
+        protocol: UNSET,
+        extensions: UNSET
+      )
+        @chrome_version = chrome_version
+        @protocol = protocol
+        @extensions = extensions
+      end
     end
     class GetDiagnosticsParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class GetDiagnosticsResult < Model
       FIELDS = {enabled: "enabled", host_only: "hostOnly", costs: "costs", cpu_profiles: "cpu_profiles", realms: "realms"}.freeze
       TYPES = {enabled: nil, host_only: nil, costs: [:map, "DiagnosticCost"], cpu_profiles: [:map, nil], realms: [:array, "RealmDiagnostics"]}.freeze
       REQUIRED = [:enabled].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :enabled
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :host_only
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :costs
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :cpu_profiles
+      # @return [Array<RealmDiagnostics>] UNSET until assigned when omitted.
+      attr_accessor :realms
+      # @param enabled [Boolean]
+      # @param host_only [Boolean]
+      # @param costs [Hash]
+      # @param cpu_profiles [Hash]
+      # @param realms [Array<RealmDiagnostics>]
+      def initialize(
+        enabled: UNSET,
+        host_only: UNSET,
+        costs: UNSET,
+        cpu_profiles: UNSET,
+        realms: UNSET
+      )
+        @enabled = enabled
+        @host_only = host_only
+        @costs = costs
+        @cpu_profiles = cpu_profiles
+        @realms = realms
+      end
     end
     class GetMediaPresetsParams < Model
       FIELDS = {browser_context_id: "browserContextId"}.freeze
       TYPES = {browser_context_id: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @param browser_context_id [String]
+      def initialize(
+        browser_context_id: UNSET
+      )
+        @browser_context_id = browser_context_id
+      end
     end
     class GetMediaPresetsResult < Model
       FIELDS = {presets: "presets"}.freeze
       TYPES = {presets: [:array, "MediaPreset"]}.freeze
       REQUIRED = [:presets].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Array<MediaPreset>] UNSET until assigned when omitted.
+      attr_accessor :presets
+      # @param presets [Array<MediaPreset>]
+      def initialize(
+        presets: UNSET
+      )
+        @presets = presets
+      end
     end
     class GetMediaProfileParams < Model
       FIELDS = {browser_context_id: "browserContextId"}.freeze
       TYPES = {browser_context_id: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @param browser_context_id [String]
+      def initialize(
+        browser_context_id: UNSET
+      )
+        @browser_context_id = browser_context_id
+      end
     end
     class GetMediaProfileResult < Model
       FIELDS = {profile: "profile", diagnostics: "diagnostics"}.freeze
       TYPES = {profile: "MediaProfile", diagnostics: [:map, nil]}.freeze
       REQUIRED = [:profile, :diagnostics].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [MediaProfile, nil] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :diagnostics
+      # @param profile [MediaProfile, nil]
+      # @param diagnostics [Hash]
+      def initialize(
+        profile: UNSET,
+        diagnostics: UNSET
+      )
+        @profile = profile
+        @diagnostics = diagnostics
+      end
     end
     class GetMediaSourcesParams < Model
       FIELDS = {browser_context_id: "browserContextId"}.freeze
       TYPES = {browser_context_id: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @param browser_context_id [String]
+      def initialize(
+        browser_context_id: UNSET
+      )
+        @browser_context_id = browser_context_id
+      end
     end
     class GetMediaSourcesResult < Model
       FIELDS = {sources: "sources", diagnostics: "diagnostics"}.freeze
       TYPES = {sources: [:array, "MediaSource"], diagnostics: [:map, nil]}.freeze
       REQUIRED = [:sources, :diagnostics].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Array<MediaSource>] UNSET until assigned when omitted.
+      attr_accessor :sources
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :diagnostics
+      # @param sources [Array<MediaSource>]
+      # @param diagnostics [Hash]
+      def initialize(
+        sources: UNSET,
+        diagnostics: UNSET
+      )
+        @sources = sources
+        @diagnostics = diagnostics
+      end
     end
     class GetProfileParams < Model
       FIELDS = {browser_context_id: "browserContextId", target_id: "targetId"}.freeze
       TYPES = {browser_context_id: nil, target_id: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :target_id
+      # @param browser_context_id [String]
+      # @param target_id [String]
+      def initialize(
+        browser_context_id: UNSET,
+        target_id: UNSET
+      )
+        @browser_context_id = browser_context_id
+        @target_id = target_id
+      end
     end
     class GetProfileResult < Model
       FIELDS = {profile: "profile", limitations: "limitations"}.freeze
       TYPES = {profile: "EnvironmentProfile", limitations: [:array, nil]}.freeze
       REQUIRED = [:profile, :limitations].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [EnvironmentProfile] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :limitations
+      # @param profile [EnvironmentProfile]
+      # @param limitations [Array<String>]
+      def initialize(
+        profile: UNSET,
+        limitations: UNSET
+      )
+        @profile = profile
+        @limitations = limitations
+      end
     end
     class GetProfileSchemaParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class GetProfileSchemaResult < Model
       FIELDS = {schema: "schema", base_profiles: "baseProfiles", limitations: "limitations"}.freeze
       TYPES = {schema: [:map, nil], base_profiles: [:array, nil], limitations: [:array, nil]}.freeze
       REQUIRED = [:schema, :base_profiles, :limitations].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :schema
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :base_profiles
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :limitations
+      # @param schema [Hash]
+      # @param base_profiles [Array<String>]
+      # @param limitations [Array<String>]
+      def initialize(
+        schema: UNSET,
+        base_profiles: UNSET,
+        limitations: UNSET
+      )
+        @schema = schema
+        @base_profiles = base_profiles
+        @limitations = limitations
+      end
     end
     class GetResourcePolicyParams < Model
       FIELDS = {browser_context_id: "browserContextId"}.freeze
       TYPES = {browser_context_id: nil}.freeze
       REQUIRED = [:browser_context_id].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @param browser_context_id [String]
+      def initialize(
+        browser_context_id: UNSET
+      )
+        @browser_context_id = browser_context_id
+      end
     end
     class GetResourcePolicyResult < Model
       FIELDS = {policy: "policy", enabled: "enabled", generation: "generation"}.freeze
       TYPES = {policy: "ResourcePolicy", enabled: nil, generation: nil}.freeze
       REQUIRED = [:policy, :enabled, :generation].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [ResourcePolicy] UNSET until assigned when omitted.
+      attr_accessor :policy
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :enabled
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :generation
+      # @param policy [ResourcePolicy]
+      # @param enabled [Boolean]
+      # @param generation [Integer]
+      def initialize(
+        policy: UNSET,
+        enabled: UNSET,
+        generation: UNSET
+      )
+        @policy = policy
+        @enabled = enabled
+        @generation = generation
+      end
     end
     class GetResourcePolicySchemaParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class GetResourcePolicySchemaResult < Model
       FIELDS = {schema: "schema"}.freeze
       TYPES = {schema: [:map, nil]}.freeze
       REQUIRED = [:schema].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :schema
+      # @param schema [Hash]
+      def initialize(
+        schema: UNSET
+      )
+        @schema = schema
+      end
     end
     class GetResourcePolicyStatsParams < Model
       FIELDS = {browser_context_id: "browserContextId"}.freeze
       TYPES = {browser_context_id: nil}.freeze
       REQUIRED = [:browser_context_id].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @param browser_context_id [String]
+      def initialize(
+        browser_context_id: UNSET
+      )
+        @browser_context_id = browser_context_id
+      end
     end
     class GetResourcePolicyStatsResult < Model
       FIELDS = {stats: "stats"}.freeze
       TYPES = {stats: "ResourcePolicyStats"}.freeze
       REQUIRED = [:stats].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [ResourcePolicyStats] UNSET until assigned when omitted.
+      attr_accessor :stats
+      # @param stats [ResourcePolicyStats]
+      def initialize(
+        stats: UNSET
+      )
+        @stats = stats
+      end
     end
     class GetStatusParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class GetStatusResult < Model
       FIELDS = {execution: "execution"}.freeze
       TYPES = {execution: "ExecutionStatus"}.freeze
       REQUIRED = [:execution].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [ExecutionStatus] UNSET until assigned when omitted.
+      attr_accessor :execution
+      # @param execution [ExecutionStatus]
+      def initialize(
+        execution: UNSET
+      )
+        @execution = execution
+      end
     end
     class GetTraceParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class GetTraceResult < Model
       FIELDS = {events: "events", crash_reports: "crashReports"}.freeze
       TYPES = {events: [:array, "TraceEvent"], crash_reports: [:map, nil]}.freeze
       REQUIRED = [:events, :crash_reports].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Array<TraceEvent>, nil] UNSET until assigned when omitted.
+      attr_accessor :events
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :crash_reports
+      # @param events [Array<TraceEvent>, nil]
+      # @param crash_reports [Hash]
+      def initialize(
+        events: UNSET,
+        crash_reports: UNSET
+      )
+        @events = events
+        @crash_reports = crash_reports
+      end
     end
     class GetVersionParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class GetVersionResult < Model
       FIELDS = {version: "version", chrome_version: "chromeVersion", base_profile: "baseProfile"}.freeze
       TYPES = {version: nil, chrome_version: nil, base_profile: nil}.freeze
       REQUIRED = [:version, :chrome_version, :base_profile].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :version
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :chrome_version
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :base_profile
+      # @param version [String]
+      # @param chrome_version [String]
+      # @param base_profile [String]
+      def initialize(
+        version: UNSET,
+        chrome_version: UNSET,
+        base_profile: UNSET
+      )
+        @version = version
+        @chrome_version = chrome_version
+        @base_profile = base_profile
+      end
     end
     class ImportProfileParams < Model
       FIELDS = {profile: "profile", mode: "mode"}.freeze
       TYPES = {profile: nil, mode: nil}.freeze
       REQUIRED = [:profile].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Object] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :mode
+      # @param profile [Object]
+      # @param mode [String]
+      def initialize(
+        profile: UNSET,
+        mode: UNSET
+      )
+        @profile = profile
+        @mode = mode
+      end
     end
     class ImportProfileResult < Model
       FIELDS = {profile: "profile", profile_id: "profileId", mode: "mode", warnings: "warnings"}.freeze
       TYPES = {profile: nil, profile_id: nil, mode: nil, warnings: [:array, nil]}.freeze
       REQUIRED = [:profile, :profile_id, :mode, :warnings].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile_id
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :mode
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :warnings
+      # @param profile [String]
+      # @param profile_id [String]
+      # @param mode [String]
+      # @param warnings [Array<String>]
+      def initialize(
+        profile: UNSET,
+        profile_id: UNSET,
+        mode: UNSET,
+        warnings: UNSET
+      )
+        @profile = profile
+        @profile_id = profile_id
+        @mode = mode
+        @warnings = warnings
+      end
     end
     class ManualNetwork < Model
       FIELDS = {save_data: "saveData", online: "online", effective_type: "effectiveType", downlink_mbps: "downlinkMbps", rtt_millis: "rttMillis", cookies_enabled: "cookiesEnabled", wire_profile: "wireProfile", ice: "ice"}.freeze
       TYPES = {save_data: nil, online: nil, effective_type: nil, downlink_mbps: nil, rtt_millis: nil, cookies_enabled: nil, wire_profile: nil, ice: "EnvironmentICEProfile"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :save_data
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :online
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :effective_type
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :downlink_mbps
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :rtt_millis
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :cookies_enabled
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :wire_profile
+      # @return [EnvironmentICEProfile] UNSET until assigned when omitted.
+      attr_accessor :ice
+      # @param save_data [Boolean]
+      # @param online [Boolean]
+      # @param effective_type [String]
+      # @param downlink_mbps [Numeric]
+      # @param rtt_millis [Numeric]
+      # @param cookies_enabled [Boolean]
+      # @param wire_profile [String]
+      # @param ice [EnvironmentICEProfile]
+      def initialize(
+        save_data: UNSET,
+        online: UNSET,
+        effective_type: UNSET,
+        downlink_mbps: UNSET,
+        rtt_millis: UNSET,
+        cookies_enabled: UNSET,
+        wire_profile: UNSET,
+        ice: UNSET
+      )
+        @save_data = save_data
+        @online = online
+        @effective_type = effective_type
+        @downlink_mbps = downlink_mbps
+        @rtt_millis = rtt_millis
+        @cookies_enabled = cookies_enabled
+        @wire_profile = wire_profile
+        @ice = ice
+      end
     end
     class ManualProfile < Model
       FIELDS = {identity: "identity", display: "display", window: "window", hardware: "hardware", locale: "locale", graphics: "graphics", audio: "audio", fonts: "fonts", preferences: "preferences", network: "network", permissions: "permissions", capabilities: "capabilities", features: "features", timing: "timing"}.freeze
       TYPES = {identity: "EnvironmentIdentity", display: "EnvironmentDisplay", window: "EnvironmentWindow", hardware: "EnvironmentHardware", locale: "EnvironmentLocale", graphics: "EnvironmentGraphics", audio: "EnvironmentAudio", fonts: "EnvironmentFonts", preferences: "EnvironmentPreferences", network: "ManualNetwork", permissions: [:map, nil], capabilities: "EnvironmentCapabilities", features: [:map, nil], timing: "EnvironmentTiming"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [EnvironmentIdentity] UNSET until assigned when omitted.
+      attr_accessor :identity
+      # @return [EnvironmentDisplay] UNSET until assigned when omitted.
+      attr_accessor :display
+      # @return [EnvironmentWindow] UNSET until assigned when omitted.
+      attr_accessor :window
+      # @return [EnvironmentHardware] UNSET until assigned when omitted.
+      attr_accessor :hardware
+      # @return [EnvironmentLocale] UNSET until assigned when omitted.
+      attr_accessor :locale
+      # @return [EnvironmentGraphics] UNSET until assigned when omitted.
+      attr_accessor :graphics
+      # @return [EnvironmentAudio] UNSET until assigned when omitted.
+      attr_accessor :audio
+      # @return [EnvironmentFonts] UNSET until assigned when omitted.
+      attr_accessor :fonts
+      # @return [EnvironmentPreferences] UNSET until assigned when omitted.
+      attr_accessor :preferences
+      # @return [ManualNetwork] UNSET until assigned when omitted.
+      attr_accessor :network
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :permissions
+      # @return [EnvironmentCapabilities] UNSET until assigned when omitted.
+      attr_accessor :capabilities
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :features
+      # @return [EnvironmentTiming] UNSET until assigned when omitted.
+      attr_accessor :timing
+      # @param identity [EnvironmentIdentity]
+      # @param display [EnvironmentDisplay]
+      # @param window [EnvironmentWindow]
+      # @param hardware [EnvironmentHardware]
+      # @param locale [EnvironmentLocale]
+      # @param graphics [EnvironmentGraphics]
+      # @param audio [EnvironmentAudio]
+      # @param fonts [EnvironmentFonts]
+      # @param preferences [EnvironmentPreferences]
+      # @param network [ManualNetwork]
+      # @param permissions [Hash]
+      # @param capabilities [EnvironmentCapabilities]
+      # @param features [Hash]
+      # @param timing [EnvironmentTiming]
+      def initialize(
+        identity: UNSET,
+        display: UNSET,
+        window: UNSET,
+        hardware: UNSET,
+        locale: UNSET,
+        graphics: UNSET,
+        audio: UNSET,
+        fonts: UNSET,
+        preferences: UNSET,
+        network: UNSET,
+        permissions: UNSET,
+        capabilities: UNSET,
+        features: UNSET,
+        timing: UNSET
+      )
+        @identity = identity
+        @display = display
+        @window = window
+        @hardware = hardware
+        @locale = locale
+        @graphics = graphics
+        @audio = audio
+        @fonts = fonts
+        @preferences = preferences
+        @network = network
+        @permissions = permissions
+        @capabilities = capabilities
+        @features = features
+        @timing = timing
+      end
     end
     class MediaCameraRequest < Model
       FIELDS = {source: "source", profile: "profile", overrides: "overrides"}.freeze
       TYPES = {source: "MediaSourceSelector", profile: nil, overrides: "MediaDeviceOverride"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Object] UNSET until assigned when omitted.
+      attr_accessor :source
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [MediaDeviceOverride] UNSET until assigned when omitted.
+      attr_accessor :overrides
+      # @param source [Object]
+      # @param profile [String]
+      # @param overrides [MediaDeviceOverride]
+      def initialize(
+        source: UNSET,
+        profile: UNSET,
+        overrides: UNSET
+      )
+        @source = source
+        @profile = profile
+        @overrides = overrides
+      end
     end
     class MediaConfiguration < Model
       FIELDS = {seed: "seed", camera: "camera", microphone: "microphone", devices: "devices"}.freeze
       TYPES = {seed: nil, camera: "MediaCameraRequest", microphone: "MediaMicrophoneRequest", devices: [:array, "MediaDeviceProfile"]}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :seed
+      # @return [MediaCameraRequest] UNSET until assigned when omitted.
+      attr_accessor :camera
+      # @return [MediaMicrophoneRequest] UNSET until assigned when omitted.
+      attr_accessor :microphone
+      # @return [Array<MediaDeviceProfile>] UNSET until assigned when omitted.
+      attr_accessor :devices
+      # @param seed [String]
+      # @param camera [MediaCameraRequest]
+      # @param microphone [MediaMicrophoneRequest]
+      # @param devices [Array<MediaDeviceProfile>]
+      def initialize(
+        seed: UNSET,
+        camera: UNSET,
+        microphone: UNSET,
+        devices: UNSET
+      )
+        @seed = seed
+        @camera = camera
+        @microphone = microphone
+        @devices = devices
+      end
     end
     class MediaDeviceOverride < Model
       FIELDS = {label: "label", modes: "modes", default_mode: "defaultMode", processing: "processing"}.freeze
       TYPES = {label: nil, modes: [:array, "CameraFormat"], default_mode: "CameraFormat", processing: "MediaProcessing"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :label
+      # @return [Array<CameraFormat>] UNSET until assigned when omitted.
+      attr_accessor :modes
+      # @return [CameraFormat] UNSET until assigned when omitted.
+      attr_accessor :default_mode
+      # @return [MediaProcessing] UNSET until assigned when omitted.
+      attr_accessor :processing
+      # @param label [String]
+      # @param modes [Array<CameraFormat>]
+      # @param default_mode [CameraFormat]
+      # @param processing [MediaProcessing]
+      def initialize(
+        label: UNSET,
+        modes: UNSET,
+        default_mode: UNSET,
+        processing: UNSET
+      )
+        @label = label
+        @modes = modes
+        @default_mode = default_mode
+        @processing = processing
+      end
     end
     class MediaDeviceProfile < Model
       FIELDS = {key: "key", kind: "kind", source: "source", profile: "profile", label: "label", group: "group", modes: "modes", default_mode: "defaultMode", processing: "processing"}.freeze
       TYPES = {key: nil, kind: nil, source: "MediaSourceSelector", profile: nil, label: nil, group: nil, modes: [:array, "CameraFormat"], default_mode: "CameraFormat", processing: "MediaProcessing"}.freeze
       REQUIRED = [:key, :kind, :source, :label].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :key
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :kind
+      # @return [Object] UNSET until assigned when omitted.
+      attr_accessor :source
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :label
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :group
+      # @return [Array<CameraFormat>] UNSET until assigned when omitted.
+      attr_accessor :modes
+      # @return [CameraFormat] UNSET until assigned when omitted.
+      attr_accessor :default_mode
+      # @return [MediaProcessing] UNSET until assigned when omitted.
+      attr_accessor :processing
+      # @param key [String]
+      # @param kind [String]
+      # @param source [Object]
+      # @param profile [String]
+      # @param label [String]
+      # @param group [String]
+      # @param modes [Array<CameraFormat>]
+      # @param default_mode [CameraFormat]
+      # @param processing [MediaProcessing]
+      def initialize(
+        key: UNSET,
+        kind: UNSET,
+        source: UNSET,
+        profile: UNSET,
+        label: UNSET,
+        group: UNSET,
+        modes: UNSET,
+        default_mode: UNSET,
+        processing: UNSET
+      )
+        @key = key
+        @kind = kind
+        @source = source
+        @profile = profile
+        @label = label
+        @group = group
+        @modes = modes
+        @default_mode = default_mode
+        @processing = processing
+      end
     end
     class MediaMicrophoneRequest < Model
       FIELDS = {source: "source", profile: "profile"}.freeze
       TYPES = {source: "MediaSourceSelector", profile: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Object] UNSET until assigned when omitted.
+      attr_accessor :source
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @param source [Object]
+      # @param profile [String]
+      def initialize(
+        source: UNSET,
+        profile: UNSET
+      )
+        @source = source
+        @profile = profile
+      end
     end
     class MediaPreset < Model
       FIELDS = {id: "id", label: "label", class_: "class", variants: "variants"}.freeze
       TYPES = {id: nil, label: nil, class_: nil, variants: [:array, nil]}.freeze
       REQUIRED = [:id, :label, :class_, :variants].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :id
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :label
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :class_
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :variants
+      # @param id [String]
+      # @param label [String]
+      # @param class_ [String]
+      # @param variants [Array<String>]
+      def initialize(
+        id: UNSET,
+        label: UNSET,
+        class_: UNSET,
+        variants: UNSET
+      )
+        @id = id
+        @label = label
+        @class_ = class_
+        @variants = variants
+      end
     end
     class MediaProcessing < Model
       FIELDS = {resize: "resize", noise: "noise"}.freeze
       TYPES = {resize: nil, noise: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :resize
+      # @return [Numeric] UNSET until assigned when omitted.
+      attr_accessor :noise
+      # @param resize [String]
+      # @param noise [Numeric]
+      def initialize(
+        resize: UNSET,
+        noise: UNSET
+      )
+        @resize = resize
+        @noise = noise
+      end
     end
     class MediaProfile < Model
       FIELDS = {seed: "seed", devices: "devices"}.freeze
       TYPES = {seed: nil, devices: [:array, "MediaDeviceProfile"]}.freeze
       REQUIRED = [:seed, :devices].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :seed
+      # @return [Array<MediaDeviceProfile>] UNSET until assigned when omitted.
+      attr_accessor :devices
+      # @param seed [String]
+      # @param devices [Array<MediaDeviceProfile>]
+      def initialize(
+        seed: UNSET,
+        devices: UNSET
+      )
+        @seed = seed
+        @devices = devices
+      end
     end
     class MediaSource < Model
       FIELDS = {source_id: "sourceId", kind: "kind", label: "label", default: "default"}.freeze
       TYPES = {source_id: nil, kind: nil, label: nil, default: nil}.freeze
       REQUIRED = [:source_id, :kind, :label, :default].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :source_id
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :kind
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :label
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :default
+      # @param source_id [String]
+      # @param kind [String]
+      # @param label [String]
+      # @param default [Boolean]
+      def initialize(
+        source_id: UNSET,
+        kind: UNSET,
+        label: UNSET,
+        default: UNSET
+      )
+        @source_id = source_id
+        @kind = kind
+        @label = label
+        @default = default
+      end
     end
     class PauseParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class PauseResult < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class ProfileDescriptor < Model
       FIELDS = {mode: "mode", base_profile: "baseProfile", seed: "seed", profile_id: "profileId", environment: "environment"}.freeze
       TYPES = {mode: nil, base_profile: nil, seed: nil, profile_id: nil, environment: "ManualProfile"}.freeze
       REQUIRED = [:mode, :base_profile, :profile_id].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :mode
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :base_profile
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :seed
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :profile_id
+      # @return [ManualProfile] UNSET until assigned when omitted.
+      attr_accessor :environment
+      # @param mode [String]
+      # @param base_profile [String]
+      # @param seed [String]
+      # @param profile_id [String]
+      # @param environment [ManualProfile]
+      def initialize(
+        mode: UNSET,
+        base_profile: UNSET,
+        seed: UNSET,
+        profile_id: UNSET,
+        environment: UNSET
+      )
+        @mode = mode
+        @base_profile = base_profile
+        @seed = seed
+        @profile_id = profile_id
+        @environment = environment
+      end
     end
     class ProfileErrorData < Model
       FIELDS = {path: "path", reason: "reason", message: "message"}.freeze
       TYPES = {path: nil, reason: nil, message: nil}.freeze
       REQUIRED = [:path, :reason, :message].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :path
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :reason
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :message
+      # @param path [String]
+      # @param reason [String]
+      # @param message [String]
+      def initialize(
+        path: UNSET,
+        reason: UNSET,
+        message: UNSET
+      )
+        @path = path
+        @reason = reason
+        @message = message
+      end
     end
     class ProfilePatch < Model
       FIELDS = {identity: "identity", display: "display", window: "window", hardware: "hardware", locale: "locale", graphics: "graphics", audio: "audio", fonts: "fonts", preferences: "preferences", network: "network", permissions: "permissions", capabilities: "capabilities", features: "features", timing: "timing"}.freeze
       TYPES = {identity: "EnvironmentIdentity", display: "EnvironmentDisplay", window: "EnvironmentWindow", hardware: "EnvironmentHardware", locale: "EnvironmentLocale", graphics: "EnvironmentGraphics", audio: "EnvironmentAudio", fonts: "EnvironmentFonts", preferences: "EnvironmentPreferences", network: "ManualNetwork", permissions: [:map, nil], capabilities: "EnvironmentCapabilities", features: [:map, nil], timing: "EnvironmentTiming"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [EnvironmentIdentity] UNSET until assigned when omitted.
+      attr_accessor :identity
+      # @return [EnvironmentDisplay] UNSET until assigned when omitted.
+      attr_accessor :display
+      # @return [EnvironmentWindow] UNSET until assigned when omitted.
+      attr_accessor :window
+      # @return [EnvironmentHardware] UNSET until assigned when omitted.
+      attr_accessor :hardware
+      # @return [EnvironmentLocale] UNSET until assigned when omitted.
+      attr_accessor :locale
+      # @return [EnvironmentGraphics] UNSET until assigned when omitted.
+      attr_accessor :graphics
+      # @return [EnvironmentAudio] UNSET until assigned when omitted.
+      attr_accessor :audio
+      # @return [EnvironmentFonts] UNSET until assigned when omitted.
+      attr_accessor :fonts
+      # @return [EnvironmentPreferences] UNSET until assigned when omitted.
+      attr_accessor :preferences
+      # @return [ManualNetwork] UNSET until assigned when omitted.
+      attr_accessor :network
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :permissions
+      # @return [EnvironmentCapabilities] UNSET until assigned when omitted.
+      attr_accessor :capabilities
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :features
+      # @return [EnvironmentTiming] UNSET until assigned when omitted.
+      attr_accessor :timing
+      # @param identity [EnvironmentIdentity]
+      # @param display [EnvironmentDisplay]
+      # @param window [EnvironmentWindow]
+      # @param hardware [EnvironmentHardware]
+      # @param locale [EnvironmentLocale]
+      # @param graphics [EnvironmentGraphics]
+      # @param audio [EnvironmentAudio]
+      # @param fonts [EnvironmentFonts]
+      # @param preferences [EnvironmentPreferences]
+      # @param network [ManualNetwork]
+      # @param permissions [Hash]
+      # @param capabilities [EnvironmentCapabilities]
+      # @param features [Hash]
+      # @param timing [EnvironmentTiming]
+      def initialize(
+        identity: UNSET,
+        display: UNSET,
+        window: UNSET,
+        hardware: UNSET,
+        locale: UNSET,
+        graphics: UNSET,
+        audio: UNSET,
+        fonts: UNSET,
+        preferences: UNSET,
+        network: UNSET,
+        permissions: UNSET,
+        capabilities: UNSET,
+        features: UNSET,
+        timing: UNSET
+      )
+        @identity = identity
+        @display = display
+        @window = window
+        @hardware = hardware
+        @locale = locale
+        @graphics = graphics
+        @audio = audio
+        @fonts = fonts
+        @preferences = preferences
+        @network = network
+        @permissions = permissions
+        @capabilities = capabilities
+        @features = features
+        @timing = timing
+      end
     end
     class ProtocolCoverage < Model
       FIELDS = {name: "name", kind: "kind", surface_registered: "surfaceRegistered", wire_schema_generated: "wireSchemaGenerated", status: "status", notes: "notes", tests: "tests", semantics_implemented: "semanticsImplemented", semantics_verified: "semanticsVerified"}.freeze
       TYPES = {name: nil, kind: nil, surface_registered: nil, wire_schema_generated: nil, status: nil, notes: nil, tests: [:array, nil], semantics_implemented: nil, semantics_verified: nil}.freeze
       REQUIRED = [:name, :kind, :surface_registered, :wire_schema_generated, :status, :semantics_implemented, :semantics_verified].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :name
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :kind
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :surface_registered
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :wire_schema_generated
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :status
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :notes
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :tests
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :semantics_implemented
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :semantics_verified
+      # @param name [String]
+      # @param kind [String]
+      # @param surface_registered [Boolean]
+      # @param wire_schema_generated [Boolean]
+      # @param status [String]
+      # @param notes [String]
+      # @param tests [Array<String>]
+      # @param semantics_implemented [Boolean]
+      # @param semantics_verified [Boolean]
+      def initialize(
+        name: UNSET,
+        kind: UNSET,
+        surface_registered: UNSET,
+        wire_schema_generated: UNSET,
+        status: UNSET,
+        notes: UNSET,
+        tests: UNSET,
+        semantics_implemented: UNSET,
+        semantics_verified: UNSET
+      )
+        @name = name
+        @kind = kind
+        @surface_registered = surface_registered
+        @wire_schema_generated = wire_schema_generated
+        @status = status
+        @notes = notes
+        @tests = tests
+        @semantics_implemented = semantics_implemented
+        @semantics_verified = semantics_verified
+      end
     end
     class ProtocolError < Model
       FIELDS = {code: "code", message: "message", data: "data"}.freeze
       TYPES = {code: nil, message: nil, data: nil}.freeze
       REQUIRED = [:code, :message].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :code
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :message
+      # @return [Object] UNSET until assigned when omitted.
+      attr_accessor :data
+      # @param code [Integer]
+      # @param message [String]
+      # @param data [Object]
+      def initialize(
+        code: UNSET,
+        message: UNSET,
+        data: UNSET
+      )
+        @code = code
+        @message = message
+        @data = data
+      end
     end
     class Proxy < Model
       FIELDS = {server: "server", username: "username", password: "password"}.freeze
       TYPES = {server: nil, username: nil, password: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :server
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :username
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :password
+      # @param server [String]
+      # @param username [String]
+      # @param password [String]
+      def initialize(
+        server: UNSET,
+        username: UNSET,
+        password: UNSET
+      )
+        @server = server
+        @username = username
+        @password = password
+      end
     end
     class RealmDiagnostics < Model
       FIELDS = {realm: "realm", diagnostics: "diagnostics"}.freeze
       TYPES = {realm: nil, diagnostics: "Diagnostics"}.freeze
       REQUIRED = [:realm, :diagnostics].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :realm
+      # @return [Diagnostics] UNSET until assigned when omitted.
+      attr_accessor :diagnostics
+      # @param realm [String]
+      # @param diagnostics [Diagnostics]
+      def initialize(
+        realm: UNSET,
+        diagnostics: UNSET
+      )
+        @realm = realm
+        @diagnostics = diagnostics
+      end
     end
     class ResetProfileOverridesParams < Model
       FIELDS = {target_id: "targetId"}.freeze
       TYPES = {target_id: nil}.freeze
       REQUIRED = [:target_id].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :target_id
+      # @param target_id [String]
+      def initialize(
+        target_id: UNSET
+      )
+        @target_id = target_id
+      end
     end
     class ResetProfileOverridesResult < Model
       FIELDS = {profile: "profile"}.freeze
       TYPES = {profile: "EnvironmentProfile"}.freeze
       REQUIRED = [:profile].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [EnvironmentProfile] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @param profile [EnvironmentProfile]
+      def initialize(
+        profile: UNSET
+      )
+        @profile = profile
+      end
     end
     class ResourceBudgets < Model
       FIELDS = {max_requests: "maxRequests", max_concurrent: "maxConcurrent", max_wire_bytes: "maxWireBytes", max_body_bytes: "maxBodyBytes", max_response_bytes: "maxResponseBytes", max_decoded_bytes: "maxDecodedBytes", max_retained_bytes: "maxRetainedBytes"}.freeze
       TYPES = {max_requests: nil, max_concurrent: nil, max_wire_bytes: nil, max_body_bytes: nil, max_response_bytes: nil, max_decoded_bytes: nil, max_retained_bytes: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_requests
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_concurrent
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_wire_bytes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_body_bytes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_response_bytes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_decoded_bytes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :max_retained_bytes
+      # @param max_requests [Integer]
+      # @param max_concurrent [Integer]
+      # @param max_wire_bytes [Integer]
+      # @param max_body_bytes [Integer]
+      # @param max_response_bytes [Integer]
+      # @param max_decoded_bytes [Integer]
+      # @param max_retained_bytes [Integer]
+      def initialize(
+        max_requests: UNSET,
+        max_concurrent: UNSET,
+        max_wire_bytes: UNSET,
+        max_body_bytes: UNSET,
+        max_response_bytes: UNSET,
+        max_decoded_bytes: UNSET,
+        max_retained_bytes: UNSET
+      )
+        @max_requests = max_requests
+        @max_concurrent = max_concurrent
+        @max_wire_bytes = max_wire_bytes
+        @max_body_bytes = max_body_bytes
+        @max_response_bytes = max_response_bytes
+        @max_decoded_bytes = max_decoded_bytes
+        @max_retained_bytes = max_retained_bytes
+      end
     end
     class ResourceMatch < Model
       FIELDS = {kinds: "kinds", hosts: "hosts", origins: "origins", url_glob: "urlGlob", owners: "owners", mechanisms: "mechanisms", top_level_site: "topLevelSite"}.freeze
       TYPES = {kinds: [:array, nil], hosts: [:array, nil], origins: [:array, nil], url_glob: nil, owners: [:array, nil], mechanisms: [:array, nil], top_level_site: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :kinds
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :hosts
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :origins
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :url_glob
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :owners
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :mechanisms
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :top_level_site
+      # @param kinds [Array<String>]
+      # @param hosts [Array<String>]
+      # @param origins [Array<String>]
+      # @param url_glob [String]
+      # @param owners [Array<String>]
+      # @param mechanisms [Array<String>]
+      # @param top_level_site [String]
+      def initialize(
+        kinds: UNSET,
+        hosts: UNSET,
+        origins: UNSET,
+        url_glob: UNSET,
+        owners: UNSET,
+        mechanisms: UNSET,
+        top_level_site: UNSET
+      )
+        @kinds = kinds
+        @hosts = hosts
+        @origins = origins
+        @url_glob = url_glob
+        @owners = owners
+        @mechanisms = mechanisms
+        @top_level_site = top_level_site
+      end
     end
     class ResourcePolicy < Model
       FIELDS = {report_only: "reportOnly", presets: "presets", rules: "rules", budgets: "budgets"}.freeze
       TYPES = {report_only: nil, presets: [:array, nil], rules: [:array, "ResourceRule"], budgets: "ResourceBudgets"}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :report_only
+      # @return [Array<String>] UNSET until assigned when omitted.
+      attr_accessor :presets
+      # @return [Array<ResourceRule>] UNSET until assigned when omitted.
+      attr_accessor :rules
+      # @return [ResourceBudgets] UNSET until assigned when omitted.
+      attr_accessor :budgets
+      # @param report_only [Boolean]
+      # @param presets [Array<String>]
+      # @param rules [Array<ResourceRule>]
+      # @param budgets [ResourceBudgets]
+      def initialize(
+        report_only: UNSET,
+        presets: UNSET,
+        rules: UNSET,
+        budgets: UNSET
+      )
+        @report_only = report_only
+        @presets = presets
+        @rules = rules
+        @budgets = budgets
+      end
     end
     class ResourcePolicyStats < Model
       FIELDS = {generation: "generation", requests: "requests", network_acquisitions: "networkAcquisitions", cache_hits: "cacheHits", blocked: "blocked", header_only: "headerOnly", prefixes: "prefixes", wire_bytes_known: "wireBytesKnown", encoded_network_body_bytes: "encodedNetworkBodyBytes", body_bytes_consumed: "bodyBytesConsumed", retained_body_bytes: "retainedBodyBytes", decoded_pixel_work_bytes: "decodedPixelWorkBytes", known_avoided_body_read_bytes: "knownAvoidedBodyReadBytes", unknown_avoided_body_requests: "unknownAvoidedBodyRequests", would_block: "wouldBlock", would_bypass_cache: "wouldBypassCache", budget_denied: "budgetDenied", by_rule: "byRule"}.freeze
       TYPES = {generation: nil, requests: nil, network_acquisitions: nil, cache_hits: nil, blocked: nil, header_only: nil, prefixes: nil, wire_bytes_known: nil, encoded_network_body_bytes: nil, body_bytes_consumed: nil, retained_body_bytes: nil, decoded_pixel_work_bytes: nil, known_avoided_body_read_bytes: nil, unknown_avoided_body_requests: nil, would_block: nil, would_bypass_cache: nil, budget_denied: nil, by_rule: [:map, nil]}.freeze
       REQUIRED = [:generation, :requests, :network_acquisitions, :cache_hits, :blocked, :header_only, :prefixes, :wire_bytes_known, :encoded_network_body_bytes, :body_bytes_consumed, :retained_body_bytes, :decoded_pixel_work_bytes, :known_avoided_body_read_bytes, :unknown_avoided_body_requests, :would_block, :would_bypass_cache, :budget_denied, :by_rule].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :generation
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :requests
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :network_acquisitions
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :cache_hits
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :blocked
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :header_only
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :prefixes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :wire_bytes_known
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :encoded_network_body_bytes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :body_bytes_consumed
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :retained_body_bytes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :decoded_pixel_work_bytes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :known_avoided_body_read_bytes
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :unknown_avoided_body_requests
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :would_block
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :would_bypass_cache
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :budget_denied
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :by_rule
+      # @param generation [Integer]
+      # @param requests [Integer]
+      # @param network_acquisitions [Integer]
+      # @param cache_hits [Integer]
+      # @param blocked [Integer]
+      # @param header_only [Integer]
+      # @param prefixes [Integer]
+      # @param wire_bytes_known [Integer]
+      # @param encoded_network_body_bytes [Integer]
+      # @param body_bytes_consumed [Integer]
+      # @param retained_body_bytes [Integer]
+      # @param decoded_pixel_work_bytes [Integer]
+      # @param known_avoided_body_read_bytes [Integer]
+      # @param unknown_avoided_body_requests [Integer]
+      # @param would_block [Integer]
+      # @param would_bypass_cache [Integer]
+      # @param budget_denied [Integer]
+      # @param by_rule [Hash]
+      def initialize(
+        generation: UNSET,
+        requests: UNSET,
+        network_acquisitions: UNSET,
+        cache_hits: UNSET,
+        blocked: UNSET,
+        header_only: UNSET,
+        prefixes: UNSET,
+        wire_bytes_known: UNSET,
+        encoded_network_body_bytes: UNSET,
+        body_bytes_consumed: UNSET,
+        retained_body_bytes: UNSET,
+        decoded_pixel_work_bytes: UNSET,
+        known_avoided_body_read_bytes: UNSET,
+        unknown_avoided_body_requests: UNSET,
+        would_block: UNSET,
+        would_bypass_cache: UNSET,
+        budget_denied: UNSET,
+        by_rule: UNSET
+      )
+        @generation = generation
+        @requests = requests
+        @network_acquisitions = network_acquisitions
+        @cache_hits = cache_hits
+        @blocked = blocked
+        @header_only = header_only
+        @prefixes = prefixes
+        @wire_bytes_known = wire_bytes_known
+        @encoded_network_body_bytes = encoded_network_body_bytes
+        @body_bytes_consumed = body_bytes_consumed
+        @retained_body_bytes = retained_body_bytes
+        @decoded_pixel_work_bytes = decoded_pixel_work_bytes
+        @known_avoided_body_read_bytes = known_avoided_body_read_bytes
+        @unknown_avoided_body_requests = unknown_avoided_body_requests
+        @would_block = would_block
+        @would_bypass_cache = would_bypass_cache
+        @budget_denied = budget_denied
+        @by_rule = by_rule
+      end
     end
     class ResourceRule < Model
       FIELDS = {id: "id", match: "match", work: "work"}.freeze
       TYPES = {id: nil, match: "ResourceMatch", work: "ResourceWork"}.freeze
       REQUIRED = [:id].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :id
+      # @return [ResourceMatch] UNSET until assigned when omitted.
+      attr_accessor :match
+      # @return [ResourceWork] UNSET until assigned when omitted.
+      attr_accessor :work
+      # @param id [String]
+      # @param match [ResourceMatch]
+      # @param work [ResourceWork]
+      def initialize(
+        id: UNSET,
+        match: UNSET,
+        work: UNSET
+      )
+        @id = id
+        @match = match
+        @work = work
+      end
     end
     class ResourceWork < Model
       FIELDS = {cache_read: "cacheRead", network: "network", body: "body", prefix_bytes: "prefixBytes", decode: "decode", cache_retain: "cacheRetain", debug_retain: "debugRetain"}.freeze
       TYPES = {cache_read: nil, network: nil, body: nil, prefix_bytes: nil, decode: nil, cache_retain: nil, debug_retain: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :cache_read
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :network
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :body
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :prefix_bytes
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :decode
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :cache_retain
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :debug_retain
+      # @param cache_read [Boolean]
+      # @param network [Boolean]
+      # @param body [String]
+      # @param prefix_bytes [Integer]
+      # @param decode [Boolean]
+      # @param cache_retain [Boolean]
+      # @param debug_retain [Boolean]
+      def initialize(
+        cache_read: UNSET,
+        network: UNSET,
+        body: UNSET,
+        prefix_bytes: UNSET,
+        decode: UNSET,
+        cache_retain: UNSET,
+        debug_retain: UNSET
+      )
+        @cache_read = cache_read
+        @network = network
+        @body = body
+        @prefix_bytes = prefix_bytes
+        @decode = decode
+        @cache_retain = cache_retain
+        @debug_retain = debug_retain
+      end
     end
     class ResumeParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class ResumeResult < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class SetMediaProfileParams < Model
       FIELDS = {seed: "seed", camera: "camera", microphone: "microphone", devices: "devices", browser_context_id: "browserContextId"}.freeze
       TYPES = {seed: nil, camera: "MediaCameraRequest", microphone: "MediaMicrophoneRequest", devices: [:array, "MediaDeviceProfile"], browser_context_id: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :seed
+      # @return [MediaCameraRequest] UNSET until assigned when omitted.
+      attr_accessor :camera
+      # @return [MediaMicrophoneRequest] UNSET until assigned when omitted.
+      attr_accessor :microphone
+      # @return [Array<MediaDeviceProfile>] UNSET until assigned when omitted.
+      attr_accessor :devices
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @param seed [String]
+      # @param camera [MediaCameraRequest]
+      # @param microphone [MediaMicrophoneRequest]
+      # @param devices [Array<MediaDeviceProfile>]
+      # @param browser_context_id [String]
+      def initialize(
+        seed: UNSET,
+        camera: UNSET,
+        microphone: UNSET,
+        devices: UNSET,
+        browser_context_id: UNSET
+      )
+        @seed = seed
+        @camera = camera
+        @microphone = microphone
+        @devices = devices
+        @browser_context_id = browser_context_id
+      end
     end
     class SetMediaProfileResult < Model
       FIELDS = {profile: "profile", native_modes_verified: "nativeModesVerified"}.freeze
       TYPES = {profile: "MediaProfile", native_modes_verified: nil}.freeze
       REQUIRED = [:profile, :native_modes_verified].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [MediaProfile] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :native_modes_verified
+      # @param profile [MediaProfile]
+      # @param native_modes_verified [Boolean]
+      def initialize(
+        profile: UNSET,
+        native_modes_verified: UNSET
+      )
+        @profile = profile
+        @native_modes_verified = native_modes_verified
+      end
     end
     class SetViewportParams < Model
       FIELDS = {width: "width", height: "height"}.freeze
       TYPES = {width: nil, height: nil}.freeze
       REQUIRED = [:width, :height].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :width
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :height
+      # @param width [Integer]
+      # @param height [Integer]
+      def initialize(
+        width: UNSET,
+        height: UNSET
+      )
+        @width = width
+        @height = height
+      end
     end
     class SetViewportResult < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class StartTraceParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class StartTraceResult < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class StopTraceParams < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class StopTraceResult < Model
       FIELDS = {}.freeze
       TYPES = {}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      def initialize
+      end
     end
     class TraceEvent < Model
       FIELDS = {sequence: "sequence", time: "time", kind: "kind", name: "name", data: "data"}.freeze
       TYPES = {sequence: nil, time: nil, kind: nil, name: nil, data: [:map, nil]}.freeze
       REQUIRED = [:sequence, :time, :kind, :name].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :sequence
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :time
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :kind
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :name
+      # @return [Hash] UNSET until assigned when omitted.
+      attr_accessor :data
+      # @param sequence [Integer]
+      # @param time [String]
+      # @param kind [String]
+      # @param name [String]
+      # @param data [Hash]
+      def initialize(
+        sequence: UNSET,
+        time: UNSET,
+        kind: UNSET,
+        name: UNSET,
+        data: UNSET
+      )
+        @sequence = sequence
+        @time = time
+        @kind = kind
+        @name = name
+        @data = data
+      end
     end
     class UpdateProfileParams < Model
       FIELDS = {target_id: "targetId", patch: "patch"}.freeze
       TYPES = {target_id: nil, patch: "ProfilePatch"}.freeze
       REQUIRED = [:target_id, :patch].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :target_id
+      # @return [ProfilePatch] UNSET until assigned when omitted.
+      attr_accessor :patch
+      # @param target_id [String]
+      # @param patch [ProfilePatch]
+      def initialize(
+        target_id: UNSET,
+        patch: UNSET
+      )
+        @target_id = target_id
+        @patch = patch
+      end
     end
     class UpdateProfileResult < Model
       FIELDS = {profile: "profile"}.freeze
       TYPES = {profile: "EnvironmentProfile"}.freeze
       REQUIRED = [:profile].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [EnvironmentProfile] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @param profile [EnvironmentProfile]
+      def initialize(
+        profile: UNSET
+      )
+        @profile = profile
+      end
     end
     class UpdateResourcePolicyParams < Model
       FIELDS = {browser_context_id: "browserContextId", policy: "policy"}.freeze
       TYPES = {browser_context_id: nil, policy: "ResourcePolicy"}.freeze
       REQUIRED = [:browser_context_id, :policy].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @return [ResourcePolicy] UNSET until assigned when omitted.
+      attr_accessor :policy
+      # @param browser_context_id [String]
+      # @param policy [ResourcePolicy]
+      def initialize(
+        browser_context_id: UNSET,
+        policy: UNSET
+      )
+        @browser_context_id = browser_context_id
+        @policy = policy
+      end
     end
     class UpdateResourcePolicyResult < Model
       FIELDS = {generation: "generation"}.freeze
       TYPES = {generation: nil}.freeze
       REQUIRED = [:generation].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [Integer] UNSET until assigned when omitted.
+      attr_accessor :generation
+      # @param generation [Integer]
+      def initialize(
+        generation: UNSET
+      )
+        @generation = generation
+      end
     end
     class ValidateMediaProfileParams < Model
       FIELDS = {seed: "seed", camera: "camera", microphone: "microphone", devices: "devices", browser_context_id: "browserContextId"}.freeze
       TYPES = {seed: nil, camera: "MediaCameraRequest", microphone: "MediaMicrophoneRequest", devices: [:array, "MediaDeviceProfile"], browser_context_id: nil}.freeze
       REQUIRED = [].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :seed
+      # @return [MediaCameraRequest] UNSET until assigned when omitted.
+      attr_accessor :camera
+      # @return [MediaMicrophoneRequest] UNSET until assigned when omitted.
+      attr_accessor :microphone
+      # @return [Array<MediaDeviceProfile>] UNSET until assigned when omitted.
+      attr_accessor :devices
+      # @return [String] UNSET until assigned when omitted.
+      attr_accessor :browser_context_id
+      # @param seed [String]
+      # @param camera [MediaCameraRequest]
+      # @param microphone [MediaMicrophoneRequest]
+      # @param devices [Array<MediaDeviceProfile>]
+      # @param browser_context_id [String]
+      def initialize(
+        seed: UNSET,
+        camera: UNSET,
+        microphone: UNSET,
+        devices: UNSET,
+        browser_context_id: UNSET
+      )
+        @seed = seed
+        @camera = camera
+        @microphone = microphone
+        @devices = devices
+        @browser_context_id = browser_context_id
+      end
     end
     class ValidateMediaProfileResult < Model
       FIELDS = {profile: "profile", native_modes_verified: "nativeModesVerified"}.freeze
       TYPES = {profile: "MediaProfile", native_modes_verified: nil}.freeze
       REQUIRED = [:profile, :native_modes_verified].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [MediaProfile] UNSET until assigned when omitted.
+      attr_accessor :profile
+      # @return [Boolean] UNSET until assigned when omitted.
+      attr_accessor :native_modes_verified
+      # @param profile [MediaProfile]
+      # @param native_modes_verified [Boolean]
+      def initialize(
+        profile: UNSET,
+        native_modes_verified: UNSET
+      )
+        @profile = profile
+        @native_modes_verified = native_modes_verified
+      end
     end
     class ValidateResourcePolicyParams < Model
       FIELDS = {policy: "policy"}.freeze
       TYPES = {policy: "ResourcePolicy"}.freeze
       REQUIRED = [:policy].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [ResourcePolicy] UNSET until assigned when omitted.
+      attr_accessor :policy
+      # @param policy [ResourcePolicy]
+      def initialize(
+        policy: UNSET
+      )
+        @policy = policy
+      end
     end
     class ValidateResourcePolicyResult < Model
       FIELDS = {policy: "policy"}.freeze
       TYPES = {policy: "ResourcePolicy"}.freeze
       REQUIRED = [:policy].freeze
-      attr_accessor(*FIELDS.keys)
+      # @return [ResourcePolicy] UNSET until assigned when omitted.
+      attr_accessor :policy
+      # @param policy [ResourcePolicy]
+      def initialize(
+        policy: UNSET
+      )
+        @policy = policy
+      end
     end
     class MimicCommands
       def initialize(sender)
         @sender = sender
       end
+      # @param params [CancelExecutionParams, Hash]
+      # @return [CancelExecutionResult]
       def cancel_execution(params = {})
         CancelExecutionResult.from_wire(@sender.call("Mimic.cancelExecution", Generated.to_wire(params)))
       end
+      # @param params [CaptureSnapshotParams, Hash]
+      # @return [CaptureSnapshotResult]
       def capture_snapshot(params = {})
         CaptureSnapshotResult.from_wire(@sender.call("Mimic.captureSnapshot", Generated.to_wire(params)))
       end
+      # @param params [ClearTraceParams, Hash]
+      # @return [ClearTraceResult]
       def clear_trace(params = {})
         ClearTraceResult.from_wire(@sender.call("Mimic.clearTrace", Generated.to_wire(params)))
       end
+      # @param params [ConfigureContextParams, Hash]
+      # @return [ConfigureContextResult]
       def configure_context(params)
         ConfigureContextResult.from_wire(@sender.call("Mimic.configureContext", Generated.to_wire(params)))
       end
+      # @param params [CreateContextParams, Hash]
+      # @return [CreateContextResult]
       def create_context(params = {})
         CreateContextResult.from_wire(@sender.call("Mimic.createContext", Generated.to_wire(params)))
       end
+      # @param params [ExportProfileParams, Hash]
+      # @return [ExportProfileResult]
       def export_profile(params)
         ExportProfileResult.from_wire(@sender.call("Mimic.exportProfile", Generated.to_wire(params)))
       end
+      # @param params [GenerateProfileParams, Hash]
+      # @return [GenerateProfileResult]
       def generate_profile(params = {})
         GenerateProfileResult.from_wire(@sender.call("Mimic.generateProfile", Generated.to_wire(params)))
       end
+      # @param params [GetCompatibilityMatrixParams, Hash]
+      # @return [GetCompatibilityMatrixResult]
       def get_compatibility_matrix(params = {})
         GetCompatibilityMatrixResult.from_wire(@sender.call("Mimic.getCompatibilityMatrix", Generated.to_wire(params)))
       end
+      # @param params [GetDiagnosticsParams, Hash]
+      # @return [GetDiagnosticsResult]
       def get_diagnostics(params = {})
         GetDiagnosticsResult.from_wire(@sender.call("Mimic.getDiagnostics", Generated.to_wire(params)))
       end
+      # @param params [GetMediaPresetsParams, Hash]
+      # @return [GetMediaPresetsResult]
       def get_media_presets(params = {})
         GetMediaPresetsResult.from_wire(@sender.call("Mimic.getMediaPresets", Generated.to_wire(params)))
       end
+      # @param params [GetMediaProfileParams, Hash]
+      # @return [GetMediaProfileResult]
       def get_media_profile(params = {})
         GetMediaProfileResult.from_wire(@sender.call("Mimic.getMediaProfile", Generated.to_wire(params)))
       end
+      # @param params [GetMediaSourcesParams, Hash]
+      # @return [GetMediaSourcesResult]
       def get_media_sources(params = {})
         GetMediaSourcesResult.from_wire(@sender.call("Mimic.getMediaSources", Generated.to_wire(params)))
       end
+      # @param params [GetProfileParams, Hash]
+      # @return [GetProfileResult]
       def get_profile(params)
         GetProfileResult.from_wire(@sender.call("Mimic.getProfile", Generated.to_wire(params)))
       end
+      # @param params [GetProfileSchemaParams, Hash]
+      # @return [GetProfileSchemaResult]
       def get_profile_schema(params = {})
         GetProfileSchemaResult.from_wire(@sender.call("Mimic.getProfileSchema", Generated.to_wire(params)))
       end
+      # @param params [GetResourcePolicyParams, Hash]
+      # @return [GetResourcePolicyResult]
       def get_resource_policy(params)
         GetResourcePolicyResult.from_wire(@sender.call("Mimic.getResourcePolicy", Generated.to_wire(params)))
       end
+      # @param params [GetResourcePolicySchemaParams, Hash]
+      # @return [GetResourcePolicySchemaResult]
       def get_resource_policy_schema(params = {})
         GetResourcePolicySchemaResult.from_wire(@sender.call("Mimic.getResourcePolicySchema", Generated.to_wire(params)))
       end
+      # @param params [GetResourcePolicyStatsParams, Hash]
+      # @return [GetResourcePolicyStatsResult]
       def get_resource_policy_stats(params)
         GetResourcePolicyStatsResult.from_wire(@sender.call("Mimic.getResourcePolicyStats", Generated.to_wire(params)))
       end
+      # @param params [GetStatusParams, Hash]
+      # @return [GetStatusResult]
       def get_status(params = {})
         GetStatusResult.from_wire(@sender.call("Mimic.getStatus", Generated.to_wire(params)))
       end
+      # @param params [GetTraceParams, Hash]
+      # @return [GetTraceResult]
       def get_trace(params = {})
         GetTraceResult.from_wire(@sender.call("Mimic.getTrace", Generated.to_wire(params)))
       end
+      # @param params [GetVersionParams, Hash]
+      # @return [GetVersionResult]
       def get_version(params = {})
         GetVersionResult.from_wire(@sender.call("Mimic.getVersion", Generated.to_wire(params)))
       end
+      # @param params [ImportProfileParams, Hash]
+      # @return [ImportProfileResult]
       def import_profile(params)
         ImportProfileResult.from_wire(@sender.call("Mimic.importProfile", Generated.to_wire(params)))
       end
+      # @param params [PauseParams, Hash]
+      # @return [PauseResult]
       def pause(params = {})
         PauseResult.from_wire(@sender.call("Mimic.pause", Generated.to_wire(params)))
       end
+      # @param params [ResetProfileOverridesParams, Hash]
+      # @return [ResetProfileOverridesResult]
       def reset_profile_overrides(params)
         ResetProfileOverridesResult.from_wire(@sender.call("Mimic.resetProfileOverrides", Generated.to_wire(params)))
       end
+      # @param params [ResumeParams, Hash]
+      # @return [ResumeResult]
       def resume(params = {})
         ResumeResult.from_wire(@sender.call("Mimic.resume", Generated.to_wire(params)))
       end
+      # @param params [SetMediaProfileParams, Hash]
+      # @return [SetMediaProfileResult]
       def set_media_profile(params)
         SetMediaProfileResult.from_wire(@sender.call("Mimic.setMediaProfile", Generated.to_wire(params)))
       end
+      # @param params [SetViewportParams, Hash]
+      # @return [SetViewportResult]
       def set_viewport(params)
         SetViewportResult.from_wire(@sender.call("Mimic.setViewport", Generated.to_wire(params)))
       end
+      # @param params [StartTraceParams, Hash]
+      # @return [StartTraceResult]
       def start_trace(params = {})
         StartTraceResult.from_wire(@sender.call("Mimic.startTrace", Generated.to_wire(params)))
       end
+      # @param params [StopTraceParams, Hash]
+      # @return [StopTraceResult]
       def stop_trace(params = {})
         StopTraceResult.from_wire(@sender.call("Mimic.stopTrace", Generated.to_wire(params)))
       end
+      # @param params [UpdateProfileParams, Hash]
+      # @return [UpdateProfileResult]
       def update_profile(params)
         UpdateProfileResult.from_wire(@sender.call("Mimic.updateProfile", Generated.to_wire(params)))
       end
+      # @param params [UpdateResourcePolicyParams, Hash]
+      # @return [UpdateResourcePolicyResult]
       def update_resource_policy(params)
         UpdateResourcePolicyResult.from_wire(@sender.call("Mimic.updateResourcePolicy", Generated.to_wire(params)))
       end
+      # @param params [ValidateMediaProfileParams, Hash]
+      # @return [ValidateMediaProfileResult]
       def validate_media_profile(params)
         ValidateMediaProfileResult.from_wire(@sender.call("Mimic.validateMediaProfile", Generated.to_wire(params)))
       end
+      # @param params [ValidateResourcePolicyParams, Hash]
+      # @return [ValidateResourcePolicyResult]
       def validate_resource_policy(params)
         ValidateResourcePolicyResult.from_wire(@sender.call("Mimic.validateResourcePolicy", Generated.to_wire(params)))
       end

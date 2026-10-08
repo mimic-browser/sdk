@@ -3,6 +3,46 @@ require 'tmpdir'
 require 'mimic_sdk'
 
 class SDKTest < Minitest::Test
+  def test_concurrent_page_close_preserves_one_cleanup_failure
+    entered, release = Queue.new, Queue.new
+    failure = IOError.new('Detach connection failed')
+    handle = MimicSDK::PageClient.new(Object.new, session_id: 'owned', detach: lambda do |_client|
+      entered << true
+      release.pop
+      raise failure
+    end)
+    first = Thread.new { handle.close rescue $! }
+    Timeout.timeout(5) { entered.pop }
+    second = Thread.new { handle.close rescue $! }
+    assert handle.closed?
+    assert_nil second.join(0.05), 'Second close must join the first cleanup'
+    release << true
+    assert_same failure, first.value
+    assert_same failure, second.value
+    assert_same failure, assert_raises(IOError) { handle.close }
+    assert entered.empty?, 'Cleanup ran more than once'
+  ensure
+    release&.push(true)
+    [first, second].compact.each { |worker| worker.join(5) }
+  end
+
+  def test_runtime_options_are_explicit_and_preserve_environment_default
+    assert_raises(ArgumentError) { MimicSDK::RuntimeManager.new(runtime_verison: '0.2.3') }
+    manager = MimicSDK::RuntimeManager.new(runtime_version: '0.2.3', allow_download: false)
+    assert_equal '0.2.3', manager.options[:runtime_version]
+    refute manager.downloads?
+    refute MimicSDK::RuntimeManager.new.options.key?(:allow_download), 'Omission must preserve the environment selection'
+  end
+
+  def test_generated_keyword_constructors_expose_fields_and_preserve_omission
+    model = MimicSDK::Generated::MediaConfiguration.new(devices: [], camera: nil)
+    assert_equal({ 'devices' => [], 'camera' => nil }, model.to_wire)
+    parameters = model.method(:initialize).parameters
+    assert_includes parameters, [:key, :devices]
+    refute parameters.any? { |kind, _| kind == :keyrest }
+    assert_raises(ArgumentError) { MimicSDK::Generated::MediaConfiguration.new(devcies: []) }
+  end
+
   def test_exact_selectors_and_manifest_integrity
     manager = MimicSDK::RuntimeManager.new
     lock = manager.resolve_lock

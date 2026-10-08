@@ -63,5 +63,12 @@ try {
     check($capture->calls[1][0] === 'Mimic.setMediaProfile' && $capture->calls[1][1]->browserContextId === 'context-x', 'Context media scope');
     $client->context('context-x')->setResourcePolicy([]);
     check($capture->calls[2][0] === 'Mimic.updateResourcePolicy' && is_object($capture->calls[2][1]->policy), 'Resource policy scope');
+    $configuration = new \Mimic\Sdk\Generated\ConfigureContextParams();
+    $configuration->media = new \Mimic\Sdk\Generated\MediaConfiguration();
+    $configuration->media->devices = [];
+    $client->context('context-x')->configure($configuration);
+    check($configuration->browserContextId === Missing::Value, 'Bound Context mutated the caller model');
+    $encoded = json_decode(json_encode($capture->calls[3][1], JSON_THROW_ON_ERROR), false, 512, JSON_THROW_ON_ERROR);
+    check($encoded->browserContextId === 'context-x' && $encoded->media->devices === [] && !property_exists($encoded, 'profile'), 'Typed Context options lost scope or omission');
 } finally { RuntimeManager::removeTree($temporary); }
 echo "PASS PHP offline unit checks and $count shared wire round trips\n";

@@ -27,7 +27,10 @@ $session = ChromeSession::launch(new RuntimeOptions(executablePath: $argv[1], al
 $pid = $session->runtime->processId;
 try {
     check($session->browser instanceof HeadlessChromium\Browser, 'Adapter returned imitation browser');
-    $context = $session->newContext(['media' => ['devices' => []], 'resourcePolicy' => ['reportOnly' => true]]);
+    $configuration = new \Mimic\Sdk\Generated\CreateContextParams();
+    $configuration->media = new \Mimic\Sdk\Generated\MediaConfiguration(); $configuration->media->devices = [];
+    $configuration->resourcePolicy = new \Mimic\Sdk\Generated\ResourcePolicy(); $configuration->resourcePolicy->reportOnly = true;
+    $context = $session->newContext($configuration);
     check($context->getMediaProfile()->profile->devices === [], 'Media profile');
     check($context->getResourcePolicy()->policy->reportOnly === true, 'Resource policy');
     $page = $session->newPage($context);
@@ -35,6 +38,23 @@ try {
     $page->dom()->querySelector('#run')->click();
     check($page->evaluate('document.querySelector("#run").textContent')->getReturnValue() === 'done', 'Native Chrome PHP click scenario');
     check($session->forPage($page)->id === $context->id, 'Public page-to-Context bridge');
+    $pageClient = $session->forPageCommands($page);
+    check($session->forPageCommands($page) === $pageClient, 'Repeated page lookup allocated another attachment');
+    check($pageClient->send('Target.getTargetInfo')->targetInfo->targetId === $page->getSession()->getTargetId(), 'Page commands addressed another target');
+    check(is_object($pageClient->commands->getStatus()), 'Typed page result');
+    try { $pageClient->experimental()->send('Mimic.futureUnsupported'); throw new RuntimeException('Unknown page command accepted'); }
+    catch (ProtocolException $error) { check($error->getCode() === -32601, 'Page raw error lost numeric code'); }
+    $pageClient->close(); $pageClient->close();
+    check($pageClient->isClosed(), 'Page capability did not close');
+    try { $pageClient->commands->getStatus(); throw new RuntimeException('Closed handle accepted a command'); }
+    catch (LogicException $error) { check(str_contains($error->getMessage(), 'closed'), 'Wrong closed-handle error'); }
+    try { $session->runtime->transport->send('Target.detachFromTarget', ['sessionId' => $pageClient->sessionId]); throw new RuntimeException('Page attachment remained after close'); }
+    catch (ProtocolException $error) { check($error->getMessage() === 'No session with given id', 'Unexpected detach failure'); }
+    check($page->evaluate('21 * 2')->getReturnValue() === 42, 'Handle close affected native Page');
+    $renewed = $session->forPageCommands($page); check($renewed !== $pageClient, 'Closed attachment reused');
+    $disposable = $session->newPage($context); $closedWithPage = $session->forPageCommands($disposable);
+    $disposable->close();
+    check($closedWithPage->isClosed(), 'Native Page close retained its capability attachment');
     check($session->mimic->commands->getVersion()->version === $session->runtime->identity->version, 'Typed response');
     try { $session->mimic->experimental()->send('Mimic.futureUnsupported', ['null' => null]); throw new RuntimeException('Unknown command accepted'); }
     catch (ProtocolException $error) { check($error->getCode() < 0 && $error->getMessage() !== '', 'Raw error lost code/message'); }
@@ -77,6 +97,7 @@ try {
     $after = $session->mimic->send('Target.getBrowserContexts')->browserContextIds; sort($after);
     check($after === $before, 'Closing factory leaked Context');
 } finally { $session->close(); }
+check($renewed->isClosed(), 'Session close retained its capability attachment');
 check(!is_dir('/proc/' . $pid), 'Owned process survived disposal');
 $temporary = sys_get_temp_dir() . '/mimic-php-timeout-' . RuntimeManager::uuid(); RuntimeManager::mkdir($temporary);
 try {

@@ -423,6 +423,15 @@ def ruby_field(name):
     return result+'_' if result in ('class','send','method','object_id') else result
 
 
+def ruby_doc_type(schema):
+    if '$ref' in schema:
+        name = schema['$ref'].split('/')[-1]
+        return name if model_schema(DEFS[name]) else ruby_doc_type(DEFS[name])
+    if nullable(schema) is not None: return ruby_doc_type(nullable(schema)) + ', nil'
+    if schema.get('type') == 'array': return 'Array<' + ruby_doc_type(schema['items']) + '>'
+    return {'integer': 'Integer', 'number': 'Numeric', 'string': 'String', 'boolean': 'Boolean', 'object': 'Hash', 'null': 'nil'}.get(schema.get('type'), 'Object')
+
+
 def ruby():
     lines=[header('#'),'module MimicSDK','  module Generated',f'    SCHEMA_SHA256 = "{HASH}"',RUBY_HELPERS]
     for name,schema in DEFS.items():
@@ -430,11 +439,24 @@ def ruby():
         pairs=', '.join(f'{ruby_field(wire)}: "{wire}"' for wire in schema['properties'])
         types=', '.join(f'{ruby_field(wire)}: '+ruby_type(child) for wire,child in schema['properties'].items())
         req=', '.join(':'+ruby_field(wire) for wire in schema.get('required',[]))
-        lines += [f'    class {name} < Model',f'      FIELDS = {{{pairs}}}.freeze',f'      TYPES = {{{types}}}.freeze',f'      REQUIRED = [{req}].freeze','      attr_accessor(*FIELDS.keys)','    end']
+        lines += [f'    class {name} < Model',f'      FIELDS = {{{pairs}}}.freeze',f'      TYPES = {{{types}}}.freeze',f'      REQUIRED = [{req}].freeze']
+        for wire, child in schema['properties'].items():
+            lines += [f'      # @return [{ruby_doc_type(child)}] UNSET until assigned when omitted.', f'      attr_accessor :{ruby_field(wire)}']
+        if schema['properties']:
+            lines += [f'      # @param {ruby_field(wire)} [{ruby_doc_type(child)}]' for wire, child in schema['properties'].items()]
+            lines += ['      def initialize(']
+            fields = list(schema['properties'])
+            lines += [f'        {ruby_field(wire)}: UNSET' + (',' if index < len(fields)-1 else '') for index, wire in enumerate(fields)]
+            lines += ['      )']
+            lines += [f'        @{ruby_field(wire)} = {ruby_field(wire)}' for wire in fields]
+            lines += ['      end']
+        else:
+            lines += ['      def initialize', '      end']
+        lines += ['    end']
     lines+=['    class MimicCommands','      def initialize(sender)', '        @sender = sender', '      end']
     for c in CONTRACT.commands:
         name=pascal(c['name'].split('.')[1]);p=DEFS[name+'Params'];optional=not p.get('required') and 'oneOf' not in p
-        lines += [f'      def {snake(c["name"].split(".")[1])}(params'+(' = {}' if optional else '')+')',f'        {name}Result.from_wire(@sender.call("{c["name"]}", Generated.to_wire(params)))','      end']
+        lines += [f'      # @param params [{name}Params, Hash]', f'      # @return [{name}Result]', f'      def {snake(c["name"].split(".")[1])}(params'+(' = {}' if optional else '')+')',f'        {name}Result.from_wire(@sender.call("{c["name"]}", Generated.to_wire(params)))','      end']
     lines+=['    end','  end','end']
     return '\n'.join(lines)+'\n'
 

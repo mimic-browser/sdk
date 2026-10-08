@@ -18,8 +18,17 @@ module MimicSDK
     VERSION_PATTERN = /\Av?\d+\.\d+\.\d+(?:-beta\.\d+)?\z/
     SHA_PATTERN = /\A[0-9a-f]{64}\z/
 
-    def initialize(**options)
-      @options = options
+    # @param cancelled [Proc, nil] returns true to cancel a pending operation
+    def initialize(runtime_version: nil, lock_file: nil, executable_path: nil,
+                   runtime_dir: nil, archive_path: nil, allow_download: UNSET,
+                   startup_timeout: 30, lock_timeout: 120, cancelled: nil)
+      @options = {
+        runtime_version: runtime_version, lock_file: lock_file,
+        executable_path: executable_path, runtime_dir: runtime_dir,
+        archive_path: archive_path, startup_timeout: startup_timeout,
+        lock_timeout: lock_timeout, cancelled: cancelled
+      }
+      @options[:allow_download] = allow_download unless allow_download.equal?(UNSET)
     end
 
     def normalize_version(value)

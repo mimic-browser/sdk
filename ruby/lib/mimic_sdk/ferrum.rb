@@ -16,7 +16,9 @@ module MimicSDK
       def initialize(endpoint, runtime: nil, timeout: 30)
         @runtime = runtime
         @contexts = []
+        @page_clients = {}
         @mutex = Mutex.new
+        @close_changed = ConditionVariable.new
         @transport = runtime ? runtime.transport : Transport.new(endpoint, timeout: timeout)
         @mimic = Client.new(@transport)
         version = @mimic.get_version
@@ -27,6 +29,23 @@ module MimicSDK
         @browser = ::Ferrum::Browser.new(
           ws_url: @transport.url, timeout: timeout, process_timeout: timeout, flatten: false
         )
+        events, @unsubscribe = @transport.subscribe
+        @attachment_events = Thread.new do
+          while (event = events.pop)
+            next unless event['method'] == 'Target.detachedFromTarget'
+            @mutex.synchronize do
+              @page_clients.delete_if do |_target, client|
+                detached = client.session_id == event.dig('params', 'sessionId')
+                detached && client.invalidate
+              end
+            end
+          end
+        ensure
+          @mutex.synchronize do
+            # A pending explicit detach remains owned until its reply/failure.
+            @page_clients.delete_if { |_target, client| client.invalidate }
+          end
+        end
       rescue StandardError
         close
         raise
@@ -74,34 +93,88 @@ module MimicSDK
         end
       end
 
+      # @param page [::Ferrum::Page]
+      # @return [MimicSDK::PageClient] cached until detached; close releases only this attachment
       def for_page(page)
         raise ArgumentError, 'Expected an actual Ferrum::Page' unless page.is_a?(::Ferrum::Page)
-        session = @transport.call_raw('Target.attachToTarget', { 'targetId' => page.target_id, 'flatten' => true })
-        Client.new(@transport, session_id: session.fetch('sessionId'))
+        loop do
+          client = @mutex.synchronize do
+            raise RuntimeError, 'Integration session closed' if @closed
+            @page_clients[page.target_id] ||= begin
+              session = @transport.call_raw('Target.attachToTarget', { 'targetId' => page.target_id, 'flatten' => true })
+              PageClient.new(@transport, session_id: session.fetch('sessionId'), detach: method(:detach_page_client))
+            end
+          end
+          return client unless client.closed?
+          # Never replace a closing handle before its cleanup finishes. Waiting
+          # outside the Session mutex allows detach to release its ownership.
+          client.close
+        end
       end
+
+      def detach_page_client(client)
+        @transport.call_raw('Target.detachFromTarget', { 'sessionId' => client.session_id })
+      rescue ProtocolError => error
+        # The target can close between local invalidation and the detach command.
+        raise unless error.code == -32000 && error.message == 'No session with given id'
+      ensure
+        @mutex.synchronize { @page_clients.delete_if { |_target, owned| owned.equal?(client) } }
+      end
+      private :detach_page_client
 
       def close
         return unless @mutex
-        @mutex.synchronize do
-          return if @closed
+        contexts, clients = @mutex.synchronize do
+          @close_changed.wait(@mutex) while @closing
+          if @closed
+            raise @close_error if @close_error
+            return
+          end
           @closed = true
-          begin
-            @contexts.each(&:dispose)
-          ensure
-            begin
-              @browser&.quit # Remote Ferrum owns no process; quit only disconnects.
-            ensure
-              @runtime ? @runtime.close : @transport&.close
-            end
+          @closing = true
+          owned = [@contexts, @page_clients.values]
+          @contexts = []
+          @page_clients = {}
+          owned
+        end
+        failure = nil
+        cleanup = lambda do |&operation|
+          operation.call
+        rescue StandardError => error
+          failure ||= error
+        end
+        begin
+          clients.each { |client| cleanup.call { client.close } }
+          contexts.each { |context| cleanup.call { context.dispose } }
+          cleanup.call { @browser&.quit } # A remote Ferrum browser owns no process.
+          cleanup.call { @runtime ? @runtime.close : @transport&.close }
+        ensure
+          clients.each(&:invalidate)
+          cleanup.call { @unsubscribe&.call }
+          cleanup.call { @attachment_events&.join unless @attachment_events == Thread.current }
+          @mutex.synchronize do
+            @close_error = failure
+            @closing = false
+            @close_changed.broadcast
           end
         end
+        raise failure if failure
         nil
       end
     end
 
-    def self.launch(**options)
-      process = RuntimeManager.new(**options).launch
-      session = Session.new(process.endpoint, runtime: process)
+    def self.launch(runtime_version: nil, lock_file: nil, executable_path: nil,
+                    runtime_dir: nil, archive_path: nil, allow_download: UNSET,
+                    startup_timeout: 30, lock_timeout: 120, cancelled: nil,
+                    timeout: 30)
+      process = RuntimeManager.new(
+        runtime_version: runtime_version, lock_file: lock_file,
+        executable_path: executable_path, runtime_dir: runtime_dir,
+        archive_path: archive_path, allow_download: allow_download,
+        startup_timeout: startup_timeout, lock_timeout: lock_timeout,
+        cancelled: cancelled
+      ).launch
+      session = Session.new(process.endpoint, runtime: process, timeout: timeout)
       return session unless block_given?
       begin
         yield session
@@ -113,8 +186,8 @@ module MimicSDK
       raise
     end
 
-    def self.connect(endpoint, **options)
-      session = Session.new(endpoint, **options)
+    def self.connect(endpoint, timeout: 30)
+      session = Session.new(endpoint, timeout: timeout)
       return session unless block_given?
       begin
         yield session
