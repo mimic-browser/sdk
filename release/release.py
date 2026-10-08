@@ -427,6 +427,7 @@ def verify_registry(build_receipt, state_path):
             if not url:
                 raise ReleaseError(f"Registry is missing selected artifact {item['filename']}")
             data = fetch(url)
+            repository_signature = None
             # Go/Packagist construct source archives themselves; compare canonical file contents.
             if package["registry"] in ("go", "packagist"):
                 with tempfile.TemporaryDirectory(prefix="mimic-registry-") as temporary:
@@ -438,9 +439,19 @@ def verify_registry(build_receipt, state_path):
                             raise ReleaseError(f"Registry source contents differ: {key}")
                     elif remote["contentSha256"] != item["contentSha256"]:
                         raise ReleaseError(f"Registry module contents differ: {key}")
+            elif package["registry"] == "nuget":
+                import nuget_verify
+                with tempfile.TemporaryDirectory(prefix="mimic-registry-nuget-") as temporary:
+                    signed = Path(temporary) / item["filename"]
+                    signed.write_bytes(data)
+                    repository_signature = nuget_verify.verify(
+                        Path(item["file"]), signed, fetch_json=fetch_json, inspect_archive=inspect_archive)
             elif sha(data) != item["sha256"]:
                 raise ReleaseError(f"Registry bytes differ: {item['filename']}")
-            completed.append({"filename":item["filename"], "url":url, "sha256":sha(data), "verifiedAt":utc()})
+            record = {"filename":item["filename"], "url":url, "sha256":sha(data), "verifiedAt":utc()}
+            if repository_signature is not None:
+                record["repositorySignature"] = repository_signature
+            completed.append(record)
         state["packages"][key] = {"version":package["version"], "status":"verified", "artifacts":completed}
         write(state_path, state)
     return state

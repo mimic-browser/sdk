@@ -16,6 +16,7 @@ import urllib.error
 import release
 import publish_sources
 import pypi_auth
+import resume
 
 
 def check_credentials(packages, environment):
@@ -50,18 +51,23 @@ def main():
     parser.add_argument("--qualification", type=Path, nargs="+", required=True)
     parser.add_argument("--state", type=Path, required=True)
     parser.add_argument("--execute", action="store_true")
+    parser.add_argument("--recovery", type=Path)
+    parser.add_argument("--source-proof", type=Path)
     args = parser.parse_args()
     if not args.execute or os.getenv("MIMIC_SDK_PUBLICATION_ENABLED") != "true" or os.getenv("CI") != "true":
         raise release.ReleaseError("Publication is disabled; use local plan/build/handoff. Execution requires explicitly enabled CI")
     plan, build = release.read(args.plan), release.read(args.build)
     handoff = release.publication_handoff(plan, build, [release.read(path) for path in args.qualification])
     revision = release.git_revision()
-    if not revision or plan["sdkRevision"] != revision:
+    if os.getenv("RESUME_SOURCE_REVISION"):
+        resume.authorize_recovery(args.plan, args.build, args.qualification,
+                                  args.recovery, args.source_proof, os.environ)
+    elif not revision or plan["sdkRevision"] != revision:
         raise release.ReleaseError("Publication requires the exact committed SDK source from the release plan")
     if release.execute(["git", "status", "--porcelain", "--untracked-files=all"], capture=True):
         raise release.ReleaseError("Publication requires a clean source tree; keep outputs in ignored .build")
-    state = release.read(args.state) if args.state.exists() else {"kind":"sdk-publication-progress", "buildSha256":handoff["buildSha256"], "sdkRevision":revision, "packages":{}}
-    if state["buildSha256"] != handoff["buildSha256"]:
+    state = release.read(args.state) if args.state.exists() else {"kind":"sdk-publication-progress", "buildSha256":handoff["buildSha256"], "sdkRevision":plan["sdkRevision"], "packages":{}}
+    if state["buildSha256"] != handoff["buildSha256"] or state["sdkRevision"] != plan["sdkRevision"]:
         raise release.ReleaseError("Publication state belongs to another build")
     check_credentials({key: package for key, package in build["packages"].items() if state["packages"].get(key, {}).get("state") != "verified"}, os.environ)
     def save(): release.write(args.state, state)

@@ -152,10 +152,13 @@ class ReleaseTests(unittest.TestCase):
             package = {"name":"Example", "version":"0.1.0", "registry":"nuget", "artifacts":[release.artifact(path, "nuget")]}
             build = {"packages":{"example":package}}
             state = Path(directory) / "state.json"
-            with patch.object(release, "fetch", return_value=data) as download:
+            with patch.object(release, "fetch", return_value=data) as download, patch(
+                    "nuget_verify.verify", return_value={"payloadSha256": package["artifacts"][0]["contentSha256"]}) as signature:
                 release.verify_registry(build, state)
                 release.verify_registry(build, state)
                 self.assertEqual(download.call_count, 1)
+                signature.assert_called_once()
+                self.assertIn("repositorySignature", release.read(state)["packages"]["example"]["artifacts"][0])
             path.write_bytes(b"changed")
             with self.assertRaises(release.ReleaseError): release.verify_registry(build, state)
 

@@ -99,6 +99,19 @@ verified artifacts. Native artifact paths must still resolve in the same hosted
 checkout layout; resume never rewrites their identities or silently rebuilds a
 partially published release.
 
+If publication tooling needs repair after an upload, keep the original artifacts
+and dispatch the repaired workflow with the same plan and `resume_run`, plus
+`resume_source_revision` set to the original full SDK commit. This explicit
+recovery requires a complete retained build and successful qualification. It
+does not rebuild or requalify packages. The current selected package inputs,
+schema and runtime lock must still match the original plan. GitHub run and exact
+artifact provenance are authenticated before restore and again before publishing;
+the original SDK revision remains in every original receipt. A separate
+`recovery.json` records the tooling revision and its binding to the retained
+plan, build and qualification. Later retries must use the same repaired tooling
+commit and also validate that recovery lineage.
+Source-producing Go, Cargo and Packagist publication cannot use this recovery.
+
 | Registry      | Required CI configuration                                                                                                     | Publication identity                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | npm           | npm trusted publishing or `NODE_AUTH_TOKEN` through setup-node                                                                | `mimic-browser` native version                                                                     |
@@ -117,7 +130,13 @@ secret is required. Other registry credentials are unchanged.
 The PHP mirror contains no separately edited implementation. Only verified
 `sdk/php` package contents enter it. Go/Packagist registries construct their own
 ZIP containers, so verification compares complete canonical file content; native
-uploaded packages require exact SHA256 bytes. No force-push or version overwrite
+uploaded packages require exact SHA256 bytes. NuGet.org adds a repository
+signature: every original ZIP entry must remain byte-for-byte identical, with
+only `.signature.p7s` added. The verifier checks the signature chain and an
+advertised NuGet.org signing certificate using `dotnet nuget verify --all`.
+Trusted fingerprints come from the official HTTPS service index, allowing
+certificate rotation. Receipts preserve unsigned and downloaded archive hashes,
+the exact payload digest and signature evidence. No force-push or version overwrite
 is performed. Central deployment IDs are saved for retries; an unknown upload
 outcome requires recovery of the existing deployment ID rather than a duplicate.
 
