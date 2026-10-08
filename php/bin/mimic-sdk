@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+declare(strict_types=1);
+require $GLOBALS['_composer_autoload_path'] ?? dirname(__DIR__) . '/vendor/autoload.php';
+
+use Mimic\Sdk\RuntimeManager;
+use Mimic\Sdk\RuntimeOptions;
+
+try {
+    $command = $argv[1] ?? 'help';
+    $options = new RuntimeOptions(version: $argv[2] ?? null);
+    $manager = new RuntimeManager();
+    $result = match ($command) {
+        'install' => $manager->install($options),
+        'lock' => $manager->resolveLock($options),
+        'list' => RuntimeManager::list(),
+        default => throw new InvalidArgumentException('Usage: mimic-sdk install|lock [exact-version], or mimic-sdk list'),
+    };
+    echo json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR), PHP_EOL;
+} catch (Throwable $error) { fwrite(STDERR, $error->getMessage() . PHP_EOL); exit(1); }

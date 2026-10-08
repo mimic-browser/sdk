@@ -1,0 +1,49 @@
+[package]
+name = "mimic-sdk"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.89"
+description = "Typed Mimic extensions and verified native runtime management beside existing automation clients"
+license-file = "LICENSE"
+repository = "https://github.com/mimic-browser/sdk"
+readme = "README.md"
+
+[features]
+default = []
+chromiumoxide = ["dep:chromiumoxide"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "process", "fs", "sync", "time", "io-util", "net"] }
+tokio-tungstenite = { version = "0.28", features = ["rustls-tls-native-roots"] }
+futures-util = "0.3"
+reqwest = { version = "0.12", default-features = false, features = ["rustls-tls-native-roots", "json", "stream"] }
+sha2 = "0.10"
+uuid = { version = "1", features = ["v4"] }
+regex = "1"
+tempfile = "3"
+flate2 = "1"
+tar = "0.4"
+zip = { version = "2", default-features = false, features = ["deflate"] }
+chrono = { version = "0.4", default-features = false, features = ["clock"] }
+hostname = "0.4"
+libc = "0.2"
+chromiumoxide = { version = "=0.9.1", optional = true }
+
+[dev-dependencies]
+tokio = { version = "1", features = ["test-util"] }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_System_Threading"] }
+
+[profile.dev]
+debug = 0
+
+[profile.test]
+debug = 0
+
+[[example]]
+name = "chromiumoxide"
+required-features = ["chromiumoxide"]

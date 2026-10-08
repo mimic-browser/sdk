@@ -1,6 +1,6 @@
 {
   "runtimeRepository": "https://github.com/mimic-browser/runtime",
-  "runtimeRevision": "dfdd876189c48de19af5786d66353bc25663bbc1",
+  "runtimeRevision": "cfcabd40e52e86bb30461888fe101f37b4996774",
   "contractSha256": "ea792e2f194bf831f5494bedd65a7112881e45695b3af3d504367c317684e7a6",
   "auditedFiles": {
     "internal/cdp/server.go": "54b011b5e18fe262d40206df3b9b5778dca1437a6414f788f79c5dab0a41bae3",
@@ -13,6 +13,5 @@
     "internal/profile/profile.go": "38971f89f84116a5be9f419405336d8c3db816d9126581c5c32a1a80e5b04b82",
     "internal/profile/generate.go": "4b219174cf6baa852966a0140c7a9c1684c205d3ee23b2ea43f63eea80831b25"
   },
-  "chromeSource": "../sources/chrome152/chrome152.source.json",
-  "runtimeWorkingTree": true
+  "chromeSource": "../sources/chrome152/chrome152.source.json"
 }

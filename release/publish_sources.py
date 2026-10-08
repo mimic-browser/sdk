@@ -1,0 +1,124 @@
+#!/usr/bin/env python3
+"""Source-registry and Maven bundle publishers, called only by guarded publish.py."""
+import base64
+import hashlib
+import io
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import tempfile
+import urllib.parse
+import urllib.request
+import uuid
+import zipfile
+
+import release
+
+
+def empty_mirror_tree(root, workspace):
+    """Clear only the new private clone, including files deleted since the previous release."""
+    root, workspace = root.resolve(), workspace.resolve()
+    if root == workspace or not root.is_relative_to(workspace) or not (root / ".git").is_dir():
+        raise release.ReleaseError("Mirror cleanup must remain inside the newly created private workspace")
+    release.execute(["git", "read-tree", "--empty"], root)
+    for path in root.iterdir():
+        if path.name == ".git": continue
+        if path.is_symlink() or path.is_file(): path.unlink()
+        else: shutil.rmtree(path)
+
+
+def maven(package, progress, save):
+    """Use Central's supported bundle API; retain deployment ID before status checks."""
+    token = os.environ.get("MAVEN_CENTRAL_TOKEN")
+    if not token:
+        raise release.ReleaseError("MAVEN_CENTRAL_TOKEN must contain the Portal's base64 username:password token")
+    headers = {"Authorization":"Bearer " + token, "User-Agent":"Mimic-SDK-Release/0.1"}
+    if not progress.get("deploymentId"):
+        if progress.get("state") == "uploading":
+            raise release.ReleaseError("Prior upload outcome is unknown: recover its Central deployment ID into the receipt before retrying")
+        with tempfile.TemporaryDirectory(prefix="mimic-central-") as temporary:
+            root = Path(temporary)
+            group, name = package["name"].split(":")
+            prefix = group.replace(".", "/") + "/" + name + "/" + package["version"] + "/"
+            payload = io.BytesIO()
+            with zipfile.ZipFile(payload, "w", zipfile.ZIP_DEFLATED) as bundle:
+                for item in package["artifacts"]:
+                    path = Path(item["file"])
+                    signature = root / (path.name + ".asc")
+                    command = ["gpg", "--batch", "--yes", "--no-tty", "--pinentry-mode", "loopback", "--passphrase-fd", "0", "--armor", "--detach-sign", "--output", str(signature), str(path)]
+                    result = subprocess.run(command, input=os.getenv("MAVEN_SIGNING_PASSPHRASE", "") + "\n", text=True)
+                    if result.returncode:
+                        raise release.ReleaseError("Noninteractive Maven artifact signing failed")
+                    data = path.read_bytes()
+                    bundle.writestr(prefix + path.name, data)
+                    bundle.writestr(prefix + signature.name, signature.read_bytes())
+                    for algorithm in ("md5", "sha1", "sha256", "sha512"):
+                        bundle.writestr(prefix + path.name + "." + algorithm, hashlib.new(algorithm, data).hexdigest())
+            boundary = "mimic-" + uuid.uuid4().hex
+            body = ("--" + boundary + '\r\nContent-Disposition: form-data; name="bundle"; filename="bundle.zip"\r\nContent-Type: application/octet-stream\r\n\r\n').encode() + payload.getvalue() + ("\r\n--" + boundary + "--\r\n").encode()
+            headers["Content-Type"] = "multipart/form-data; boundary=" + boundary
+            progress["state"] = "uploading"; save()
+            request = urllib.request.Request("https://central.sonatype.com/api/v1/publisher/upload?publishingType=AUTOMATIC", data=body, headers=headers, method="POST")
+            with urllib.request.urlopen(request, timeout=120) as response:
+                progress["deploymentId"] = response.read().decode().strip()
+            progress["state"] = "uploaded"; save()
+    request = urllib.request.Request("https://central.sonatype.com/api/v1/publisher/status?id=" + urllib.parse.quote(progress["deploymentId"], safe=""), data=b"", headers=headers, method="POST")
+    with urllib.request.urlopen(request, timeout=60) as response:
+        status = json.loads(response.read())
+    progress["centralState"] = status["deploymentState"]; save()
+    if status["deploymentState"] == "FAILED":
+        raise release.ReleaseError("Central validation failed: " + json.dumps(status.get("errors")))
+    if status["deploymentState"] != "PUBLISHED":
+        raise release.ReleaseError("Central deployment is still processing; rerun with the retained deployment receipt")
+
+
+def php(package, source_revision, progress, save):
+    """Publish an exact SDK/php tree to the designated CI-only mirror, never an edited fork."""
+    mirror = release.catalog()["php"]["mirror"]
+    token = os.environ.get("PHP_MIRROR_TOKEN")
+    if not token:
+        raise release.ReleaseError("PHP_MIRROR_TOKEN must authorize push to the dedicated PHP mirror")
+    import base64
+    environment = dict(os.environ)
+    # Credential bytes stay out of command arguments and persistent Git config.
+    environment.update({"GIT_TERMINAL_PROMPT":"0", "GIT_CONFIG_COUNT":"1",
+        "GIT_CONFIG_KEY_0":"http." + mirror + ".extraheader",
+        "GIT_CONFIG_VALUE_0":"Authorization: Basic " + base64.b64encode(("x-access-token:" + token).encode()).decode()})
+    def git(arguments, cwd=release.ROOT, capture=False):
+        result = subprocess.run(["git", *map(str, arguments)], cwd=cwd, env=environment, text=True, capture_output=capture)
+        if result.returncode:
+            raise release.ReleaseError("PHP mirror Git operation failed; retain the same release receipt for recovery")
+        return result.stdout.strip() if capture else None
+    tag = "v" + package["version"]
+    reference = "refs/tags/" + tag
+    existing = git(["ls-remote", "--tags", mirror, reference], capture=True)
+    if existing:
+        commit = existing.split()[0]
+        if progress.get("mirrorCommit") != commit:
+            raise release.ReleaseError("PHP mirror tag exists without matching retained provenance; inspect it rather than overwrite")
+        return
+    with tempfile.TemporaryDirectory(prefix="mimic-php-mirror-") as temporary:
+        root = Path(temporary) / "repository"
+        git(["clone", "--no-checkout", mirror, root])
+        git(["checkout", "--orphan", "sdk-release-" + package["version"]], root)
+        empty_mirror_tree(root, Path(temporary))
+        # The orphan now has an empty index/worktree; no obsolete previous-mirror file can survive.
+        archive = Path(package["artifacts"][0]["file"])
+        release.inspect_archive(archive, "packagist")
+        with zipfile.ZipFile(archive) as source:
+            for entry in source.infolist():
+                if not entry.is_dir():
+                    path = root / entry.filename
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_bytes(source.read(entry))
+        git(["add", "--all"], root)
+        git(["-c", "user.name=Mimic SDK Release", "-c", "user.email=releases@mimic.boo", "commit", "-m", f"release: PHP {package['version']} from SDK {source_revision}"], root)
+        progress["mirrorCommit"] = git(["rev-parse", "HEAD"], root, capture=True)
+        progress["sourceRevision"] = source_revision
+        progress["archiveSha256"] = package["artifacts"][0]["sha256"]
+        progress["state"] = "pushing"; save()
+        git(["push", "origin", "HEAD:" + reference], root)
+        progress["state"] = "uploaded"; save()
+    # Packagist is configured once with a GitHub webhook for this mirror; no source changes here.

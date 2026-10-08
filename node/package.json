@@ -1,0 +1,64 @@
+{
+  "name": "mimic-browser",
+  "version": "0.1.0",
+  "license": "SEE LICENSE IN LICENSE",
+  "description": "Native Mimic runtime management with real Playwright and Puppeteer objects",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mimic-browser/sdk.git",
+    "directory": "node"
+  },
+  "type": "module",
+  "engines": {
+    "node": ">=22.19"
+  },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./playwright": {
+      "types": "./dist/playwright.d.ts",
+      "import": "./dist/playwright.js"
+    },
+    "./puppeteer": {
+      "types": "./dist/puppeteer.d.ts",
+      "import": "./dist/puppeteer.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').copyFileSync('runtime-lock.json','dist/runtime-lock.json')\"",
+    "test": "node --test test/*.test.mjs",
+    "test:integration": "node --test test/integration.mjs"
+  },
+  "dependencies": {
+    "tar-stream": "3.1.7",
+    "undici": "8.11.2",
+    "yauzl": "3.4.0"
+  },
+  "peerDependencies": {
+    "playwright-core": "1.63.0",
+    "puppeteer-core": "25.10.0"
+  },
+  "peerDependenciesMeta": {
+    "playwright-core": {
+      "optional": true
+    },
+    "puppeteer-core": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/tar-stream": "^3.1.3",
+    "@types/yauzl": "^2.10.3",
+    "playwright-core": "1.63.0",
+    "puppeteer-core": "25.10.0",
+    "typescript": "^5.8.3",
+    "ws": "8.22.0"
+  }
+}

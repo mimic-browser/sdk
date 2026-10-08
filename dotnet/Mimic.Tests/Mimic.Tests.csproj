@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><IsPackable>false</IsPackable></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../Mimic.Sdk/Mimic.Sdk.csproj" /><ProjectReference Include="../Mimic.Playwright/Mimic.Playwright.csproj" /><ProjectReference Include="../Mimic.PuppeteerSharp/Mimic.PuppeteerSharp.csproj" /></ItemGroup>
+  <ItemGroup><None Include="../../conformance/fixtures/wire.json" Link="wire.json" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+  <ItemGroup><None Update="media_capture.js" CopyToOutputDirectory="PreserveNewest" /></ItemGroup>
+</Project>

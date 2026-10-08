@@ -1,0 +1,49 @@
+name: Runtime compatibility evidence
+on:
+  workflow_dispatch:
+    inputs:
+      runtime_url: {description: Official Linux runtime archive URL, required: true}
+      runtime_archive_sha256: {description: Verified official archive SHA256, required: true}
+      runtime_binary_sha256: {description: Verified official executable SHA256, required: true}
+  repository_dispatch:
+    types: [runtime-released]
+permissions:
+  contents: read
+jobs:
+  qualification:
+    runs-on: ubuntu-24.04
+    env:
+      RUNTIME_URL: ${{ inputs.runtime_url || github.event.client_payload.runtime_url }}
+      RUNTIME_ARCHIVE_SHA256: ${{ inputs.runtime_archive_sha256 || github.event.client_payload.runtime_archive_sha256 }}
+      RUNTIME_BINARY_SHA256: ${{ inputs.runtime_binary_sha256 || github.event.client_payload.runtime_binary_sha256 }}
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
+      PUPPETEER_SKIP_DOWNLOAD: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: {node-version: '22.19.0'}
+      - uses: actions/setup-python@v5
+        with: {python-version: '3.12'}
+      - uses: actions/setup-dotnet@v4
+        with: {dotnet-version: '8.0.x'}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '17'}
+      - uses: actions/setup-go@v5
+        with: {go-version: '1.26.0', cache-dependency-path: go/go.sum}
+      - uses: dtolnay/rust-toolchain@stable
+        with: {toolchain: '1.94.1'}
+      - uses: ruby/setup-ruby@v1
+        with: {ruby-version: '3.2.3'}
+      - uses: shivammathur/setup-php@v2
+        with: {php-version: '8.3', extensions: 'curl, openssl, zip, zlib', tools: 'composer:v2'}
+      - run: python release/release.py plan --select node python dotnet-core dotnet-playwright dotnet-puppeteer java go rust ruby php --output .build/qualification-plan.json
+      - run: python release/ci.py prepare --plan .build/qualification-plan.json
+      - run: python release/release.py build --plan .build/qualification-plan.json --output .build/qualification-packages
+      - run: python release/ci.py runtime --url "$RUNTIME_URL" --archive-sha256 "$RUNTIME_ARCHIVE_SHA256" --binary-sha256 "$RUNTIME_BINARY_SHA256"
+      - run: python release/qualify.py --build .build/qualification-packages/build.json --runtime .build/qualification-runtime/mimic --runtime-sha256 "$RUNTIME_BINARY_SHA256" --archive .build/default-runtime.tar.gz --output .build/runtime-qualification.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: runtime-compatibility-evidence
+          path: .build/*qualification*.json
+      # Deliberately no publication credentials, package-version edits, lock updates or publish invocation.

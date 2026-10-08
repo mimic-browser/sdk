@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+require 'optparse'
+require 'mimic_sdk'
+
+command = ARGV.shift
+options = {}
+parser = OptionParser.new do |opts|
+  opts.banner = 'mimic-sdk install|list|verify|prune|lock [options]'
+  opts.on('--version VERSION') { |value| options[:runtime_version] = value }
+  opts.on('--lock FILE') { |value| options[:lock_file] = value }
+  opts.on('--runtime-dir DIR') { |value| options[:runtime_dir] = value }
+  opts.on('--archive FILE') { |value| options[:archive_path] = value }
+  opts.on('--offline') { options[:allow_download] = false }
+  opts.on('--directory DIR') { |value| options[:directory] = value }
+end
+parser.parse!
+manager = MimicSDK::RuntimeManager.new(**options)
+result = case command
+         when 'install' then manager.install
+         when 'list' then manager.list
+         when 'verify', 'prune'
+           abort('--directory is required') unless options[:directory]
+           installation = manager.verify(options[:directory])
+           manager.prune(installation) if command == 'prune'
+           installation
+         when 'lock' then manager.resolve_lock
+         else abort(parser.to_s)
+         end
+puts JSON.pretty_generate(result)

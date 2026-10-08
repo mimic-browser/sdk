@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Version>0.1.0</Version>
+    <PackageId>Mimic.Sdk</PackageId>
+    <Description>Verified Mimic runtime management and typed CDP extensions.</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <RepositoryUrl>https://github.com/mimic-browser/sdk</RepositoryUrl>
+  </PropertyGroup>
+  <ItemGroup><EmbeddedResource Include="../../release/runtime-lock.json" LogicalName="Mimic.Sdk.runtime-lock.json" /></ItemGroup>
+  <ItemGroup><None Include="../../LICENSE" Pack="true" PackagePath="" Link="LICENSE" /></ItemGroup>
+</Project>
