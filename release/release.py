@@ -365,9 +365,26 @@ def registry_urls(package):
         prefix = f"https://repo.maven.apache.org/maven2/{group.replace('.', '/')}/{component}/{version}/"
         return {item["filename"]:prefix + item["filename"] for item in package["artifacts"]}
     if registry == "crates":
-        return {package["artifacts"][0]["filename"]:f"https://crates.io/api/v1/crates/{name}/{version}/download"}
+        # A missing static archive returns S3 403. Only the registry metadata API
+        # can distinguish an unpublished version from an authorization failure.
+        endpoint = f"https://crates.io/api/v1/crates/{name}/{version}"
+        metadata = fetch_json(endpoint)["version"]
+        artifact = package["artifacts"][0]
+        if metadata.get("crate") != name or metadata.get("num") != version:
+            raise ReleaseError("Crates registry returned a different package identity")
+        if metadata.get("checksum") != artifact["sha256"]:
+            raise ReleaseError("Crates registry checksum differs from the selected artifact")
+        return {artifact["filename"]:endpoint + "/download"}
     if registry == "rubygems":
-        return {package["artifacts"][0]["filename"]:f"https://rubygems.org/downloads/{name}-{version}.gem"}
+        # The archive CDN returns S3 403 for a gem that has never been uploaded.
+        # Only the exact-version metadata endpoint's 404 establishes absence.
+        metadata = fetch_json(f"https://rubygems.org/api/v2/rubygems/{name}/versions/{version}.json")
+        artifact = package["artifacts"][0]
+        if metadata.get("name") != name or metadata.get("version") != version:
+            raise ReleaseError("RubyGems registry returned a different package identity")
+        if metadata.get("sha") != artifact["sha256"]:
+            raise ReleaseError("RubyGems registry checksum differs from the selected artifact")
+        return {artifact["filename"]:f"https://rubygems.org/downloads/{name}-{version}.gem"}
     if registry == "go":
         return {package["artifacts"][0]["filename"]:f"https://proxy.golang.org/{name}/@v/v{version}.zip"}
     if registry == "packagist":
