@@ -31,6 +31,15 @@ class ReleaseTests(unittest.TestCase):
                 with self.assertRaisesRegex(release.ReleaseError, "package name"):
                     release.check_versions({key: changed})
 
+    def test_packagist_uses_tag_version_and_rejects_explicit_mismatch(self):
+        package = release.catalog()["php"]
+        metadata = release.read(release.ROOT / "php/composer.json")
+        self.assertNotIn("version", metadata)
+        release.check_versions({"php": package})
+        with patch.object(release, "read", return_value={**metadata, "version": "99.0.0"}):
+            with self.assertRaises(release.ReleaseError):
+                release.check_versions({"php": package})
+
     def test_empty_bump_and_changed_unversioned_package_are_rejected(self):
         plan = release.make_plan(["php"])
         with self.assertRaisesRegex(release.ReleaseError, "unchanged"):

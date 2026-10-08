@@ -2,14 +2,49 @@
   "name": "mimic-browser/sdk",
   "description": "Native Mimic runtime management and typed CDP extensions for PHP",
   "type": "library",
-  "license": "Prosperity-3.0.0",
-  "version": "0.1.0",
-  "require": {"php": ">=8.2", "ext-curl": "*", "ext-json": "*", "ext-openssl": "*", "ext-zlib": "*", "ext-zip": "*"},
-  "suggest": {"chrome-php/chrome": "Install ^1.16 to use the native Chrome PHP adapter"},
-  "autoload": {"psr-4": {"Mimic\\Sdk\\": "src/"}, "files": ["src/Generated.php"]},
-  "require-dev": {"chrome-php/chrome": "1.16.0"},
-  "bin": ["bin/mimic-sdk"],
-  "archive": {"exclude": ["/tests", "/vendor", "/composer.lock"]},
-  "scripts": {"test": "php tests/unit.php"},
-  "config": {"sort-packages": true, "allow-plugins": {}}
+  "license": "LicenseRef-Prosperity-3.0.0",
+  "require": {
+    "php": ">=8.2",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-openssl": "*",
+    "ext-zlib": "*",
+    "ext-zip": "*"
+  },
+  "suggest": {
+    "chrome-php/chrome": "Install ^1.16 to use the native Chrome PHP adapter"
+  },
+  "autoload": {
+    "psr-4": {
+      "Mimic\\Sdk\\": "src/"
+    },
+    "files": [
+      "src/Generated.php"
+    ]
+  },
+  "require-dev": {
+    "chrome-php/chrome": "1.16.0"
+  },
+  "bin": [
+    "bin/mimic-sdk"
+  ],
+  "archive": {
+    "exclude": [
+      "/tests",
+      "/vendor",
+      "/composer.lock"
+    ]
+  },
+  "scripts": {
+    "test": "php tests/unit.php"
+  },
+  "config": {
+    "sort-packages": true,
+    "allow-plugins": {}
+  },
+  "homepage": "https://mimic.boo",
+  "support": {
+    "source": "https://github.com/mimic-browser/sdk",
+    "docs": "https://mimic.boo/docs/sdk/"
+  }
 }

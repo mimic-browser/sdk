@@ -152,7 +152,10 @@ def check_versions(packages):
         registry = item["registry"]
         if registry in ("npm", "packagist"):
             metadata = read(directory / ("package.json" if registry == "npm" else "composer.json"))
-            actual, identity = metadata["version"], metadata["name"]
+            # Packagist derives versions from Git tags; the release catalog
+            # remains authoritative when composer.json omits its version.
+            actual = metadata.get("version", item["version"]) if registry == "packagist" else metadata["version"]
+            identity = metadata["name"]
         elif registry == "nuget":
             metadata = ET.parse(next(directory.glob("*.csproj")))
             actual, identity = metadata.findtext(".//Version"), metadata.findtext(".//PackageId")
