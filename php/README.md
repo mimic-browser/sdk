@@ -47,7 +47,7 @@ property exposes generated methods and typed results. Call `close()` to release
 that extra attachment without closing the native Page; native Page and session
 closure invalidate the handle automatically.
 Generated/imported profiles, proxy, media and resource policies are accepted by
-`newContext`; the runtime enforces profile coherence. The bundled v0.2.3 runtime
+`newContext`; the runtime enforces profile coherence. The bundled v0.2.4 runtime
 provides the `Mimic.configureContext` bridge for managed profiles.
 
 Use `RuntimeOptions` named arguments and generated models for editor completion:
@@ -78,7 +78,7 @@ close sessions in `finally` for reliable errors and cleanup.
 
 `RuntimeManager::install` supports exact version pins, explicit lock files,
 verified shared cache, offline reuse and native binary overrides. The bundled
-pin is immutable v0.2.3. `MIMIC_RUNTIME_DIR`, `MIMIC_RUNTIME_VERSION`,
+pin is immutable v0.2.4. `MIMIC_RUNTIME_DIR`, `MIMIC_RUNTIME_VERSION`,
 `MIMIC_EXECUTABLE_PATH` and `MIMIC_DOWNLOAD=0` follow the shared specification.
 Linux requires amd64/glibc 2.39; the other packaged target is Windows amd64.
 The installer uses libcurl's HTTPS, proxy and CA settings. The browser Context

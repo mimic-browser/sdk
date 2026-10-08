@@ -10,7 +10,7 @@ gem install mimic-browser --no-document
 gem install ferrum --version 0.18.0 --no-document
 ```
 
-The bundled v0.2.3 runtime includes the CSS and navigation lifecycle support
+The bundled v0.2.4 runtime includes the CSS and navigation lifecycle support
 required by Ferrum. The first launch downloads and verifies that exact runtime;
 later launches reuse the persistent cache. No executable path is required.
 
@@ -82,7 +82,7 @@ after dispatch does not imply rollback and does not cause automatic retries.
 `RuntimeManager.new(runtime_version:, lock_file:, executable_path:, runtime_dir:,
 allow_download:, archive_path:, startup_timeout:, lock_timeout:, cancelled:)` follows the shared
 runtime contract. It provides `resolve_lock`, `install`, `launch`, `list`,
-`verify` and explicit `prune`. The packaged pin is v0.2.3. Exact archives and
+`verify` and explicit `prune`. The packaged pin is v0.2.4. Exact archives and
 executables are hash-verified; all languages reuse the same OS cache and leases.
 Use `mimic-sdk install --offline --archive /path/to/official.tar.gz`, `list`,
 `verify`, or `lock` for deliberate cache operations.

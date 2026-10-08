@@ -9,10 +9,10 @@ Install the released module and the client you want to use:
 mkdir mimic-go-example
 cd mimic-go-example
 go mod init example.com/mimic-go-example
-go get github.com/mimic-browser/sdk/go/rod@v0.1.0
+go get github.com/mimic-browser/sdk/go/rod@v0.1.1
 ```
 
-For chromedp, use `go get github.com/mimic-browser/sdk/go/chromedp@v0.1.0`
+For chromedp, use `go get github.com/mimic-browser/sdk/go/chromedp@v0.1.1`
 instead. The runtime installer uses the bundled default pin without an explicit
 executable path.
 
@@ -31,7 +31,7 @@ value, err := page.Eval(`() => document.title`)
 `Session.Browser` and returned objects are native Rod types. chromedp exposes
 `Session.Context` and `Session.Browser`; pass the context to normal
 `chromedp.Run` actions. Its existing-target attachment hydrates an already loaded
-blank frame through public chromedp APIs. The bundled v0.2.3 runtime includes the
+blank frame through public chromedp APIs. The bundled v0.2.4 runtime includes the
 CSS, DOM refresh and network identity projections required by chromedp. Default
 `RuntimeOptions{}` selects that verified pin without an executable path.
 

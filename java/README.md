@@ -17,7 +17,7 @@ and the optional Playwright client to `pom.xml`:
   <dependency>
     <groupId>boo.mimic</groupId>
     <artifactId>mimic-browser</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
   </dependency>
   <dependency>
     <groupId>com.microsoft.playwright</groupId>
@@ -87,7 +87,7 @@ configures the actual Context before application pages are created. Native
 
 `newConfiguredContext(configuration, options)` applies coherent generated or
 imported profiles and proxy settings via `Mimic.configureContext` in the bundled
-v0.2.3 runtime. Public Playwright Optional-null settings disable its default
+v0.2.4 runtime. Public Playwright Optional-null settings disable its default
 viewport and media emulation for managed profiles. Conflicting identity, geometry
 or media options are rejected before Context creation. Supplied options are copied.
 

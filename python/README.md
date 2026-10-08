@@ -10,7 +10,7 @@ python -m pip install playwright==1.63.0
 ```
 
 Source installation is also available with
-`python -m pip install "mimic-browser @ git+https://github.com/mimic-browser/sdk.git@v0.1.0#subdirectory=python"`.
+`python -m pip install "mimic-browser @ git+https://github.com/mimic-browser/sdk.git@v0.1.1#subdirectory=python"`.
 
 Python 3.10+ is required. The first `launch()` downloads Mimic and later runs
 reuse it. No executable path or `playwright install` step is needed. The native runtime
@@ -139,7 +139,7 @@ asyncio.run(main())
 ```
 
 `RuntimeManager` supplies `install`, `inspect`, `verify`, `prune` and `launch`.
-`launch(runtime_version="0.2.3")` selects an explicit release when your project
+`launch(runtime_version="0.2.4")` selects an explicit release when your project
 needs a pin.
 `mimic-sdk install|list|verify|prune` exposes artifact operations. Preinstall an
 official archive with `install(archive_path=...)`. Installation can run offline

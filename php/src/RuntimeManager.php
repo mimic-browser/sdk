@@ -259,7 +259,7 @@ final class RuntimeManager
     {
         // libcurl honors standard proxy/CA configuration; the timeout bounds the whole transfer.
         $handle = curl_init($url); $total = 0; $failure = null;
-        curl_setopt_array($handle, [CURLOPT_FOLLOWLOCATION => true, CURLOPT_MAXREDIRS => 8, CURLOPT_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_CONNECTTIMEOUT => 20, CURLOPT_TIMEOUT => 120, CURLOPT_FAILONERROR => true, CURLOPT_USERAGENT => 'Mimic-SDK-PHP/0.1.0', CURLOPT_WRITEFUNCTION => static function ($unused, string $part) use (&$total, &$failure, $limit, $write): int {
+        curl_setopt_array($handle, [CURLOPT_FOLLOWLOCATION => true, CURLOPT_MAXREDIRS => 8, CURLOPT_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_REDIR_PROTOCOLS => CURLPROTO_HTTPS, CURLOPT_CONNECTTIMEOUT => 20, CURLOPT_TIMEOUT => 120, CURLOPT_FAILONERROR => true, CURLOPT_USERAGENT => 'Mimic-SDK-PHP/0.1.1', CURLOPT_WRITEFUNCTION => static function ($unused, string $part) use (&$total, &$failure, $limit, $write): int {
             try { $total += strlen($part); if ($total > $limit) { throw new SdkException('integrity', 'Download exceeds declared size'); } $write($part); return strlen($part); }
             catch (\Throwable $error) { $failure = $error; return 0; }
         }]);

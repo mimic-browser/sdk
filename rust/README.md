@@ -17,7 +17,7 @@ cd mimic-rust-example
 cargo add mimic-browser --path ../sdk/rust --features chromiumoxide
 ```
 
-The bundled v0.2.3 runtime includes the Frame security projection and Context
+The bundled v0.2.4 runtime includes the Frame security projection and Context
 configuration bridge required by the native adapter. Default `RuntimeOptions`
 downloads and verifies that exact release on first launch; no executable path
 is required. Rust 1.89 or newer is required by the locked dependency graph.

@@ -14,13 +14,13 @@ the core package as a dependency:
 ```sh
 dotnet new console --framework net8.0 --name MimicExample
 cd MimicExample
-dotnet add package mimic-browser.Playwright --version 0.1.0
+dotnet add package mimic-browser.Playwright --version 0.1.1
 ```
 
 For PuppeteerSharp, select its adapter instead:
 
 ```sh
-dotnet add package mimic-browser.PuppeteerSharp --version 0.1.0
+dotnet add package mimic-browser.PuppeteerSharp --version 0.1.1
 ```
 
 Save this Playwright example as `Program.cs`, then run `dotnet run`.
@@ -51,7 +51,7 @@ Console.WriteLine(await page.GetTitleAsync());
 ```
 
 For runtime management and typed Mimic commands without either automation client,
-install only `dotnet add package mimic-browser --version 0.1.0`.
+install only `dotnet add package mimic-browser --version 0.1.1`.
 
 The first launch installs the pinned, verified runtime into the shared OS cache.
 `AllowDownload = false` requires a complete verified cache. `ExecutablePath` uses
@@ -77,7 +77,7 @@ the application creates its first page. No private framework fields are accessed
 
 `NewConfiguredContextAsync(configuration)` also supports coherent generated or
 imported profiles and proxy settings through `Mimic.configureContext` on the
-bundled v0.2.3 runtime. Its Playwright defaults use the public no-viewport and null
+bundled v0.2.4 runtime. Its Playwright defaults use the public no-viewport and null
 media sentinels so framework defaults do not alter a managed profile. Conflicting
 identity, geometry or media options are rejected before a Context is created.
 PuppeteerSharp sessions default to `DefaultViewport = null`; callers using

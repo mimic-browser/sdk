@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mimic-browser"
-version = "0.1.0"
+version = "0.1.1"
 license = {file = "LICENSE"}
 description = "Native Mimic runtime manager and real browser automation integrations"
 requires-python = ">=3.10"

@@ -1,12 +1,12 @@
 {
-  "release": "v0.2.3",
-  "manifestSha256": "11964875450f3526da487cc8d66618065fb3e0d1a5d69250a27a8def2b514fb5",
-  "manifestJson": "{\r\n  \"version\": \"v0.2.3\",\r\n  \"sourceRevision\": \"cfcabd40e52e86bb30461888fe101f37b4996774\",\r\n  \"packagingRevision\": \"cfcabd40e52e86bb30461888fe101f37b4996774\",\r\n  \"ciRun\": \"https://github.com/mimic-browser/runtime/actions/runs/37752215291\",\r\n  \"binariesReusedUnchanged\": true,\r\n  \"license\": \"Prosperity-3.0.0\",\r\n  \"exampleLicense\": \"MIT\",\r\n  \"requirements\": {\r\n    \"windows-amd64\": \"Windows x64; validated on Windows 11\",\r\n    \"linux-amd64\": \"glibc 2.39+, libgcc_s, installed fonts; Ubuntu 24.04 / WSL2\"\r\n  },\r\n  \"clients\": {\r\n    \"playwright-core\": \"1.63.0\",\r\n    \"puppeteer-core\": \"25.10.0\"\r\n  },\r\n  \"artifacts\": [\r\n    {\r\n      \"platform\": \"windows-amd64\",\r\n      \"archive\": \"mimic-v0.2.3-windows-amd64.zip\",\r\n      \"sha256\": \"6040ed4fa90f7cb42df6cb54d9a1481c0945a3cbde340ffebd5d45883ee49a19\",\r\n      \"size\": 47677460,\r\n      \"binarySha256\": \"a657174860a4e570ef8e0ee8737a566134f4c1c15d595e8f6f823437c1556cb5\",\r\n      \"binaryVersion\": \"v0.2.3\",\r\n      \"checks\": [\r\n        \"runtimecheck:v8\",\r\n        \"runtimecheck:quickjs\",\r\n        \"runtimecheck:goja\",\r\n        \"examples:puppeteer\",\r\n        \"examples:playwright\",\r\n        \"examples:concurrency\"\r\n      ]\r\n    },\r\n    {\r\n      \"platform\": \"linux-amd64\",\r\n      \"archive\": \"mimic-v0.2.3-linux-amd64.tar.gz\",\r\n      \"sha256\": \"4fb6a71f7b2c5d5ad49136c9456e6f2cc1e70701e91259ff905ae72218c56a9a\",\r\n      \"size\": 51026543,\r\n      \"binarySha256\": \"414fc217b24301861c078e0e39dafb79110996ea4c4c23ff7d33fab41175eb32\",\r\n      \"binaryVersion\": \"v0.2.3\",\r\n      \"checks\": [\r\n        \"runtimecheck:v8\",\r\n        \"runtimecheck:quickjs\",\r\n        \"runtimecheck:goja\",\r\n        \"examples:puppeteer\",\r\n        \"examples:playwright\",\r\n        \"examples:concurrency\"\r\n      ]\r\n    }\r\n  ]\r\n}\r\n",
+  "release": "v0.2.4",
+  "manifestSha256": "cb263f5cf287ee845670663e2ed33248d32d136f9e67bc82b78f0d27b93b4c38",
+  "manifestJson": "{\r\n  \"version\": \"v0.2.4\",\r\n  \"sourceRevision\": \"ee49a1da8776b63b1c43654a121bcb31dc618106\",\r\n  \"packagingRevision\": \"3126b06798eeaa7a767ea4dc64ab34dcce46d276\",\r\n  \"ciRun\": \"https://github.com/mimic-browser/runtime/actions/runs/37779657608\",\r\n  \"binariesReusedUnchanged\": true,\r\n  \"license\": \"Prosperity-3.0.0\",\r\n  \"exampleLicense\": \"MIT\",\r\n  \"requirements\": {\r\n    \"windows-amd64\": \"Windows x64; validated on Windows 11\",\r\n    \"linux-amd64\": \"glibc 2.39+, libgcc_s, installed fonts; Ubuntu 24.04 / WSL2\"\r\n  },\r\n  \"clients\": {\r\n    \"playwright-core\": \"1.63.0\",\r\n    \"puppeteer-core\": \"25.10.0\"\r\n  },\r\n  \"artifacts\": [\r\n    {\r\n      \"platform\": \"windows-amd64\",\r\n      \"archive\": \"mimic-v0.2.4-windows-amd64.zip\",\r\n      \"sha256\": \"f9e447d63db30673756c75629b82f75ffe32bce0fa15cd0afbda498a2d7774c8\",\r\n      \"size\": 47678094,\r\n      \"binarySha256\": \"7e7cf7986c0ab0f608f9c948af2ca16af6b88a5e90b8ba4e5d6596ec68a166e7\",\r\n      \"binaryVersion\": \"v0.2.4\",\r\n      \"checks\": [\r\n        \"runtimecheck:v8\",\r\n        \"runtimecheck:quickjs\",\r\n        \"runtimecheck:goja\",\r\n        \"examples:puppeteer\",\r\n        \"examples:playwright\",\r\n        \"examples:concurrency\"\r\n      ]\r\n    },\r\n    {\r\n      \"platform\": \"linux-amd64\",\r\n      \"archive\": \"mimic-v0.2.4-linux-amd64.tar.gz\",\r\n      \"sha256\": \"8f3b5e0a027235fc1c8cffd787e23e751ec7d134545bb402a67f93ab8d597903\",\r\n      \"size\": 51027813,\r\n      \"binarySha256\": \"f0b3cb16c4016b3023d31b266883fac131d645e2892ffb96fc0e48e554598581\",\r\n      \"binaryVersion\": \"v0.2.4\",\r\n      \"checks\": [\r\n        \"runtimecheck:v8\",\r\n        \"runtimecheck:quickjs\",\r\n        \"runtimecheck:goja\",\r\n        \"examples:puppeteer\",\r\n        \"examples:playwright\",\r\n        \"examples:concurrency\"\r\n      ]\r\n    }\r\n  ]\r\n}\r\n",
   "manifest": {
-    "version": "v0.2.3",
-    "sourceRevision": "cfcabd40e52e86bb30461888fe101f37b4996774",
-    "packagingRevision": "cfcabd40e52e86bb30461888fe101f37b4996774",
-    "ciRun": "https://github.com/mimic-browser/runtime/actions/runs/37752215291",
+    "version": "v0.2.4",
+    "sourceRevision": "ee49a1da8776b63b1c43654a121bcb31dc618106",
+    "packagingRevision": "3126b06798eeaa7a767ea4dc64ab34dcce46d276",
+    "ciRun": "https://github.com/mimic-browser/runtime/actions/runs/37779657608",
     "binariesReusedUnchanged": true,
     "license": "Prosperity-3.0.0",
     "exampleLicense": "MIT",
@@ -21,11 +21,11 @@
     "artifacts": [
       {
         "platform": "windows-amd64",
-        "archive": "mimic-v0.2.3-windows-amd64.zip",
-        "sha256": "6040ed4fa90f7cb42df6cb54d9a1481c0945a3cbde340ffebd5d45883ee49a19",
-        "size": 47677460,
-        "binarySha256": "a657174860a4e570ef8e0ee8737a566134f4c1c15d595e8f6f823437c1556cb5",
-        "binaryVersion": "v0.2.3",
+        "archive": "mimic-v0.2.4-windows-amd64.zip",
+        "sha256": "f9e447d63db30673756c75629b82f75ffe32bce0fa15cd0afbda498a2d7774c8",
+        "size": 47678094,
+        "binarySha256": "7e7cf7986c0ab0f608f9c948af2ca16af6b88a5e90b8ba4e5d6596ec68a166e7",
+        "binaryVersion": "v0.2.4",
         "checks": [
           "runtimecheck:v8",
           "runtimecheck:quickjs",
@@ -37,11 +37,11 @@
       },
       {
         "platform": "linux-amd64",
-        "archive": "mimic-v0.2.3-linux-amd64.tar.gz",
-        "sha256": "4fb6a71f7b2c5d5ad49136c9456e6f2cc1e70701e91259ff905ae72218c56a9a",
-        "size": 51026543,
-        "binarySha256": "414fc217b24301861c078e0e39dafb79110996ea4c4c23ff7d33fab41175eb32",
-        "binaryVersion": "v0.2.3",
+        "archive": "mimic-v0.2.4-linux-amd64.tar.gz",
+        "sha256": "8f3b5e0a027235fc1c8cffd787e23e751ec7d134545bb402a67f93ab8d597903",
+        "size": 51027813,
+        "binarySha256": "f0b3cb16c4016b3023d31b266883fac131d645e2892ffb96fc0e48e554598581",
+        "binaryVersion": "v0.2.4",
         "checks": [
           "runtimecheck:v8",
           "runtimecheck:quickjs",
@@ -53,5 +53,5 @@
       }
     ]
   },
-  "baseUrl": "https://github.com/mimic-browser/runtime/releases/download/v0.2.3"
+  "baseUrl": "https://github.com/mimic-browser/runtime/releases/download/v0.2.4"
 }

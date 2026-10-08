@@ -1,5 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><Version>0.1.0</Version><PackageId>mimic-browser.PuppeteerSharp</PackageId><PackageLicenseFile>LICENSE</PackageLicenseFile></PropertyGroup>
+  <PropertyGroup><TargetFramework>net8.0</TargetFramework><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable><Version>0.1.1</Version><PackageId>mimic-browser.PuppeteerSharp</PackageId><PackageLicenseFile>LICENSE</PackageLicenseFile></PropertyGroup>
   <ItemGroup><ProjectReference Include="../Mimic.Sdk/Mimic.Sdk.csproj" /><PackageReference Include="PuppeteerSharp" Version="25.12.0" /></ItemGroup>
   <ItemGroup><None Include="../../LICENSE" Pack="true" PackagePath="" Link="LICENSE" /></ItemGroup>
 </Project>

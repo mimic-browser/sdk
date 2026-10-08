@@ -108,7 +108,7 @@ Current binary artifacts target Windows x64 and Linux x64 with glibc 2.39+.
 An unsupported host fails before a download. Framework client support is
 qualified separately from runtime host packaging.
 
-The packaged runtime is v0.2.3. It includes the context configuration bridge
+The packaged runtime is v0.2.4. It includes the context configuration bridge
 used by managed environment profiles. See
 [supported integrations](compatibility/README.md) for client versions and
 runtime capability boundaries.

@@ -25,7 +25,7 @@ For Puppeteer, use `npm install puppeteer-core@25.10.0` instead and import from
 either framework.
 
 Source installation is also available with
-`npm install git+https://github.com/mimic-browser/sdk.git#v0.1.0`.
+`npm install git+https://github.com/mimic-browser/sdk.git#v0.1.1`.
 Git installation builds the package automatically; runtime acquisition still
 happens only on `launch()`.
 
@@ -112,11 +112,11 @@ Omission differs from explicit null. Unsupported JSON values fail before send.
 undo a command already dispatched; the SDK does not retry state-changing calls.
 
 `RuntimeManager` provides `install`, `inspect`, `verify`, `prune` and `launch`.
-An explicit `launch({runtimeVersion: "0.2.3"})` selects a runtime release when
+An explicit `launch({runtimeVersion: "0.2.4"})` selects a runtime release when
 your project needs a pin.
 Use `install({archivePath})` to preinstall a separately obtained verified archive.
 `allowDownload:false` or `MIMIC_DOWNLOAD=0` makes installation strictly offline.
-The packaged default remains exactly v0.2.3; runtime releases do not update SDK
+The packaged default remains exactly v0.2.4; runtime releases do not update SDK
 packages or change saved pins. The common cache, lock, receipt, requirements and
 selector rules are specified in `../spec/runtime-manager.md`. Pruning requires
 an explicit call and rejects live or unverifiable leases.
