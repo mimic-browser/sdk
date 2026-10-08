@@ -15,12 +15,12 @@ import urllib.error
 
 import release
 import publish_sources
+import pypi_auth
 
 
 def check_credentials(packages, environment):
     """Fail before uploading any package when selected registry auth is missing."""
     required = {
-        "pypi": ("TWINE_USERNAME", "TWINE_PASSWORD"),
         "nuget": ("NUGET_API_KEY",),
         "crates": ("CARGO_REGISTRY_TOKEN",),
         "rubygems": ("GEM_HOST_API_KEY",),
@@ -31,6 +31,10 @@ def check_credentials(packages, environment):
     for package in packages.values():
         registry = package["registry"]
         missing.update(name for name in required.get(registry, ()) if not environment.get(name))
+        if registry == "pypi":
+            names = (("TWINE_USERNAME", "TWINE_PASSWORD") if environment.get("TWINE_PASSWORD")
+                     else ("ACTIONS_ID_TOKEN_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_TOKEN"))
+            missing.update(name for name in names if not environment.get(name))
         if registry == "npm" and not environment.get("NODE_AUTH_TOKEN"):
             missing.update(name for name in ("ACTIONS_ID_TOKEN_REQUEST_URL", "ACTIONS_ID_TOKEN_REQUEST_TOKEN") if not environment.get(name))
     if missing:
@@ -100,7 +104,10 @@ def main():
             expanded[0] = os.getenv("MIMIC_RELEASE_" + expanded[0].upper(), expanded[0])
             progress["state"] = "uploading"; save()
             # Avoid CalledProcessError's argv representation, which can contain the NuGet key.
-            result = subprocess.run(expanded, cwd=release.ROOT, stdin=subprocess.DEVNULL, env={**os.environ, "GIT_TERMINAL_PROMPT": "0"})
+            environment = {**os.environ, "GIT_TERMINAL_PROMPT": "0"}
+            if registry == "pypi":
+                environment = pypi_auth.publication_environment(environment)
+            result = subprocess.run(expanded, cwd=release.ROOT, stdin=subprocess.DEVNULL, env=environment)
             if result.returncode:
                 raise release.ReleaseError(f"{key}: native publisher failed (exit {result.returncode}); resume using the same receipt")
         progress["state"] = "uploaded"; save()

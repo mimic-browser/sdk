@@ -63,7 +63,7 @@ class ReleaseTests(unittest.TestCase):
         environment = {"NODE_AUTH_TOKEN": "never-include-token-in-errors", "TWINE_USERNAME": "__token__"}
         with self.assertRaises(release.ReleaseError) as captured:
             publish.check_credentials(packages, environment)
-        self.assertIn("TWINE_PASSWORD", str(captured.exception))
+        self.assertIn("ACTIONS_ID_TOKEN_REQUEST_TOKEN", str(captured.exception))
         self.assertIn("NUGET_API_KEY", str(captured.exception))
         self.assertNotIn(environment["NODE_AUTH_TOKEN"], str(captured.exception))
         environment.update(TWINE_PASSWORD="secret", NUGET_API_KEY="secret")

@@ -18,10 +18,35 @@ on:
         description: Publish selected qualified packages (requires separately enabled environment)
         type: boolean
         default: false
+      verify_pypi_auth:
+        description: Verify the PyPI trusted publisher without building or uploading packages
+        type: boolean
+        default: false
 permissions:
   contents: read
 jobs:
+  verify-pypi-publisher:
+    if: inputs.verify_pypi_auth
+    runs-on: ubuntu-24.04
+    environment: sdk-production
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - name: Verify PyPI trusted publisher without uploading
+        working-directory: release
+        run: |
+          python - <<'PY'
+          import os
+          import pypi_auth
+          pypi_auth.publication_environment(os.environ)
+          print("PASS PyPI trusted publisher authentication; no package uploaded")
+          PY
   selected-packages:
+    if: '!inputs.verify_pypi_auth'
     runs-on: ubuntu-24.04
     environment: sdk-production
     permissions:
@@ -81,8 +106,6 @@ jobs:
         env:
           MIMIC_SDK_PUBLICATION_ENABLED: "true"
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
           NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
           CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}
           GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_TOKEN }}

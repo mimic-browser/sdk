@@ -98,13 +98,17 @@ the receipt directory; never silently rebuild a partially published release.
 | Registry      | Required CI configuration                                                                                                          | Publication identity                                                             |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | npm           | npm trusted publishing or `NODE_AUTH_TOKEN` through setup-node                                                                     | `mimic-browser` native version                                                   |
-| PyPI          | `TWINE_USERNAME=__token__`, `TWINE_PASSWORD`                                                                                       | `mimic-browser` wheel and sdist                                                  |
+| PyPI          | GitHub trusted publisher for `sdk-release.yml` and environment `sdk-production`; `id-token: write`                                  | `mimic-browser` wheel and sdist                                                  |
 | NuGet         | `NUGET_API_KEY`                                                                                                                    | Independently selected `Mimic.Sdk`, `Mimic.Playwright`, `Mimic.PuppeteerSharp`   |
 | Maven Central | Portal base64 token in `MAVEN_CENTRAL_TOKEN`; pre-provisioned noninteractive GPG signing key                                       | `io.mimicbrowser:mimic-sdk`, JAR/sources/Javadoc/POM                             |
 | Go            | Authenticated SDK origin with tag-write permission                                                                                 | `go/vX.Y.Z` points at the exact SDK source commit                                |
 | crates.io     | `CARGO_REGISTRY_TOKEN`                                                                                                             | `mimic-sdk` crate; clean checkout and locked dependencies                        |
 | RubyGems      | `GEM_HOST_API_KEY`                                                                                                                 | `mimic-browser-sdk` gem                                                          |
 | Packagist     | `PHP_MIRROR_TOKEN` with Contents write permission only on the CI-only `mimic-browser/sdk-php` mirror; configured Packagist webhook | Exact packed PHP tree, ordinary `vX.Y.Z` tag; source and mirror commits retained |
+
+PyPI authentication exchanges the GitHub OIDC identity for a short-lived upload
+token immediately before publishing the selected Python package. No `PYPI_TOKEN`
+secret is required. Other registry credentials are unchanged.
 
 The PHP mirror contains no separately edited implementation. Only verified
 `sdk/php` package contents enter it. Go/Packagist registries construct their own
