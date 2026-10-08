@@ -4,8 +4,8 @@ Use the browser automation API you already know, with a managed Mimic runtime
 and typed Mimic capabilities beside it. Browser, Context, Page and Locator
 objects come from the selected framework. The SDK does not imitate their APIs.
 
-Packages are available from npm, PyPI, crates.io, RubyGems, Packagist, and the
-Go module proxy. NuGet adapter packages and Maven Central publication are pending.
+Packages are available from npm, PyPI, NuGet, Maven Central, crates.io,
+RubyGems, Packagist, and the Go module proxy.
 [GitHub source installation](https://github.com/mimic-browser/sdk) remains
 available through each language's native package manager or build tool.
 
