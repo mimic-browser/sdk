@@ -9,6 +9,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import time
 import urllib.parse
 import urllib.request
 import uuid
@@ -42,7 +43,7 @@ def maven_token(environment):
     return base64.b64encode((username + ":" + password).encode()).decode()
 
 
-def maven(package, progress, save):
+def maven(package, progress, save, timeout=1800):
     """Use Central's supported bundle API; retain deployment ID before status checks."""
     token = maven_token(os.environ)
     headers = {"Authorization":"Bearer " + token, "User-Agent":"Mimic-SDK-Release/0.1"}
@@ -78,14 +79,32 @@ def maven(package, progress, save):
             with urllib.request.urlopen(request, timeout=120) as response:
                 progress["deploymentId"] = response.read().decode().strip()
             progress["state"] = "uploaded"; save()
-    request = urllib.request.Request("https://central.sonatype.com/api/v1/publisher/status?id=" + urllib.parse.quote(progress["deploymentId"], safe=""), data=b"", headers=headers, method="POST")
-    with urllib.request.urlopen(request, timeout=60) as response:
-        status = json.loads(response.read())
-    progress["centralState"] = status["deploymentState"]; save()
-    if status["deploymentState"] == "FAILED":
-        raise release.ReleaseError("Central validation failed: " + json.dumps(status.get("errors")))
-    if status["deploymentState"] != "PUBLISHED":
-        raise release.ReleaseError("Central deployment is still processing; rerun with the retained deployment receipt")
+    # Query only the retained deployment; a slow validation queue never causes
+    # another upload. Central's documented nonterminal states are explicit.
+    deadline = time.monotonic() + timeout
+    delay = 5
+    while time.monotonic() < deadline:
+        request = urllib.request.Request("https://central.sonatype.com/api/v1/publisher/status?id=" + urllib.parse.quote(progress["deploymentId"], safe=""), data=b"", headers=headers, method="POST")
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            break
+        with urllib.request.urlopen(request, timeout=min(60, remaining)) as response:
+            status = json.loads(response.read())
+        progress["centralState"] = status["deploymentState"]; save()
+        if status["deploymentState"] == "FAILED":
+            raise release.ReleaseError("Central validation failed: " + json.dumps(status.get("errors")))
+        if status["deploymentState"] == "PUBLISHED":
+            return
+        if status["deploymentState"] not in ("PENDING", "VALIDATING", "VALIDATED", "PUBLISHING"):
+            raise release.ReleaseError("Central returned an unknown deployment state")
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            break
+        pause = min(delay, remaining)
+        print(f"Central deployment {status['deploymentState']}; checking the retained deployment after {pause:g}s", flush=True)
+        time.sleep(pause)
+        delay = min(delay * 2, 30)
+    raise release.ReleaseError("Central deployment is still processing after the bounded wait; resume with the retained deployment receipt")
 
 
 def php(package, source_revision, progress, save):

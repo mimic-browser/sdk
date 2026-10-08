@@ -86,8 +86,11 @@ them. `publish.py` validates the clean committed checkout, unchanged artifacts,
 plan and complete qualification. It retains per-package progress and verifies
 downloaded registry artifacts after upload. Retry with the same build/progress
 receipts; it first recovers already uploaded matching artifacts from the registry.
-A registry's temporary indexing delay leaves the release incomplete. A byte
-mismatch is an error, never permission to overwrite or bump a version.
+After a confirmed upload, verification waits for registry indexing for up to
+10 minutes, or 35 minutes for Go's negative cache. Maven deployment processing
+uses a separate 30-minute wait on the retained deployment ID. If a bound expires,
+resume using the saved receipts. Authentication failures and byte mismatches
+remain errors, never permission to overwrite or bump a version.
 
 The workflow retains `.build/release`, including its frozen `plan.json`, native
 packages and publication receipts. To resume, dispatch `sdk-release.yml` at the

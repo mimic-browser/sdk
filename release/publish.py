@@ -5,18 +5,90 @@ Disabled unless both --execute and MIMIC_SDK_PUBLICATION_ENABLED=true are presen
 No runtime release event calls this script. Never use it during local SDK work.
 """
 import argparse
+import datetime as dt
+import email.utils
 import json
 import os
 from pathlib import Path
 import re
 import subprocess
 import sys
+import time
 import urllib.error
 
 import release
 import publish_sources
 import pypi_auth
 import resume
+
+
+def index_retry_delay(headers, fallback):
+    """Respect server retry dates and the remaining freshness of a cached 404."""
+    headers = {key.lower(): value for key, value in (headers.items() if headers else [])}
+    now = time.time()
+
+    def date(value):
+        try:
+            parsed = email.utils.parsedate_to_datetime(value)
+            if parsed.tzinfo is None:
+                parsed = parsed.replace(tzinfo=dt.timezone.utc)
+            return parsed.timestamp()
+        except (TypeError, ValueError, OverflowError):
+            return None
+
+    retry = headers.get("retry-after", "").strip()
+    retry_date = date(retry)
+    requested = int(retry) if retry.isdecimal() else max(0, retry_date - now) if retry_date is not None else 0
+    directives = {}
+    for value in headers.get("cache-control", "").split(","):
+        name, _, value = value.strip().partition("=")
+        directives[name.lower()] = value.strip(' "')
+    freshness = 0
+    if not {"no-cache", "no-store"}.intersection(directives):
+        response_date = date(headers.get("date"))
+        age = headers.get("age", "0").strip()
+        age = max(int(age) if age.isdecimal() else 0, max(0, now - response_date) if response_date is not None else 0)
+        maximum = directives.get("s-maxage", directives.get("max-age", ""))
+        if maximum.isdecimal():
+            freshness = max(0, int(maximum) - age)
+        else:
+            expires = date(headers.get("expires"))
+            if expires is not None:
+                freshness = max(0, expires - response_date - age if response_date is not None else expires - now)
+    return max(fallback, requested, freshness)
+
+
+def verify_uploaded_registry(selected, registry_state, progress, timeout=None):
+    """Wait only after a confirmed upload; never publish, change bytes or reset state."""
+    if progress.get("state") not in ("uploaded", "verifying"):
+        raise release.ReleaseError("Registry visibility waiting requires a confirmed upload")
+    if timeout is None:
+        # The public Go proxy negatively caches a missing initial module tag for
+        # up to thirty minutes. Other registries use the shorter indexing bound.
+        timeout = max(2100 if package["registry"] == "go" else 600
+                      for package in selected["packages"].values())
+    deadline = time.monotonic() + timeout
+    delay = 2
+    while True:
+        if time.monotonic() >= deadline:
+            raise release.ReleaseError("Uploaded registry artifacts are not yet visible; retain the receipt and resume verification without uploading again")
+        headers = None
+        try:
+            return release.verify_registry(selected, registry_state)
+        except urllib.error.HTTPError as error:
+            if error.code != 404:
+                raise
+            headers = error.headers
+            error.close()
+        except release.RegistryNotIndexed:
+            pass
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            continue
+        pause = min(index_retry_delay(headers, delay), remaining)
+        print(f"Uploaded package not yet indexed; verifying again after {pause:g}s", flush=True)
+        time.sleep(pause)
+        delay = min(delay * 2, 30)
 
 
 def check_credentials(packages, environment):
@@ -78,6 +150,9 @@ def main():
             continue
         selected = {**build, "packages":{key:package}}
         registry_state = args.state.with_name(args.state.stem + "-" + key + "-registry.json")
+        if progress["state"] in ("uploaded", "verifying") and not (package["registry"] == "maven" and progress.get("deploymentId")):
+            verify_uploaded_registry(selected, registry_state, progress)
+            progress["state"] = "verified"; save(); continue
         # Recover an upload whose response was lost by verifying the registry first.
         try:
             release.verify_registry(selected, registry_state)
@@ -85,11 +160,9 @@ def main():
         except urllib.error.HTTPError as error:
             if error.code != 404:
                 raise
-        except release.ReleaseError as error:
-            if "has not indexed" not in str(error):
-                raise
-        if progress["state"] in ("uploaded", "verifying") and not (package["registry"] == "maven" and progress.get("deploymentId")):
-            raise release.ReleaseError(f"{key}: uploaded artifact is not yet visible; retry verification without uploading again")
+            error.close()
+        except release.RegistryNotIndexed:
+            pass
         registry = package["registry"]
         if registry == "maven":
             publish_sources.maven(package, progress, save)
@@ -119,7 +192,7 @@ def main():
             if result.returncode:
                 raise release.ReleaseError(f"{key}: native publisher failed (exit {result.returncode}); resume using the same receipt")
         progress["state"] = "uploaded"; save()
-        release.verify_registry(selected, registry_state)
+        verify_uploaded_registry(selected, registry_state, progress)
         progress["state"] = "verified"; save()
     state["status"] = "complete"; save()
     print("All selected package registry artifacts verified")

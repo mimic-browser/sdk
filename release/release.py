@@ -36,6 +36,10 @@ class ReleaseError(RuntimeError):
     pass
 
 
+class RegistryNotIndexed(ReleaseError):
+    """An exact selected version or artifact is absent from registry metadata."""
+
+
 def read(path: Path):
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -391,7 +395,7 @@ def registry_urls(package):
         metadata = fetch_json("https://repo.packagist.org/p2/" + name + ".json")
         chosen = next((item for item in metadata["packages"][name] if item["version"].lstrip("v") == version), None)
         if not chosen or not chosen.get("dist"):
-            raise ReleaseError("Packagist has not indexed the selected mirror version")
+            raise RegistryNotIndexed("Packagist has not indexed the selected mirror version")
         return {package["artifacts"][0]["filename"]:chosen["dist"]["url"]}
     raise ReleaseError("Unsupported package registry")
 
@@ -425,7 +429,7 @@ def verify_registry(build_receipt, state_path):
         for item in package["artifacts"]:
             url = urls.get(item["filename"])
             if not url:
-                raise ReleaseError(f"Registry is missing selected artifact {item['filename']}")
+                raise RegistryNotIndexed(f"Registry is missing selected artifact {item['filename']}")
             data = fetch(url)
             repository_signature = None
             # Go/Packagist construct source archives themselves; compare canonical file contents.
